@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\HouseWareController;
 use App\Http\Controllers\Api\IngredientsController;
+use App\Http\Controllers\Api\BillsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,3 +124,13 @@ Route::get('/list-coupon-ingredients', [IngredientsController::class, 'listCoupo
 Route::delete('/delete-coupon-ingredients/{id}', [IngredientsController::class, 'deleteCouponHouseware'])->name('deleteCouponHouseware');
 Route::get('/getinfo-coupon-ingredients/{id}', [IngredientsController::class, 'getInfoCouponHouseware'])->name('getInfoCouponHouseware');
 Route::post('/update-coupon-ingredients', [IngredientsController::class, 'updateCouponHouseware'])->name('updateCouponHouseware');
+
+
+
+//chart + doanh thu
+
+Route::get('/room-count', [RoomController::class, 'getCountRooms'])->name('getCountRooms');
+Route::get('/customer-count', [CustomerController::class, 'getCountCustomer'])->name('getCountCustomer');
+Route::get('/revenue', [BillsController::class, 'getRevenue'])->name('getRevenue');
+Route::get('/getRevenueByMonth', [BillsController::class, 'getRevenueByMonth'])->name('getRevenueByMonth');
+Route::get('/get-list-bills', [BillsController::class, 'getListBills'])->name('getListBills');

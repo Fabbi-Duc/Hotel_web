@@ -65,6 +65,22 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
         }
     }
 
+    public function getCountCustomer()
+    {
+        try {
+            $list = DB::table("customers");
+            return [
+                'success' => true,
+                'count' => $list->get()->count()
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     public function bookRoom($data, $id, $time)
     {
         try {

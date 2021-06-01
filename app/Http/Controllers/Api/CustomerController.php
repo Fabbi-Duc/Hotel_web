@@ -33,6 +33,12 @@ class CustomerController extends Controller
         return $result;
     }
 
+    public function getCountCustomer(Request $request)
+    {
+        $result = $this->customerRepository->getCountCustomer();
+        return $result;
+    }
+
     public function getCustomerFood($id)
     {
         $result = DB::table('rooms_customers')->where('customer_id', $id)->where('status', 2)->first();

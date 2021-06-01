@@ -8,6 +8,7 @@ interface RoomRepositoryInterface extends RepositoryInterface
 {
     public function getCodeRoom($data);
     public function getListRooms($data);
+    public function getCountRooms();
     public function deleteRoom($data);
     public function getTypeRoom();
     public function getInfoRoom($id);

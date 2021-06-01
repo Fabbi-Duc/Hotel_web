@@ -57,6 +57,22 @@ class RoomRepository extends RepositoryAbstract implements RoomRepositoryInterfa
         }
     }
 
+    public function getCountRooms()
+    {
+        try {
+            $list = DB::table("rooms");
+            return [
+                'success' => true,
+                'count' => $list->get()->count()
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     public function getTypeRoom()
     {
         try {

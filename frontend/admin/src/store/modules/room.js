@@ -1,4 +1,4 @@
-import { listRooms, deleteRoom, getRoomType, getInfoRoom, createRoom, getNameRoom, updateRoom, getRoomFloor, getInfoRoomCustomer } from "@/api/room.api";
+import { listRooms, deleteRoom, getRoomType, getInfoRoom, createRoom, getNameRoom, updateRoom, getRoomFloor, getInfoRoomCustomer, getCountRoom } from "@/api/room.api";
 
 export const state = {
   listRooms: null,
@@ -115,6 +115,18 @@ export const actions = {
   getInfoRoomCustomer({ commit }, id) {
     return new Promise((resolve, reject) => {
       getInfoRoomCustomer(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getCountRoom({ commit }) {
+    return new Promise((resolve, reject) => {
+      getCountRoom()
         .then(response => {
           resolve(response);
         })

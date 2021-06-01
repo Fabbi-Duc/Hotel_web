@@ -13,6 +13,7 @@ class Bills extends Model
         'room_id',
         'start_time',
         'end_time',
+        'price',
         'status',
     ];
 }

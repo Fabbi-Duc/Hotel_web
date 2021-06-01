@@ -67,3 +67,11 @@ export const getInfoRoomCustomer = id => {
     method: "get",
   })
 }
+
+export const getCountRoom = params => {
+  return request({
+    url: "/room-count",
+    method: "get",
+    params
+  })
+}

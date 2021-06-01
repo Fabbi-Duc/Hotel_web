@@ -127,3 +127,11 @@ export const getCustomerFood = id => {
     method: "get",
   });
 };
+
+export const getCountCustomer = params => {
+  return request({
+    url: "/customer-count",
+    method: "get",
+    params
+  })
+}
