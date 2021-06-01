@@ -29,6 +29,12 @@ class RoomController extends Controller
         return $result;
     }
 
+    public function getCountRooms(Request $request)
+    {
+        $result = $this->roomRepository->getCountRooms();
+        return $result;
+    }
+
     public function deleteRoom(Request $request)
     {
         $data = $request->all();

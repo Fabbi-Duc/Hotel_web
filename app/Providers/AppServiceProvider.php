@@ -51,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
             "App\Services\Mail\MailServiceInterface",
             "App\Services\Mail\MailService"
         );
+        $this->app->singleton(
+            "App\Repositories\Bills\BillsRepositoryInterface",
+            "App\Repositories\Bills\BillsRepository"
+        );
     }
 
     /**
