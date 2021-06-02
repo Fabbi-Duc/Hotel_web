@@ -256,4 +256,20 @@ class UserRepository extends RepositoryAbstract implements UserRepositoryInterfa
             ];
         }
     }
+
+    public function getCountUser()
+    {
+        try {
+            $list = DB::table("users");
+            return [
+                'success' => true,
+                'count' => $list->get()->count()
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }

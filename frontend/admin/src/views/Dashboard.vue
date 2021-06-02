@@ -1,6 +1,11 @@
 <template>
   <div>
-    <b-row>
+    <template v-if="isLoading">
+      <AppLoading />
+    </template>
+    <template>
+      <!-- <h3>Số lượng</h3> -->
+      <b-row>
       <b-col cols="12" md="3">
         <div class="wrap wrap--color1">
           <div class="wrap__label">
@@ -10,7 +15,7 @@
                 View
               </div>
             </div>
-            Rooms
+            Phòng
           </div>
         </div>
       </b-col>
@@ -26,7 +31,7 @@
                 View
               </div>
             </div>
-            Customer
+            Khách hàng
           </div>
         </div>
       </b-col>
@@ -45,7 +50,7 @@
               </p>
               <div class="wrap__button">View</div>
             </div>
-            Total Revenue
+            Tổng doanh thu
           </div>
         </div>
       </b-col>
@@ -53,17 +58,20 @@
         <div class="wrap wrap--color4">
           <div class="wrap__label">
             <div class="d-flex justify-content-between align-items-center">
-              <p>9823</p>
-              <div class="wrap__button">View</div>
+              <p>{{ countUser }}</p>
+              <div class="wrap__button" @click.prevent="nextPage('Users')">View</div>
             </div>
-            Customer
+            Nhân viên
           </div>
         </div>
       </b-col>
     </b-row>
+    </template>
     <br /><br />
+    <h3>Số lượng khách hàng / tháng</h3>
     <LineChart />
     <br /><br />
+    <h3>Doanh thu / tháng</h3>
     <BarChart />
   </div>
 </template>
@@ -71,6 +79,7 @@
 <script>
 import LineChart from "../views/ChartDashboard/LineChart.vue";
 import BarChart from "../views/ChartDashboard/BarChart.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Dashboard",
   components: {
@@ -82,10 +91,18 @@ export default {
       countRoom: null,
       countCustomer: null,
       AllRevenue: null,
+      countUser: null
     };
   },
+  computed: {
+    ...mapGetters({
+      isLoading: "common/isLoading",
+    }),
+  },
   created() {
+    this.$store.dispatch("common/setIsLoading", true);
     this.getCount();
+    this.$store.dispatch("common/setIsLoading", false);
   },
   methods: {
     color(value) {
@@ -114,6 +131,9 @@ export default {
       this.$store.dispatch("bills/getRevenue").then((response) => {
         this.AllRevenue = response.Revenue;
       });
+      this.$store.dispatch("user/getCountUser").then((response) => {
+        this.countUser = response.count;
+      })
     },
   },
 };

@@ -1,6 +1,6 @@
 import { listUsers, bookRoom, deleteUser, 
           createUser, updateUser, getInfoUser, 
-          pay, createFood, updateFood, listFood, getInfoFood, deleteFood, createPark } from "@/api/user.api";
+          pay, createFood, updateFood, listFood, getInfoFood, deleteFood, createPark, getCountUser } from "@/api/user.api";
 
 export const state = {
   listUsers: null,
@@ -179,4 +179,16 @@ export const actions = {
         });
     });
   },
+
+  getCountUser({ commit }) {
+    return new Promise((resolve, reject) => {
+      getCountUser()
+      .then(response => {
+        resolve(response);
+      })
+      .catch(error => {
+        reject(error);
+      });
+    })
+  }
 }

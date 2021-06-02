@@ -39,11 +39,7 @@
       </template>
       <template #cell(gender)="row">
         <span>
-          {{
-            row.item.gender == 1
-            ? 'male'
-            : 'female'
-          }}
+          {{ row.item.gender == 1 ? "male" : "female" }}
         </span>
       </template>
     </b-table>
@@ -61,10 +57,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      name: '',
+      name: "",
       fields: [
         { key: "numerical", label: "numerical" },
         { key: "name", label: "lastname" },
@@ -87,11 +84,17 @@ export default {
         total: 50,
         page: 1,
       },
-    }
+    };
   },
-
-  mounted() {
+  computed: {
+    ...mapGetters({
+      isLoading: "common/isLoading",
+    }),
+  },
+  created() {
+    this.$store.dispatch("common/setIsLoading", true);
     this.getCustomers();
+    this.$store.dispatch("common/setIsLoading", false);
   },
   methods: {
     async getCustomers() {
@@ -100,10 +103,12 @@ export default {
         perPage: this.paginate.perPage,
         page: this.paginate.page,
       };
-      await this.$store.dispatch("customer/getListCustomer", params).then((res) => {
-        this.customers = res.data.data;
-        this.paginate.total = res.data.total;
-      });
+      await this.$store
+        .dispatch("customer/getListCustomer", params)
+        .then((res) => {
+          this.customers = res.data.data;
+          this.paginate.total = res.data.total;
+        });
     },
     customPaginate() {
       this.getCustomers();
@@ -116,8 +121,8 @@ export default {
       this.paginate.page = page;
       await this.getCustomers();
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

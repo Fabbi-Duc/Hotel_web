@@ -61,6 +61,15 @@ export const listFood = params => {
   });
 };
 
+export const getCountUser = params => {
+  return request({
+    url: "/get-count-user",
+    method: "get",
+    params
+  });
+};
+
+
 export const getInfoFood = id => {
   return request({
     url: "/food/" + id,

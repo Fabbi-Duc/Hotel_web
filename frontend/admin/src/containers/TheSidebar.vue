@@ -5,8 +5,8 @@
     :show="show"
     @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
-    <CSidebarBrand class="d-md-down-none" to="/">
-      <CIcon
+    <CSidebarBrand class="d-md-down-none py-2" to="/">
+      <!-- <CIcon
         class="c-sidebar-brand-full"
         name="logo"
         size="custom-size"
@@ -19,7 +19,8 @@
         size="custom-size"
         :height="35"
         viewBox="0 0 110 134"
-      />
+      /> -->
+    <img src="../assets/image/logo.svg" style="height: 85px;" alt="">
     </CSidebarBrand>
 
     <CRenderFunction

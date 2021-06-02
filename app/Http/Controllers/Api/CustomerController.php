@@ -9,8 +9,9 @@ use App\Mail\SendMailPark;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoomServiceClean;
+use App\Models\Room;
 
-class CustomerController extends Controller
+class CustomerController extends ApiController
 {
     private $customerRepository;
 
@@ -150,7 +151,7 @@ class CustomerController extends Controller
         $result->end_time = '2021-04-29T10:24';
         $result->cost = '1000';
         $result->save();
-        
+
         return [
             "success" => true
         ];
@@ -175,5 +176,41 @@ class CustomerController extends Controller
     {
         $result = $this->customerRepository->detailBill($id);
         return $result;
+    }
+
+    public function getCountRoomByMonth()
+    {
+        $rooms = Room::join('rooms_customers', 'rooms.id', '=', 'rooms_customers.room_id')
+            ->whereYEAR('start_time', now()->format('Y'))
+            ->select(
+                DB::raw('count(room_id) as qty'),
+                'room_type_id',
+                DB::raw('MONTH(start_time) as month')
+            )
+            ->groupBy('room_type_id', 'month')
+            ->get();
+
+        $room_type_id_1 = [];
+        $room_type_id_2 = [];
+        $room_type_id_3 = [];
+        $room_type_id_4 = [];
+        foreach ($rooms as $room) {
+            if ($room->room_type_id == 1) {
+                $room_type_id_1[] = $room;
+            } elseif ($room->room_type_id == 2) {
+                $room_type_id_2[] = $room;
+            } elseif ($room->room_type_id == 3) {
+                $room_type_id_3[] = $room;
+            } else {
+                $room_type_id_4[] = $room;
+            }
+        }
+
+        return $this->sendSuccess([
+            'type_1' => $room_type_id_1,
+            'type_2' => $room_type_id_2,
+            'type_3' => $room_type_id_3,
+            'type_4' => $room_type_id_4
+        ]);
     }
 }

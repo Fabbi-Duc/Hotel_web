@@ -2,20 +2,20 @@
   <div class="list-houseware">
     <b-row style="margin-bottom: 30px">
       <b-col cols="4" class="position-relative">
-        <label for="">Name</label>
+        <label for="">Tên</label>
         <br />
         <input type="text" class="form-control" v-model="name" />
         <b-button
           style="height: 30px; right: -100px; bottom: 0"
           class="position-absolute"
           @click="getListHouseWare()"
-          >Search</b-button
+          >Tìm kiếm</b-button
         >
         <b-button
-          style="height: 30px; right: -250px; bottom: 0"
+          style="height: 30px; right: -200px; bottom: 0"
           class="position-absolute"
           @click="createHouseware()"
-          >Create Houseware</b-button
+          >Tạo mới</b-button
         >
       </b-col>
     </b-row>
@@ -36,7 +36,7 @@
           icon="trash"
           variant="danger"
           font-scale="1.5"
-          class="deleteRoom"
+          class="deleteRoom cursor"
           @click="deleteData(row.item.id)"
         >
         </b-icon>
@@ -44,7 +44,7 @@
           icon="pencil-square"
           variant="dark"
           font-scale="1.5"
-          class="updateRoom ml-3"
+          class="updateRoom cursor ml-3"
           @click="updateHouseware(row.item.id)"
         >
         </b-icon>
@@ -66,18 +66,18 @@
       id="modal-ingredients"
       hide-footer
     >
-      <label for="">Name</label>
+      <label for="">Tên</label>
       <input type="text" class="form-control" v-model="name_houseware" />
-      <label for="">Cost</label>
+      <label for="">Giá</label>
       <input type="text" class="form-control" v-model="cost_houseware" />
-      <label for="">Quantity</label>
+      <label for="">Số lượng</label>
       <input type="text" class="form-control" v-model="quantity_houseware" />
       <div class="mt-3 d-flex justify-content-center">
         <b-button style="width: 100px" @click="create()" v-if="!update"
-          >Create</b-button
+          >Tạo mới</b-button
         >
         <b-button style="width: 100px" @click="updateData()" v-else
-          >Update</b-button
+          >Cập nhật</b-button
         >
       </div>
     </b-modal>
@@ -104,11 +104,11 @@ export default {
       update: false,
       id: null,
       fields: [
-        { key: "numerical", label: "numerical" },
-        { key: "name", label: "name" },
-        { key: "cost", label: "cost" },
-        { key: "quantity", label: "quantity" },
-        { key: "action", label: "action" },
+        { key: "numerical", label: "STT" },
+        { key: "name", label: "Tên" },
+        { key: "cost", label: "Giá" },
+        { key: "quantity", label: "Số lượng" },
+        { key: "action", label: "Tùy chọn" },
       ],
     };
   },
@@ -190,3 +190,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+  .cursor {
+    cursor: pointer;
+  }
+</style>

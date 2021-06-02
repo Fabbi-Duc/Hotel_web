@@ -149,3 +149,10 @@ export const pay = params => {
     params
   });
 };
+
+export const getCountRoomByMonth = () => {
+  return request({
+    url: "/get-count-room-ByMonth",
+    method: "get",
+  });
+};

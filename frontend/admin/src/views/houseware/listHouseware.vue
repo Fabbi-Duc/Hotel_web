@@ -2,20 +2,20 @@
   <div class="list-houseware">
     <b-row style="margin-bottom: 30px">
       <b-col cols="4" class="position-relative">
-        <label for="">Name</label>
+        <label for="">Tên đồ dùng</label>
         <br />
         <input type="text" class="form-control" v-model="name" />
         <b-button
           style="height: 30px; right: -100px; bottom: 0"
           class="position-absolute"
           @click="getListHouseWare()"
-          >Search</b-button
+          >Tìm kiếm</b-button
         >
         <b-button
           style="height: 30px; right: -250px; bottom: 0"
           class="position-absolute"
           @click="createHouseware()"
-          >Create Houseware</b-button
+          >Tạo mới đồ dùng</b-button
         >
       </b-col>
     </b-row>
@@ -36,7 +36,7 @@
           icon="trash"
           variant="danger"
           font-scale="1.5"
-          class="deleteRoom"
+          class="deleteRoom cursor"
           @click="deleteData(row.item.id)"
         >
         </b-icon>
@@ -44,7 +44,7 @@
           icon="pencil-square"
           variant="dark"
           font-scale="1.5"
-          class="updateRoom ml-3"
+          class="updateRoom cursor ml-3"
           @click="updateHouseware(row.item.id)"
         >
         </b-icon>
@@ -60,19 +60,19 @@
       </b-pagination>
     </div>
     <b-modal
-      title="Houseware"
+      title="Đồ dùng"
       centered
       ref="modal-houseware"
       id="modal-houseware"
       hide-footer
     >
-      <label for="">Name</label>
+      <label for="">Tên đồ dùng</label>
       <input type="text" class="form-control" v-model="name_houseware" />
-      <label for="">Cost</label>
+      <label for="">Giá</label>
       <input type="text" class="form-control" v-model="cost_houseware" />
-      <label for="">Quantity</label>
+      <label for="">Số lượng</label>
       <input type="text" class="form-control" v-model="quantity_houseware" />
-      <label for="">Quantity_Broken</label>
+      <label for="">Số lượng bị hỏng</label>
       <input
         type="text"
         class="form-control"
@@ -80,10 +80,10 @@
       />
       <div class="mt-3 d-flex justify-content-center">
         <b-button style="width: 100px" @click="create()" v-if="!update"
-          >Create</b-button
+          >Tạo mới</b-button
         >
         <b-button style="width: 100px" @click="updateData()" v-else
-          >Update</b-button
+          >Cập nhật</b-button
         >
       </div>
     </b-modal>
@@ -94,6 +94,7 @@
 </style>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -111,20 +112,28 @@ export default {
       update: false,
       id: null,
       fields: [
-        { key: "numerical", label: "numerical" },
-        { key: "name", label: "name" },
-        { key: "cost", label: "cost" },
-        { key: "quantity", label: "quantity" },
-        { key: "quantity_broken", label: "quantity_broken" },
-        { key: "action", label: "action" },
+        { key: "numerical", label: "STT" },
+        { key: "name", label: "Tên đồ dùng" },
+        { key: "cost", label: "Giá" },
+        { key: "quantity", label: "Số lượng" },
+        { key: "quantity_broken", label: "Số lượng bị hỏng" },
+        { key: "action", label: "Tùy chỉnh" },
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      isLoading: "common/isLoading",
+    }),
+  },
   created() {
+    this.$store.dispatch("common/setIsLoading", true);
     this.getListHouseWare();
+    this.$store.dispatch("common/setIsLoading", false);
   },
   methods: {
     getListHouseWare() {
+      this.$store.dispatch("common/setIsLoading", true);
       const params = {
         name: this.name,
         perPage: 10,
@@ -134,10 +143,13 @@ export default {
         this.list_houseware = res.data.data;
         this.paginate.total = res.data.total;
       });
+      this.$store.dispatch("common/setIsLoading", false);
     },
     async changePage(page) {
+      this.$store.dispatch("common/setIsLoading", true);
       this.paginate.page = page;
       await this.getListHouseWare();
+      this.$store.dispatch("common/setIsLoading", false);
     },
     createHouseware() {
       this.name_houseware = null;
@@ -202,3 +214,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+  .cursor {
+    cursor: pointer;
+  }
+</style>
