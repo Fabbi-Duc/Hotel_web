@@ -5,7 +5,7 @@
         <b-col md="9">
           <img
             class="current-image"
-            src="https://placekitten.com/801/800"
+            src="https://vinapad.com/wp-content/uploads/2018/09/noi-that-phong-ngu-khach-san-5-sao-2.jpg"
             alt=""
           />
           <div>
@@ -25,7 +25,7 @@
           ></vue-gallery-slideshow>
         </b-col>
         <b-col md="3" class="book-room">
-          <h2>choose a room</h2>
+          <h2>Đặt phòng</h2>
           <!-- <label for="" class="text-left">NAME</label>
           <b-form-input
             v-model="name"
@@ -172,10 +172,10 @@ export default {
         { key: "end_time", label: "End Time" },
       ],
       images: [
-        "https://placekitten.com/801/800",
-        "https://placekitten.com/802/800",
-        "https://placekitten.com/803/800",
-        "https://placekitten.com/804/800",
+        "https://vinapad.com/wp-content/uploads/2018/09/noi-that-phong-ngu-khach-san-5-sao-2.jpg",
+        "https://daphovinahotel.com/wp-content/uploads/2019/07/N5_9842_SENIOR_6-700x450.jpg",
+        "https://kenhota.com/wp-content/uploads/2019/06/kinh-nghiem-chup-hinh-can-ho-khach-san-homestay-dep-8.jpg",
+        "https://halotravel.vn/wp-content/uploads/2021/05/Mento-Hotel.jpg",
       ],
       index: null,
       name: null,

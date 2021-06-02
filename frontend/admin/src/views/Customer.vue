@@ -1,59 +1,63 @@
 <template>
   <div id="customer-body">
-    <b-carousel
-      id="carousel-1"
-      class="position-relative carousel"
-      v-model="slide"
-      :interval="4000"
-      controls
-      indicators
-      background="#ababab"
-      img-width="1024"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <!-- Text slides with image -->
-      <b-carousel-slide
-        caption="First slide"
-        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        img-src="https://picsum.photos/1024/480/?image=52"
-      ></b-carousel-slide>
+    <template v-if="isLoading">
+      <AppLoading />
+    </template>
+    <template v-else>
+      <b-carousel
+        id="carousel-1"
+        class="position-relative carousel"
+        v-model="slide"
+        :interval="4000"
+        controls
+        indicators
+        background="#ababab"
+        img-width="1024"
+        img-height="480"
+        style="text-shadow: 1px 1px 2px #333"
+        @sliding-start="onSlideStart"
+        @sliding-end="onSlideEnd"
+      >
+        <!-- Text slides with image -->
+        <b-carousel-slide
+          caption="First slide"
+          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+          img-src="https://picsum.photos/1024/480/?image=52"
+        ></b-carousel-slide>
 
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-        <h1>Welcome to Hotel</h1>
-      </b-carousel-slide>
+        <!-- Slides with custom text -->
+        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+          <h1>Welcome to Hotel</h1>
+        </b-carousel-slide>
 
-      <!-- Slides with image only -->
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=58"
-      ></b-carousel-slide>
+        <!-- Slides with image only -->
+        <b-carousel-slide
+          img-src="https://picsum.photos/1024/480/?image=58"
+        ></b-carousel-slide>
 
-      <!-- Slides with img slot -->
-      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-      <b-carousel-slide>
-        <template #img>
-          <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
-            src="https://picsum.photos/1024/480/?image=55"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
+        <!-- Slides with img slot -->
+        <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
+        <b-carousel-slide>
+          <template #img>
+            <img
+              class="d-block img-fluid w-100"
+              width="1024"
+              height="480"
+              src="https://picsum.photos/1024/480/?image=55"
+              alt="image slot"
+            />
+          </template>
+        </b-carousel-slide>
 
-      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          eros felis, tincidunt a tincidunt eget, convallis vel est. Ut
-          pellentesque ut lacus vel interdum.
-        </p>
-      </b-carousel-slide>
-      <div class="book__options position-absolute">
+        <!-- Slide with blank fluid image to maintain slide aspect ratio -->
+        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            eros felis, tincidunt a tincidunt eget, convallis vel est. Ut
+            pellentesque ut lacus vel interdum.
+          </p>
+        </b-carousel-slide>
+        <!-- <div class="book__options position-absolute">
         <b-row class="justify-content-between align-items-end">
           <b-col>
             CHECK-IN:
@@ -95,166 +99,168 @@
             <button>BOOK NOW</button>
           </b-col>
         </b-row>
+      </div> -->
+      </b-carousel>
+      <div class="list__room">
+        <h2 class="list__room__label text-center">ROOMS & SUITS</h2>
+        <div class="list__room__line text-center"></div>
+        <div class="list__room__wrap">
+          <b-row class="text-center">
+            <b-col
+              cols="12"
+              md="4"
+              class="list__room__wrap__item"
+              @click="nextPage(3)"
+            >
+              <div class="list__room__wrap__item__img">
+                <span class="list__room__wrap__item__price position-absolute">
+                  <span class="list__room__wrap__item__price--label"
+                    >Starting from</span
+                  >
+                  <span class="list__room__wrap__item__price--value">450$</span>
+                </span>
+                <div>
+                  <img
+                    src="http://datphongsamson.com/medias/img/big/top-10-khach-san-dep-nhat-o-sam-son-2018.jpg"
+                    width="100%"
+                    height="250px"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="list__room__wrap__item__content">
+                <h5 class="list__room__wrap__item__content-title">
+                  Single rooms normal
+                </h5>
+                <div class="list__room__wrap__item__content-line"></div>
+                <p class="list__room__wrap__item__content-description">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's.
+                </p>
+                <div class="list__room__wrap__item__content-details">
+                  List Rooms
+                </div>
+              </div>
+            </b-col>
+            <b-col
+              cols="12"
+              md="4"
+              class="list__room__wrap__item"
+              @click="nextPage(2)"
+            >
+              <div class="list__room__wrap__item__img">
+                <span class="list__room__wrap__item__price position-absolute">
+                  <span class="list__room__wrap__item__price--label"
+                    >Starting from</span
+                  >
+                  <span class="list__room__wrap__item__price--value">450$</span>
+                </span>
+                <div href="">
+                  <img
+                    src="https://i0.wp.com/du-lich.net/wp-content/uploads/2019/04/Review-h%C3%ACnh-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-Minh-Chau-Pearl-Hotel-%E1%BB%9F-Quan-L%E1%BA%A1n.jpg?resize=810%2C615&ssl=1"
+                    width="100%"
+                    height="250px"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="list__room__wrap__item__content">
+                <h5 class="list__room__wrap__item__content-title">
+                  Double room normals
+                </h5>
+                <div class="list__room__wrap__item__content-line"></div>
+                <p class="list__room__wrap__item__content-description">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's.
+                </p>
+                <div class="list__room__wrap__item__content-details">
+                  List Rooms
+                </div>
+              </div>
+            </b-col>
+            <b-col
+              cols="12"
+              md="4"
+              class="list__room__wrap__item"
+              @click="nextPage(1)"
+            >
+              <div class="list__room__wrap__item__img">
+                <span class="list__room__wrap__item__price position-absolute">
+                  <span class="list__room__wrap__item__price--label"
+                    >Starting from</span
+                  >
+                  <span class="list__room__wrap__item__price--value">450$</span>
+                </span>
+                <div href="">
+                  <img
+                    src="https://dulichdalat.pro/wp-content/uploads/2020/07/khach-san-dalat-plaza-o-da-lat-1024x682-1.jpg"
+                    width="100%"
+                    height="250px"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="list__room__wrap__item__content">
+                <h5 class="list__room__wrap__item__content-title">
+                  VIP single rooms
+                </h5>
+                <div class="list__room__wrap__item__content-line"></div>
+                <p class="list__room__wrap__item__content-description">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's.
+                </p>
+                <div class="list__room__wrap__item__content-details">
+                  List Rooms
+                </div>
+              </div>
+            </b-col>
+            <b-col
+              cols="12"
+              md="4"
+              class="list__room__wrap__item"
+              @click="nextPage(4)"
+            >
+              <div class="list__room__wrap__item__img">
+                <span class="list__room__wrap__item__price position-absolute">
+                  <span class="list__room__wrap__item__price--label"
+                    >Starting from</span
+                  >
+                  <span class="list__room__wrap__item__price--value">450$</span>
+                </span>
+                <div href="">
+                  <img
+                    src="https://dulichkhampha24.com/wp-content/uploads/2018/09/can-ho.jpg"
+                    width="100%"
+                    height="250px"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="list__room__wrap__item__content">
+                <h5 class="list__room__wrap__item__content-title">
+                  VIP double rooms
+                </h5>
+                <div class="list__room__wrap__item__content-line"></div>
+                <p class="list__room__wrap__item__content-description">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's.
+                </p>
+                <div class="list__room__wrap__item__content-details">
+                  List Rooms
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+        </div>
       </div>
-    </b-carousel>
-
-    <p class="mt-4">
-      Slide #: {{ slide }}<br />
-      Sliding: {{ sliding }}
-    </p>
-    <div class="list__room">
-      <h2 class="list__room__label text-center">ROOMS & SUITS</h2>
-      <div class="list__room__line text-center"></div>
-      <div class="list__room__wrap">
-        <b-row class="text-center">
-          <b-col
-            cols="12"
-            md="4"
-            class="list__room__wrap__item"
-            @click="nextPage(3)"
-          >
-            <div class="list__room__wrap__item__img">
-              <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label"
-                  >Starting from</span
-                >
-                <span class="list__room__wrap__item__price--value">450$</span>
-              </span>
-              <div>
-                <img
-                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
-                  width="100%"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">
-                Single rooms normal
-              </h5>
-              <div class="list__room__wrap__item__content-line"></div>
-              <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's.
-              </p>
-              <div class="list__room__wrap__item__content-details">
-                List Rooms
-              </div>
-            </div>
-          </b-col>
-          <b-col
-            cols="12"
-            md="4"
-            class="list__room__wrap__item"
-            @click="nextPage(2)"
-          >
-            <div class="list__room__wrap__item__img">
-              <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label"
-                  >Starting from</span
-                >
-                <span class="list__room__wrap__item__price--value">450$</span>
-              </span>
-              <div href="">
-                <img
-                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
-                  width="100%"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">
-                Double room normals
-              </h5>
-              <div class="list__room__wrap__item__content-line"></div>
-              <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's.
-              </p>
-              <div class="list__room__wrap__item__content-details">
-                List Rooms
-              </div>
-            </div>
-          </b-col>
-          <b-col
-            cols="12"
-            md="4"
-            class="list__room__wrap__item"
-            @click="nextPage(1)"
-          >
-            <div class="list__room__wrap__item__img">
-              <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label"
-                  >Starting from</span
-                >
-                <span class="list__room__wrap__item__price--value">450$</span>
-              </span>
-              <div href="">
-                <img
-                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
-                  width="100%"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">
-                VIP single rooms
-              </h5>
-              <div class="list__room__wrap__item__content-line"></div>
-              <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's.
-              </p>
-              <div class="list__room__wrap__item__content-details">
-                List Rooms
-              </div>
-            </div>
-          </b-col>
-          <b-col
-            cols="12"
-            md="4"
-            class="list__room__wrap__item"
-            @click="nextPage(4)"
-          >
-            <div class="list__room__wrap__item__img">
-              <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label"
-                  >Starting from</span
-                >
-                <span class="list__room__wrap__item__price--value">450$</span>
-              </span>
-              <div href="">
-                <img
-                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
-                  width="100%"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">
-                VIP double rooms
-              </h5>
-              <div class="list__room__wrap__item__content-line"></div>
-              <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's.
-              </p>
-              <div class="list__room__wrap__item__content-details">
-                List Rooms
-              </div>
-            </div>
-          </b-col>
-        </b-row>
-      </div>
-    </div>
+    </template>
 
     <!--FOOTER-->
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import { sendNotificationFirebase } from "@/api/notification.api";
 export default {
   data() {
     return {
@@ -303,12 +309,34 @@ export default {
     if (this.$route.query.vnp_ResponseCode === "00") {
       const params = {
         user_id: this.user.id,
-        code: this.$route.query.vnp_ResponseCode
-      }
-      this.$store.dispatch("customer/bookRoomOnline", params).then();
+        code: this.$route.query.vnp_ResponseCode,
+      };
+      await this.$store.dispatch("customer/bookRoomOnline", params).then(() => {
+        this.$toasted.show("Đặt phòng thành công", {
+          duration: 2000,
+        });
+        sendNotificationFirebase({
+          device_type: "5",
+          body: "Khách hàng đã đặt phòng",
+          user_id: "5",
+          title: "Đặt phòng",
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        window.location.replace("/customer");
+      });
     } else {
       console.log("loi");
     }
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: "common/isLoading",
+    }),
   },
   methods: {
     onSlideStart(slide) {
@@ -318,12 +346,14 @@ export default {
       this.sliding = false;
     },
     nextPage(type) {
+      this.$store.dispatch("common/setIsLoading", true);
       this.$router.push({
         name: "ListRoomType",
         query: {
           type_room_id: type,
         },
       });
+      this.$store.dispatch("common/setIsLoading", false);
     },
   },
 };

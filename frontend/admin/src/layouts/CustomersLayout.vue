@@ -21,7 +21,7 @@
         </b-col>
         <b-col cols="12" md="4" class="text-right">
           <b-icon icon="twitter" class="header__contact__icon--right"></b-icon>
-          <b-icon icon="facebook" class="header__contact__icon--right"></b-icon>
+          <a href="https://www.facebook.com/nguyendinhtan5555/"><b-icon icon="facebook" class="header__contact__icon--right"></b-icon></a>
           <b-icon
             icon="instagram"
             class="header__contact__icon--right"
@@ -38,34 +38,24 @@
             class="header__nav__brand d-flex justify-content-start align-items-center"
           >
             <img
-              src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/3Logo-5star-regular.png"
+              @click="home()"
+              src="../assets/image/logo.svg"
               alt=""
               class="mr-3"
+              style="cursor: pointer"
             />
-            <div
-              class="fb-share-button"
-              data-href="https://2cc28894e19d.ngrok.io"
-              data-layout="button_count"
-              data-size="large"
-            >
-              <a
-                target="_blank"
-                href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F2cc28894e19d.ngrok.io%2F&amp;src=sdkpreparse"
-                class="fb-xfbml-parse-ignore"
-                >Chia sẻ</a
-              >
-            </div>
           </b-col>
-          <b-col md="6" class="header__nav__top text-right">
-            <a class="active" href="#home">Home</a>
-            <a href="#news">News</a>
-            <a href="/food" v-if="isFood">Contact</a>
-            <a href="/food">About</a>
-            <button @click="chat()">Chat</button>
-            <button @click="clean()" v-if="isFood">Clean</button>
-            <button @click="getLocation()" class="ml-3">Share Location</button>
-            <button @click="logoutCustomer()" class="ml-3">Logout</button>
-            <a href=""><b-icon icon="search"></b-icon></a>
+          <b-col md="8" class="header__nav__top text-right">
+            <a style="cursor: pointer" class="active" @click="home()">Trang chủ</a>
+            <a href="/food" v-if="isFood">Đặt đồ ăn</a>
+            <!-- <a href="/food">About</a> -->
+            <!-- <button @click="chat()">Chat</button> -->
+            <a style="cursor: pointer" @click="clean()" v-if="isFood">Clean</a>
+            <b-button @click="chat()" variant="success" class="button-action">Chat với lễ tân</b-button>
+            <!-- <button @click="getLocation()" class="ml-3">Share Location</button> -->
+            <b-button  @click="getLocation()" variant="info" class="button-action">Chia sẻ vị trí</b-button>
+            <!-- <button @click="logoutCustomer()" class="ml-3">Logout</button> -->
+            <b-button  @click="logoutCustomer()" variant="dark">Đăng xuất</b-button>
           </b-col>
         </b-row>
       </div>
@@ -121,6 +111,21 @@
               <input type="text" placeholder="E-Mail" />
               <span class="go">GO</span>
             </div>
+            <div
+            style="background-color: blue; width: 150px; padding: 10px 0; margin-left: 29px"
+              class="fb-share-button"
+              data-href="https://2cc28894e19d.ngrok.io"
+              data-layout="button_count"
+              data-size="large"
+            >
+              <a
+                target="_blank"
+                style="color: #fff"
+                href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F2cc28894e19d.ngrok.io%2F&amp;src=sdkpreparse"
+                class="fb-xfbml-parse-ignore"
+                >Chia sẻ lên facebook</a
+              >
+            </div>
           </b-col>
         </b-row>
         <div class="footer__copyright text-center mt-5">
@@ -152,6 +157,10 @@ export default {
     this.getUser();
   },
   methods: {
+    home() {
+      this.$router.push({ name: 'Customer' })
+    },
+
     ...mapActions("firebase", ["createRoom"]),
 
     async chat() {
@@ -188,10 +197,10 @@ export default {
     },
     async clean() {
       await store.dispatch("customer/clean", this.room_id).then(() => {
-        alert("Vui long cho doi nguoi don phong toi");
+        alert("Vui lòng chờ người dọn phòng tới");
         sendNotificationFirebase({
           device_type: "1",
-          body: "Khach hang " + this.user.name + " da dat don phong",
+          body: "Khách hàng " + this.user.name + " Đã đặt dọn phòng",
           user_id: "1",
           title: "Clean",
         })
@@ -211,8 +220,8 @@ export default {
           // console.log(position.coords.longitude);
           let lat1 = 21.0603335;
           let log1 = 105.7826151;
-          let lat2 = 21.0403401;
-          let log2 = 105.7880043;
+          let lat2 = position.coords.latitude;
+          let log2 = position.coords.longitude;
           var pi = Math.PI;
 
           let deglat1 = lat1 * (pi / 180);
@@ -232,9 +241,9 @@ export default {
           sendNotificationFirebase({
             device_type: "5",
             body:
-              "Khach hang " +
+              "Khách hàng " +
               self.user.name +
-              " hien dang cach khach san " +
+              " Hiện đang cách khách sạn " +
               res.toFixed(2) +
               " km",
             user_id: "5",
@@ -251,6 +260,9 @@ export default {
           console.log(res);
         }
       );
+      this.$toasted.show("Chia sẻ vị trí thành công", {
+        duration: 3000,
+      });
     },
     ...mapActions("auth", ["logout"]),
     async logoutCustomer() {
@@ -322,6 +334,11 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(30, 30, 30, 0.9999999);
+  .button-action {
+    color: white;
+    font-weight: 600;
+    margin-right: 10px;
+  }
   &__contact {
     height: 34px;
     margin: 0 auto;
@@ -345,15 +362,17 @@ export default {
       margin: 0 auto;
     }
     background-color: rgba(51, 49, 50, 0.9999999);
-    height: 70px;
+    height: 85px;
     margin: 0 auto;
+    padding: 5px 0;
     width: 100%;
     &__brand {
       width: 150px;
       height: 26px;
       img {
-        width: auto;
-        height: 100%;
+        margin-top: -5px;
+        width: 100px;
+        height: 90px;
       }
     }
   }
