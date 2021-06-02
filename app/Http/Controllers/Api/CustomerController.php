@@ -90,9 +90,11 @@ class CustomerController extends Controller
         return $result;
     }
 
-    public function pay($id)
+    public function pay(Request $request)
     {
-        $result = $this->customerRepository->pay($id);
+        $id = $request->only('id');
+        $data = $request->only('options', 'cost_houseware', 'user_id');
+        $result = $this->customerRepository->pay($id, $data);
         return $result;
     }
 
@@ -166,6 +168,12 @@ class CustomerController extends Controller
         $data = $request->all();
         $result = $this->customerRepository->updatePark($data);
         Mail::to($data['email'])->send(new SendMailPark($data['park_id']));
+        return $result;
+    }
+
+    public function detailBill($id)
+    {
+        $result = $this->customerRepository->detailBill($id);
         return $result;
     }
 }

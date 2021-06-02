@@ -8,6 +8,8 @@ use App\Models\Bills;
 use App\Models\RoomFoods;
 use App\Models\RoomServiceFood;
 use App\Models\RoomServicePark;
+use App\Models\ExportHouseware;
+use App\Models\ServiceExportHouseware;
 use App\Repositories\RepositoryAbstract;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -187,7 +189,7 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
             $bill->save();
 
             $room = DB::table('rooms')->where('id', $id['id'])->first();
-            if($room->status == 1) {
+            if ($room->status == 1) {
                 DB::table('rooms')->where('id', $id['id'])->update(['status' => 2]);
             };
 
@@ -262,19 +264,20 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
         }
     }
 
-    public function pay($room_id)
+    public function detailBill($room_id)
     {
         try {
             $room = DB::table('rooms_customers')->where('room_id', $room_id)->where('status', 2)->first();
             $room_type = DB::table('rooms')->where('id', $room_id)->first();
             $cost = DB::table('room_types')->where('id', $room_type->room_type_id)->first();
+            $name = DB::table('customers')->where('id', $room->customer_id)->first()->name;
             $first_date = strtotime($room->start_time);
             $second_date = strtotime($room->end_time);
             $datediff = abs($second_date - $first_date);
             if ($datediff <= 1) {
                 $data = $cost->cost_first_hour;
             } else {
-                $data = $cost->cost_first_hour + (($datediff - 1) / (3600)) * $cost->cost_next_hour;
+                $data = $cost->cost_first_hour + (($datediff / 3600) - 1) * $cost->cost_next_hour;
             };
             $food = DB::table('room_service_food')->where('room_id', $room_id)->where('status', 1)->first();
             $money = 0;
@@ -283,17 +286,60 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
                 foreach ($food_list as $list) {
                     $money += DB::table('foods')->find($list->food_id)->cost * $list->count;
                 }
-                $room_service_id = DB::table('room_service_food')->where('room_id', $room_id)->where('status', 1)->first();
-                DB::table('room_service_food')->where('room_id', $room_id)->where('status', 1)->update(['status' => 3, 'cost' => $data + $money]);
-                DB::table('room_foods')->where('room_service_food_id', $room_service_id->id)->update(['status' => 3]);
             }
-            DB::table('rooms_customers')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3]);
-            DB::table('rooms')->where('id', $room_id)->update(['status' => 1]);
-            DB::table('bills')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3]);
+
             return [
                 'success' => true,
                 'data' => $data,
-                'money' => $money
+                'money' => $money,
+                'hour' => $datediff,
+                'name' => $name,
+                'start_time' => $room->start_time,
+                'end_time' => $room->end_time
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function pay($room_id, $params)
+    {
+        try {
+            DB::table('rooms_customers')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3]);
+            DB::table('rooms')->where('id', $room_id)->update(['status' => 1]);
+            DB::table('bills')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3, 'price' => $params['cost_houseware']]);
+            DB::table('rooms_customers')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3]);
+
+            if (!empty($params['options'])) {
+                $object = $params['options'];
+                $total = 0;
+                foreach ($object as $houseware) {
+                    $houseware_object = json_decode($houseware);
+                    $total += $houseware_object->cost * $houseware_object->quantity;
+                }
+                $couponHouseware = new ExportHouseware;
+                $couponHouseware->description = 'Yeu cau xuat kho';
+                $couponHouseware->status = 1;
+                $couponHouseware->cost = $total;
+                $couponHouseware->user_id = $params['user_id'];
+                $couponHouseware->save();
+                $id = DB::table('export_houseware')->get()->last()->id;
+                foreach ($object as $houseware) {
+                    $houseware_object = json_decode($houseware);
+                    $service_houseware = new ServiceExportHouseware;
+                    $service_houseware->export_houseware_id = $id;
+                    $service_houseware->houseware_id = $houseware_object->houseware_id;
+                    $service_houseware->quantity = $houseware_object->quantity;
+                    $service_houseware->save();
+                    $quantity_broken = DB::table('houseware')->where('id', $houseware_object->houseware_id)->first->quantity_broken + $houseware_object->quantity;
+                    DB::table('houseware')->where('id', $houseware_object->houseware_id)->update(['quantity_broken' => $quantity_broken]);
+                }
+            }
+            return [
+                'success' => true,
             ];
         } catch (\Exception $e) {
             return [
@@ -389,8 +435,8 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
     {
         try {
             $list = DB::table('rooms')
-                        ->leftJoin('room_service_food', 'room_service_food.room_id', '=', 'rooms.id')
-                        ->where('room_service_food.status', 2)->paginate(5);
+                ->leftJoin('room_service_food', 'room_service_food.room_id', '=', 'rooms.id')
+                ->where('room_service_food.status', 2)->paginate(5);
 
             return [
                 'success' => true,

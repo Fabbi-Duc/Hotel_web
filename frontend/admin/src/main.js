@@ -19,8 +19,11 @@ import * as rules from "vee-validate/dist/rules";
 import { loadVeeValidate } from "@/plugins/vee-validate";
 import "./registerServiceWorker";
 import { BootstrapVue,  BootstrapVueIcons} from 'bootstrap-vue';
+import components from "./commons/component";
+
 
 Vue.use(BootstrapVue);
+Vue.use(components);
 Vue.use(BootstrapVueIcons)
 Vue.component("MainLayout", MainLayout);
 Vue.component("GuestLayout", GuestLayout);

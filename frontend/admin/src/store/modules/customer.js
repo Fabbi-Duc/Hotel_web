@@ -2,7 +2,7 @@ import { listCustomers,
           bookRoom, getInfoCustomer, updateBookRoom, 
           registerCustomer, getFood, order, listOrder, 
           listFoodOrder, updateOrder, bookRoomOnline, 
-          listClean, updateClean, listPark, updatePark, getCustomerFood, clean, getCountCustomer } from "@/api/customer.api";
+          listClean, updateClean, listPark, updatePark, getCustomerFood, clean, getCountCustomer, detailBill, pay } from "@/api/customer.api";
 
 export const state = {
   listCustomer: null,
@@ -228,6 +228,11 @@ export const actions = {
   getCountCustomer({ commit }) {
     return new Promise((resolve, reject) => {
       getCountCustomer()
+    })
+  },
+  detailBill({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      detailBill(id)
         .then(response => {
           resolve(response);
         })
@@ -235,5 +240,17 @@ export const actions = {
           reject(error);
         });
     });
-  }
+  },
+
+  pay({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      pay(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 }

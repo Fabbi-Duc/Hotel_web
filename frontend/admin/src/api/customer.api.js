@@ -135,3 +135,17 @@ export const getCountCustomer = params => {
     params
   })
 }
+export const detailBill = id => {
+  return request({
+    url: "/detail-bill/" + id,
+    method: "get",
+  });
+};
+
+export const pay = params => {
+  return request({
+    url: "/pay",
+    method: "get",
+    params
+  });
+};

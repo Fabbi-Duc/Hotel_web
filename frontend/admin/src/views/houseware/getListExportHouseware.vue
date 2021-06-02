@@ -42,7 +42,7 @@
           @click="updateHouse(row.item.id)"
         >
         </b-icon>
-				<span v-if="row.item.status == 2">
+				<span v-if="row.item.status == 2" @click="updateHouse(row.item.id)">
 					Da phe duyet
 				</span>
         <span v-if="row.item.status == 3" @click="updateHouse(row.item.id)">

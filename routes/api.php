@@ -68,7 +68,8 @@ Route::post('/customer/book-room', [CustomerController::class, 'bookRoom'])->nam
 Route::get('/room-customer/{id}', [CustomerController::class, 'getInfoRoomCustomer'])->name('getInfoRoomCustomer');
 Route::get('/customer/{id}', [CustomerController::class, 'getInfoCustomer'])->name('getInfoCustomer');
 Route::post('/customer/{room_customer_id}', [CustomerController::class, 'updateBookRoom'])->name('updateBookRoom');
-Route::get('/pay/{id}', [CustomerController::class, 'pay'])->name('pay');
+Route::get('/pay', [CustomerController::class, 'pay'])->name('pay');
+Route::get('/detail-bill/{id}', [CustomerController::class, 'detailBill'])->name('detailBill');
 Route::post('/food', [CustomerController::class, 'food'])->name('food');
 Route::get('/list/food', [CustomerController::class, 'getFood'])->name('getFood');
 Route::get('/list-food-order/{room_id}', [CustomerController::class, 'getListFoodOrder'])->name('getListFoodOrder');

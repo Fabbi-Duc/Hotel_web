@@ -26,6 +26,8 @@ class CreateUsersTable extends Migration
             $table->string('image_user');
             $table->integer('position');
             $table->date('birthday');
+            $table->integer('shift');
+            $table->integer('salary');
             $table->timestamps();
         });
     }
