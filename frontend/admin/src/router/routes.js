@@ -48,6 +48,15 @@ const routes = [
     component: container("TheContainer"),
     children: [
       {
+        path: "test-pdf",
+        name: "Dashboard",
+        meta: {
+          layout: "MainLayout",
+          requiredAuth: true
+        },
+        component: view("testPdf")
+      },
+      {
         path: "dashboard",
         name: "Dashboard",
         meta: {
