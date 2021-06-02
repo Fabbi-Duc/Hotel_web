@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import 'firebase/storage';
 import "firebase/messaging";
+import "firebase/app";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDFWcGGxmXbNearyx8qO-LjmHPAeG7Hv-U",
@@ -13,7 +14,8 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
+// const firebaseApp = firebase.initializeApp(firebaseConfig);
 // firebase.analytics();
 const db = firebaseApp.firestore();
 
-export default db;
+export default { firebaseApp, db };

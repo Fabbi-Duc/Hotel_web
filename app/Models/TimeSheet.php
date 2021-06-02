@@ -14,6 +14,7 @@ class TimeSheet extends Model
         'time_check_in',
         'time_check_out',
         'day',
-        'user_id'
+        'user_id',
+        'status'
     ];
 }

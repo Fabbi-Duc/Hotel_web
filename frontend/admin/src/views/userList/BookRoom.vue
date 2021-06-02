@@ -139,6 +139,24 @@
                 </div>
               </ValidationProvider>
             </div>
+             <div class="option">
+              <label for="">Tiền cọc</label>
+              <ValidationProvider
+                name="End Time"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <input
+                  type="number"
+                  min="1000000"
+                  class="form-control"
+                  v-model="deposit"
+                />
+                <div class="text-left">
+                  <span class="warning">{{ errors[0] }}</span>
+                </div>
+              </ValidationProvider>
+            </div>
           </div>
           <div class="m-auto d-flex justify-content-center">
             <button type="submit" class="btn btn-info">Create</button>
@@ -169,6 +187,7 @@ export default {
       start_time: null,
       end_time: null,
       park_id: null,
+      deposit: null,
       gender: 1,
       genderOption: [
         { value: 0, text: "Male" },
@@ -194,6 +213,7 @@ export default {
         start_time: this.start_time,
         end_time: this.end_time,
         gender: this.gender,
+        money: this.deposit,
         password: 123456,
       };
       if (this.end_time <= this.start_time) {
@@ -233,6 +253,7 @@ export default {
           this.gender = res.data.gender;
           this.phone = res.data.phone;
           this.identity_card = res.data.identity_card;
+          this.deposit = res.data.money;
           this.start_time = moment(res.data.start_time).format(
             "YYYY-MM-DDThh:mm"
           );

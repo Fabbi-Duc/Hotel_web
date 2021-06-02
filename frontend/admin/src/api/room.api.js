@@ -55,7 +55,7 @@ export const getNameRoom = () => {
 
 export const updateRoom = params => {
   return request({
-    url: "/room/update",
+    url: "/update/room",
     method: "post",
     params
   })

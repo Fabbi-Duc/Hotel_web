@@ -215,6 +215,7 @@
 <script>
 import firebase from "@/plugins/firebase";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+
 export default {
   components: {
     ValidationObserver,
@@ -260,7 +261,7 @@ export default {
   methods: {
     chooseImage(event) {
       this.imageData = event.target.files[0];
-      var storage = firebase.storage();
+      var storage = firebase.firebaseApp.storage();
       var storageRef = storage.ref();
       const imgRef = storageRef.child(`imagesRoom/${this.imageData.name}`);
       imgRef.put(this.imageData).then(() => {
@@ -284,7 +285,7 @@ export default {
           status: this.status,
           image_url: this.pictureUrl,
           decription: this.decription,
-          code_room: this.code_room,
+          code_room: this.code_room ? this.code_room : this.name,
           id: this.id,
           floor: this.floor
         };

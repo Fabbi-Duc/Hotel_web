@@ -156,3 +156,20 @@ export const getCountRoomByMonth = () => {
     method: "get",
   });
 };
+export const payOnline = params => {
+  return request({
+    url: "/payOnline",
+    method: "get",
+    params
+  });
+};
+
+export const payCreate = data => {
+  return request({
+    url: "/create-pay",
+    method: "post",
+    data
+  });
+};
+
+

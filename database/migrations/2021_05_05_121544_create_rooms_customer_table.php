@@ -20,6 +20,7 @@ class CreateRoomsCustomerTable extends Migration
             $table->dateTimeTz('start_time');
             $table->dateTimeTz('end_time');
             $table->integer('status');
+            $table->integer('money');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
-import db from "@/plugins/firebase";
+import firebase from "@/plugins/firebase";
 
-// const db = firebase.db;
+const db = firebase.db;
 
 export const state = {
   listRoom: [],
@@ -62,118 +62,20 @@ export const actions = {
     return room.id;
   },
   // eslint-disable-next-line no-unused-vars
-  getListRoom({ commit }, data) {
+  getListRoom({ commit }, userId) {
     let listRoom = [];
     db.collection("rooms")
-      .where("type", "in", data.type)
       .onSnapshot(rooms => {
         rooms.forEach(async room => {
-          let isUserRoom = false;
-          let members = await db
-            .collection("rooms")
-            .doc(room.id)
-            .collection("members")
-            .get();
-          let users = [];
-          members.forEach(member => {
-            if (
-              member.data().userId.id === data.userId &&
-              member.data().isHidden === false
-            ) {
-              isUserRoom = true;
+          if (room.data().userId.includes(userId)) {
+            let receiverId = room.data().userId.filter(id => id !== userId);
+            console.log(receiverId);
+            let receiver = await db.collection("users").doc(receiverId[0]).get();
+            receiver = { ...receiver.data(), roomId: room.id }
+            const listRoomId = listRoom.map(roomInfo => roomInfo.roomId);
+            if (!listRoomId.includes(room.id)) {
+              listRoom.push(receiver);
             }
-          });
-          if (isUserRoom) {
-            let sender = null,
-              receiver = [],
-              roomName = [];
-            members.forEach(member => {
-              db.collection("users")
-                .doc(member.data().userId.id)
-                .get()
-                .then(user => {
-                  users.push({ ...user.data(), id: parseInt(user.id) });
-                  if (room.data().type === 3) {
-                    if (user.data().sex === 1) {
-                      sender = user.data();
-                      roomName.unshift(user.data().nickname);
-                    } else {
-                      receiver.push(user.data());
-                      roomName.push(user.data().nickname);
-                    }
-                  } else {
-                    if (user.id === data.userId) {
-                      sender = user.data();
-                    } else {
-                      receiver.push(user.data());
-                    }
-                  }
-                });
-            });
-            let notSeenMessage = 0;
-            let lastMessage = "";
-            db.collection("rooms")
-              .doc(room.id)
-              .collection("messages")
-              .orderBy("createdAt")
-              .get()
-              .then(async messages => {
-                messages.forEach(message => {
-                  db.collection("rooms")
-                    .doc(room.id)
-                    .collection("messages")
-                    .doc(message.id)
-                    .collection("read_users")
-                    .where("userId", "==", parseInt(data.userId))
-                    .get()
-                    .then(readUsers => {
-                      if (readUsers.docs.length === 0) {
-                        if (state.roomId != room.id) {
-                          notSeenMessage++;
-                        }
-                      }
-                    });
-                });
-                db.collection("rooms")
-                  .doc(room.id)
-                  .collection("messages")
-                  .orderBy("createdAt", "desc")
-                  .limit(1)
-                  .get()
-                  .then(lastMessages => {
-                    lastMessage =
-                      lastMessages.docs.length > 0
-                        ? lastMessages.docs[0].data()
-                        : "";
-                    if (messages.docs.length !== 0 || room.data().type !== 2) {
-                      const listRoomId = listRoom.map(roomInfo => roomInfo.id);
-                      if (!listRoomId.includes(room.id)) {
-                        const roomData = {
-                          ...room.data(),
-                          id: room.id,
-                          user: users,
-                          message: lastMessage,
-                          notify: notSeenMessage,
-                          sender: sender,
-                          receiver: receiver,
-                          roomName: roomName
-                        };
-                        listRoom.push(roomData);
-                      } else {
-                        listRoom.forEach(roomInfo => {
-                          if (roomInfo.id === room.id) {
-                            roomInfo.message = Object.assign(
-                              {},
-                              roomInfo.message,
-                              lastMessage
-                            );
-                            roomInfo.notify = notSeenMessage;
-                          }
-                        });
-                      }
-                    }
-                  });
-              });
           }
         });
       });

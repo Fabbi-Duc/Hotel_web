@@ -155,21 +155,6 @@ export default {
     ...mapActions("firebase", ["createRoom"]),
 
     async chat() {
-      // let data = {
-      //   userId: this.user.id,
-      //   user: {
-      //     name: this.user.name,
-      //     createdAt: new Date()
-      //   }
-      // };
-      // await this.$store
-      //   .dispatch("firebase/createUser", data)
-      //   .then(() => {
-      //     console.log('success');
-      //   })
-      //   .catch(() => {
-      //     console.log("error");
-      //   });
       let data = {
         userId: ["admin-10", this.user.id.toString()],
         users: [

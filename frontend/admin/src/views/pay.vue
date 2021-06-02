@@ -1,6 +1,6 @@
 <template>
   <div class="detail-bill">
-		<label for="">Khách hàng : </label>
+    <label for="">Khách hàng : </label>
     <span> {{ name }}</span>
     <br />
     <label for="">Giờ bắt đầu : </label>
@@ -17,6 +17,9 @@
     <br />
     <label for="" v-if="money_food">Tiền đồ ăn : </label>
     <span v-if="money_food"> {{ Math.ceil(money_food) }} VND</span>
+    <br />
+    <label>Tiền cọc : </label>
+    <span> {{ Math.ceil(deposit) }} VND</span>
     <br />
     <label for="">Danh sách đồ hỏng: </label>
     <br />
@@ -144,7 +147,11 @@
           </div>
         </div>
         <label for="" style="margin-top: 40px">Tổng tiền : </label>
-        <span> {{ total_cost }}</span>
+        <span> {{ total_cost }} VND</span>
+        <br />
+        <label>Tiền cọc : </label>
+        <span>  {{ Math.ceil(total_price) }} VND</span>
+        <br />
         <div class="d-flex justify-content-center">
           <button class="btn-info" style="width: 150px; margin-top: 50px">
             Pay
@@ -169,9 +176,11 @@ export default {
       start_time: null,
       hour: null,
       total_cost: 0,
+      total_price: 0,
       money_room: null,
       money_food: null,
-			name: null,
+      deposit: null,
+      name: null,
       options: [
         {
           houseware_id: null,
@@ -207,7 +216,9 @@ export default {
         this.money_room = res.data;
         this.money_food = res.money;
         this.total_cost = this.money_room + this.money_food;
-				this.name = res.name
+        (this.deposit = res.deposit),
+          (this.total_price = this.total_cost - this.deposit),
+          (this.name = res.name);
       });
     },
     focus() {
@@ -219,11 +230,13 @@ export default {
                 this.money_food +
                 this.money_room +
                 this.housewareOption[j].cost * this.options[i].quantity;
+              this.total_price = this.total_cost - this.deposit;
             }
           }
         }
       } else {
         this.total_cost = this.money_food + this.money_room;
+        this.total_price = this.total_cost - this.deposit;
       }
     },
     getHouseware() {

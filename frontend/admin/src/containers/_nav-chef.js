@@ -35,6 +35,12 @@ export default [
         icon: "cil-puzzle",
         name: "List Export Ingredients",
         to: "/list-export-ingredients"
+      },
+      {
+        _name: "CSidebarNavItem",
+        icon: "cil-puzzle",
+        name: "Room Chat",
+        to: "/admin/chat"
       }
     ]
   }

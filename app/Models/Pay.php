@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RoomsCustomer extends Model
+class Pay extends Model
 {
     use HasFactory;
+    protected $table = 'pay';
     protected $fillable = [
-        'customer_id',
         'room_id',
-        'status',
         'start_time',
         'end_time',
-        'money'
+        'money',
+        'user_id',
     ];
 }

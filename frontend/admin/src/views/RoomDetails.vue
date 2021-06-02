@@ -88,6 +88,15 @@
         </template>
       </b-table>
     </div>
+    <b-modal ref="modal-money" title="Tiền Cọc" hide-footer centered>
+      <label for="">Bạn cần đặt cọc tối thiểu 1000000VND</label>
+      <input type="number" min="1000000" v-model="money" class="form-control" />
+      <div class="d-flex justify-content-center mt-3">
+        <button class="btn-success" style="width: 100px" @click="payOnline()">
+          Đặt Cọc
+        </button>
+      </div>
+    </b-modal>
     <b-modal ref="my-modal" title="LIST PRAKS" centered hide-footer>
       <b-form class="form-control row">
         <b-form-select
@@ -155,6 +164,7 @@ export default {
       ],
       type: "",
       floor: "",
+      money: null,
       fields: [
         { key: "numerical", label: "Numerical" },
         { key: "name", label: "Name" },
@@ -192,6 +202,31 @@ export default {
     },
     onSlideEnd(slide) {
       this.sliding = false;
+    },
+    async payOnline() {
+      const params = {
+        money: this.money,
+        room_id: this.$route.query.room_id,
+        // park_id: park_id,
+        start_time: this.checkIn,
+        end_time: this.checkOut,
+        user_id: this.user.id,
+      };
+      const data = {
+        money: this.money,
+      };
+      await this.$store.dispatch("customer/payCreate", params).then((res) => {
+        if (res.success) {
+          this.$store.dispatch("customer/payOnline", data).then((res) => {
+            window.location.replace(res.data);
+          });
+        } else {
+          this.$refs["modal-money"].hide();
+          this.$toasted.show(res.message, {
+            duration: 2000,
+          });
+        }
+      });
     },
     async getInfoCustomerRoom(id) {
       await this.$store.dispatch("room/getInfoRoomCustomer", id).then((res) => {
@@ -237,29 +272,30 @@ export default {
         alert("Ngay ket thuc phai lon hon ngay bat dau");
         return;
       }
-      await this.$store
-        .dispatch("customer/bookRoomOnline", params)
-        .then((respone) => {
-          if (!respone.success) {
-            alert(respone.message);
-            return;
-          } else {
-            alert("Ban da dat phong thanh cong");
-            sendNotificationFirebase({
-              device_type: '5',
-              body: 'Khach hang ' + this.user.name + ' da dat phong',
-              user_id: '5',
-              title: 'Book Room'
-            })
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-            this.$refs["my-modal"].show();
-          }
-        });
+      this.$refs["modal-money"].show();
+      // await this.$store
+      //   .dispatch("customer/bookRoomOnline", params)
+      //   .then((respone) => {
+      //     if (!respone.success) {
+      //       alert(respone.message);
+      //       return;
+      //     } else {
+      //       alert("Ban da dat phong thanh cong");
+      //       sendNotificationFirebase({
+      //         device_type: '5',
+      //         body: 'Khach hang ' + this.user.name + ' da dat phong',
+      //         user_id: '5',
+      //         title: 'Book Room'
+      //       })
+      //         .then((response) => {
+      //           console.log(response);
+      //         })
+      //         .catch((error) => {
+      //           console.log(error);
+      //         });
+      //       this.$refs["my-modal"].show();
+      //     }
+      //   });
     },
   },
 };

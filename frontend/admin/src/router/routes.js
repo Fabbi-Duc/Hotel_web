@@ -441,6 +441,15 @@ const routes = [
         },
         component: view("food/createUpdateFood")
       },
+      {
+        path: "admin/chat",
+        name: "ChatAdmin",
+        meta: {
+          layout: "MainLayout",
+          requiredAuth: true
+        },
+        component: view("adminChat")
+      },
     ]
   },
   {
@@ -512,8 +521,17 @@ const routes = [
       layout: "MainLayout",
       requiredAuth: true
     },
-    prop: true,
     component: view("chat")
+  },
+  {
+    path: "/test",
+    name: "Test",
+    meta: {
+      layout: "MainLayout",
+      requiredAuth: true
+    },
+    prop: true,
+    component: view("test")
   },
 ];
 

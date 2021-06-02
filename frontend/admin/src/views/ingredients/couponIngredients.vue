@@ -128,6 +128,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import pdfCouponIngredients from "../PdfExport/pdfCouponIngredients.vue"
+import Vue from "vue";
 
 export default {
   components: {
@@ -145,7 +146,7 @@ export default {
           houseware_id: null,
           quantity: null,
           name: null,
-          cost: null
+          cost: null,
         },
       ],
     };
@@ -170,7 +171,7 @@ export default {
     chooseOption(index, indexOption) {
       this.options[indexOption].houseware_id = this.housewareOption[index].id;
       this.options[indexOption].name = this.housewareOption[index].name;
-      this.options[indexOption].cost = this.housewareOption[index].cost
+      this.options[indexOption].cost = this.housewareOption[index].cost;
       this.show = null;
     },
     plus() {
@@ -187,9 +188,16 @@ export default {
     create() {
       const params = {
         description: this.description,
-        data: this.options
+        data: this.options,
       };
-      this.$store.dispatch('ingredients/createCouponHouseware', params)
+      this.$store
+        .dispatch("ingredients/createCouponHouseware", params)
+        .then(() => {
+          this.$router.push({ name : 'ListCouponIngredients'});
+          this.$toasted.show("Bạn đã tạo đơn thành công", {
+            duration: 2000,
+          });
+        }).catch();
     },
     exportPdf() {
       this.$refs.pdfCouponIngredients.generateReport();

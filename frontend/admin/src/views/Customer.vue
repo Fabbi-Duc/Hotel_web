@@ -10,7 +10,7 @@
       background="#ababab"
       img-width="1024"
       img-height="480"
-      style="text-shadow: 1px 1px 2px #333;"
+      style="text-shadow: 1px 1px 2px #333"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
     >
@@ -107,80 +107,144 @@
       <div class="list__room__line text-center"></div>
       <div class="list__room__wrap">
         <b-row class="text-center">
-          <b-col cols="12" md="4" class="list__room__wrap__item" @click="nextPage(3)">
+          <b-col
+            cols="12"
+            md="4"
+            class="list__room__wrap__item"
+            @click="nextPage(3)"
+          >
             <div class="list__room__wrap__item__img">
               <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label">Starting from</span>
+                <span class="list__room__wrap__item__price--label"
+                  >Starting from</span
+                >
                 <span class="list__room__wrap__item__price--value">450$</span>
               </span>
               <div>
-                <img src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg" width="100%" alt="">
+                <img
+                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
+                  width="100%"
+                  alt=""
+                />
               </div>
             </div>
             <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">Single rooms normal</h5>
+              <h5 class="list__room__wrap__item__content-title">
+                Single rooms normal
+              </h5>
               <div class="list__room__wrap__item__content-line"></div>
               <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's.
               </p>
-              <div class="list__room__wrap__item__content-details">List Rooms</div>
+              <div class="list__room__wrap__item__content-details">
+                List Rooms
+              </div>
             </div>
           </b-col>
-          <b-col cols="12" md="4" class="list__room__wrap__item" @click="nextPage(2)">
+          <b-col
+            cols="12"
+            md="4"
+            class="list__room__wrap__item"
+            @click="nextPage(2)"
+          >
             <div class="list__room__wrap__item__img">
               <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label">Starting from</span>
+                <span class="list__room__wrap__item__price--label"
+                  >Starting from</span
+                >
                 <span class="list__room__wrap__item__price--value">450$</span>
               </span>
               <div href="">
-                <img src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg" width="100%" alt="">
+                <img
+                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
+                  width="100%"
+                  alt=""
+                />
               </div>
             </div>
             <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">Double room normals</h5>
+              <h5 class="list__room__wrap__item__content-title">
+                Double room normals
+              </h5>
               <div class="list__room__wrap__item__content-line"></div>
               <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's.
               </p>
-              <div class="list__room__wrap__item__content-details">List Rooms</div>
+              <div class="list__room__wrap__item__content-details">
+                List Rooms
+              </div>
             </div>
           </b-col>
-          <b-col cols="12" md="4" class="list__room__wrap__item" @click="nextPage(1)">
+          <b-col
+            cols="12"
+            md="4"
+            class="list__room__wrap__item"
+            @click="nextPage(1)"
+          >
             <div class="list__room__wrap__item__img">
               <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label">Starting from</span>
+                <span class="list__room__wrap__item__price--label"
+                  >Starting from</span
+                >
                 <span class="list__room__wrap__item__price--value">450$</span>
               </span>
               <div href="">
-                <img src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg" width="100%" alt="">
+                <img
+                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
+                  width="100%"
+                  alt=""
+                />
               </div>
             </div>
             <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">VIP single rooms</h5>
+              <h5 class="list__room__wrap__item__content-title">
+                VIP single rooms
+              </h5>
               <div class="list__room__wrap__item__content-line"></div>
               <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's.
               </p>
-              <div class="list__room__wrap__item__content-details">List Rooms</div>
+              <div class="list__room__wrap__item__content-details">
+                List Rooms
+              </div>
             </div>
           </b-col>
-          <b-col cols="12" md="4" class="list__room__wrap__item" @click="nextPage(4)">
+          <b-col
+            cols="12"
+            md="4"
+            class="list__room__wrap__item"
+            @click="nextPage(4)"
+          >
             <div class="list__room__wrap__item__img">
               <span class="list__room__wrap__item__price position-absolute">
-                <span class="list__room__wrap__item__price--label">Starting from</span>
+                <span class="list__room__wrap__item__price--label"
+                  >Starting from</span
+                >
                 <span class="list__room__wrap__item__price--value">450$</span>
               </span>
               <div href="">
-                <img src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg" width="100%" alt="">
+                <img
+                  src="https://fivestar.qodeinteractive.com/wp-content/uploads/2017/12/mainhome-room-1-img-1.jpg"
+                  width="100%"
+                  alt=""
+                />
               </div>
             </div>
             <div class="list__room__wrap__item__content">
-              <h5 class="list__room__wrap__item__content-title">VIP double rooms</h5>
+              <h5 class="list__room__wrap__item__content-title">
+                VIP double rooms
+              </h5>
               <div class="list__room__wrap__item__content-line"></div>
               <p class="list__room__wrap__item__content-description">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's.
               </p>
-              <div class="list__room__wrap__item__content-details">List Rooms</div>
+              <div class="list__room__wrap__item__content-details">
+                List Rooms
+              </div>
             </div>
           </b-col>
         </b-row>
@@ -196,6 +260,7 @@ export default {
     return {
       slide: 0,
       sliding: null,
+      user: null,
       selectedRoom: null,
       optionsRooms: [
         { value: null, text: "Please select an option" },
@@ -230,6 +295,21 @@ export default {
       ],
     };
   },
+
+  async created() {
+    await this.$store.dispatch("auth/getAccountCustomer").then((res) => {
+      this.user = res.data;
+    });
+    if (this.$route.query.vnp_ResponseCode === "00") {
+      const params = {
+        user_id: this.user.id,
+        code: this.$route.query.vnp_ResponseCode
+      }
+      this.$store.dispatch("customer/bookRoomOnline", params).then();
+    } else {
+      console.log("loi");
+    }
+  },
   methods: {
     onSlideStart(slide) {
       this.sliding = true;
@@ -238,10 +318,13 @@ export default {
       this.sliding = false;
     },
     nextPage(type) {
-      this.$router.push({name: 'ListRoomType', query: {
-        type_room_id: type
-      }})
-    }
+      this.$router.push({
+        name: "ListRoomType",
+        query: {
+          type_room_id: type,
+        },
+      });
+    },
   },
 };
 </script>
@@ -372,7 +455,7 @@ export default {
     &__label {
       font-size: 42px;
       font-weight: 400;
-      letter-spacing: .1em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #1e1e1e;
       padding-bottom: 20px;
@@ -396,14 +479,14 @@ export default {
           left: 50%;
           font-weight: 500;
           font-size: 30px;
-          color: #FFFFFF;
+          color: #ffffff;
           z-index: 10;
           -webkit-transform: translateY(-60%) translateX(-50%);
           -moz-transform: translateY(-60%) translateX(-50%);
           transform: translateY(-60%) translateX(-50%);
-          -webkit-transition: transform .23s,opacity .23s;
-          -moz-transition: transform .23s,opacity .23s;
-          transition: transform .23s,opacity .23s;
+          -webkit-transition: transform 0.23s, opacity 0.23s;
+          -moz-transition: transform 0.23s, opacity 0.23s;
+          transition: transform 0.23s, opacity 0.23s;
           text-shadow: 1px 1px 1px rgb(243, 243, 243);
           &--label {
             display: block;
@@ -420,11 +503,11 @@ export default {
               left: 0;
               width: 100%;
               height: 100%;
-              background-color: rgba(51,49,50,.55);
+              background-color: rgba(51, 49, 50, 0.55);
               opacity: 0;
-              -webkit-transition: opacity .23s;
-              -moz-transition: opacity .23s;
-              transition: opacity .23s;
+              -webkit-transition: opacity 0.23s;
+              -moz-transition: opacity 0.23s;
+              transition: opacity 0.23s;
             }
           }
         }
@@ -458,11 +541,11 @@ export default {
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(51,49,50,.55);
+          background-color: rgba(51, 49, 50, 0.55);
           opacity: 1;
-          -webkit-transition: opacity .23s;
-          -moz-transition: opacity .23s;
-          transition: opacity .23s;
+          -webkit-transition: opacity 0.23s;
+          -moz-transition: opacity 0.23s;
+          transition: opacity 0.23s;
         }
       }
     }
@@ -478,7 +561,7 @@ export default {
     &__wrap {
       width: 1200px;
       margin: 0 auto;
-      color: #FFF;
+      color: #fff;
       p {
         margin-bottom: 10px;
       }
@@ -501,7 +584,7 @@ export default {
           outline: none;
           padding: 0 12px;
           background-color: transparent;
-          color: #FFF;
+          color: #fff;
         }
         .go {
           float: right;

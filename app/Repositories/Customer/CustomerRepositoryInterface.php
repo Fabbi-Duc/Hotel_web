@@ -10,7 +10,7 @@ interface CustomerRepositoryInterface extends RepositoryInterface
     public function getListCustomer($data);
     public function getCountCustomer();
     public function bookRoom($data, $id, $time);
-    public function bookRoomOnline($data, $id, $time);
+    public function bookRoomOnline($data, $id);
     public function getInfoRoomCustomer($id);
     public function getInfoCustomer($room_customer_id);
     public function updateBookRoom($room_customer_id);

@@ -60,7 +60,7 @@ Route::post('/room-code', [RoomController::class, 'getCodeRoom'])->name('getRoom
 Route::get('/room/{id}', [RoomController::class, 'getInfoRoom'])->name('getInfoRoom');
 Route::post('/room/create', [RoomController::class, 'createRoom'])->name('createRoom');
 Route::get('/room', [RoomController::class, 'getNameRoom'])->name('getNameRoom');
-Route::post('/room/update', [RoomController::class, 'updateRoom'])->name('updateRoom');
+Route::post('/update/room', [RoomController::class, 'updateRoom'])->name('updateRoom');
 Route::get('/load/comment', [RoomController::class, 'loadComment'])->name('loadComment');
 Route::post('/register-customer', [CustomerController::class, 'registerCustomer'])->name('registerCustomer');
 Route::get('/customer/list', [CustomerController::class, 'getCustomersList'])->name('getCustomersList');
@@ -137,3 +137,7 @@ Route::get('/revenue', [BillsController::class, 'getRevenue'])->name('getRevenue
 Route::get('/getRevenueByMonth', [BillsController::class, 'getRevenueByMonth'])->name('getRevenueByMonth');
 Route::get('/get-list-bills', [BillsController::class, 'getListBills'])->name('getListBills');
 Route::get('get-count-room-ByMonth', [CustomerController::class, 'getCountRoomByMonth'])->name('getCountRoomByMonth');
+
+Route::get('/payOnline', [CustomerController::class, 'payOnline'])->name('payOnline');
+Route::get('/timesheet', [CustomerController::class, 'getTimeSheet'])->name('getTimeSheet');
+Route::post('/create-pay', [CustomerController::class, 'createPay'])->name('createPay');
