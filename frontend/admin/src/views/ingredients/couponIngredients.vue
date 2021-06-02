@@ -117,20 +117,23 @@
           </div>
         </div>
         <div class="d-flex justify-content-center">
-          <button class="btn-success mt-3" style="width: 120px">Create</button>
+          <button type="submit" class="btn-success mt-3" style="width: 120px" @click="exportPdf">Create</button>
         </div>
       </form>
     </ValidationObserver>
+    <pdfCouponIngredients ref="pdfCouponIngredients" :options="options" />
   </div>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import pdfCouponIngredients from "../PdfExport/pdfCouponIngredients.vue"
 
 export default {
   components: {
     ValidationObserver,
     ValidationProvider,
+    pdfCouponIngredients
   },
   data() {
     return {
@@ -188,6 +191,9 @@ export default {
       };
       this.$store.dispatch('ingredients/createCouponHouseware', params)
     },
+    exportPdf() {
+      this.$refs.pdfCouponIngredients.generateReport();
+    }
   },
 };
 </script>
