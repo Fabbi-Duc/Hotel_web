@@ -15,14 +15,14 @@
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/dashboard"> Dashboard </CHeaderNavLink>
+        <CHeaderNavLink to="/dashboard"> Trang chủ </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/users" exact> Users </CHeaderNavLink>
+        <CHeaderNavLink to="/users" exact> Nhân viên </CHeaderNavLink>
       </CHeaderNavItem>
-      <CHeaderNavItem class="px-3">
+      <!-- <CHeaderNavItem class="px-3">
         <CHeaderNavLink> Settings </CHeaderNavLink>
-      </CHeaderNavItem>
+      </CHeaderNavItem> -->
     </CHeaderNav>
     <CHeaderNav class="mr-4">
       <CHeaderNavItem class="d-md-down-none mx-2">
@@ -122,7 +122,6 @@ export default {
     async getUser() {
       await this.$store.dispatch('auth/getAccount').then(res => {
         this.user = res.data;
-        console.log(this.user);
       })
     }
   },

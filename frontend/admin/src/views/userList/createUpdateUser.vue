@@ -200,6 +200,7 @@
 <script>
 import firebase from "@/plugins/firebase";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -237,10 +238,17 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      isLoading: "common/isLoading",
+    }),
+  },
   props: ["id"],
   mounted() {
     if (this.id) {
+      this.$store.dispatch("common/setIsLoading", true);
       this.getInfoUser();
+      this.$store.dispatch("common/setIsLoading", false);
     }
   },
   methods: {
@@ -260,6 +268,9 @@ export default {
           salary: this.salary,
         };
         await this.$store.dispatch("user/updateUser", params);
+        this.$store.dispatch("common/setIsLoading", true);
+        this.$router.push({ name: "Users" })
+        this.$store.dispatch("common/setIsLoading", false);
       } else {
         const params = {
           first_name: this.first_name,
@@ -277,7 +288,11 @@ export default {
           email_verified_at: null
         };
         await this.$store.dispatch("user/createUser", params);
+        this.$store.dispatch("common/setIsLoading", true);
+        this.$router.push({ name: "Users" })
+        this.$store.dispatch("common/setIsLoading", false);
       }
+      this.$router.push({ name: "Users" })
     },
     chooseImage(event) {
       this.imageData = event.target.files[0];

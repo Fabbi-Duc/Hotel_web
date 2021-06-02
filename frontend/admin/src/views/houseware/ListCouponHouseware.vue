@@ -2,19 +2,19 @@
   <div>
     <div class="row">
       <div class="col-4">
-        <label for="">Time lower</label>
+        <label for="">Thời gian tạo</label>
         <br />
         <input type="date" class="form-control" v-model="time_lower" />
       </div>
       <div class="col-4">
-        <label for="">Time upper</label>
+        <label for="">Thời gian cập nhật</label>
         <br />
         <input type="date" class="form-control" v-model="time_upper" />
       </div>
       <div class="position-relative">
         <div class="position-absolute" style="bottom: 0">
-          <button class="btn-info ml-3" style="height: 35px" @click="getList()">
-            Search
+          <button class="btn-info ml-3" style="height: 35px; width: 100px" @click="getList()">
+            Tìm kiếm
           </button>
         </div>
       </div>
@@ -38,17 +38,17 @@
           icon="trash"
           variant="danger"
           font-scale="1.5"
-          class="deleteRoom"
+          class="deleteRoom cursor"
           @click="deleteData(row.item.id)"
         >
         </b-icon>
-        <span v-if="row.item.status == 2" @click="updateHouse(row.item.id)"> Da hoan thanh </span>
+        <span v-if="row.item.status == 2" @click="updateHouse(row.item.id)" class="cursor"> Đã hoàn thành </span>
         <b-icon
           v-if="row.item.status == 1"
           icon="pencil-square"
           variant="dark"
           font-scale="1.5"
-          class="updateRoom ml-3"
+          class="updateRoom cursor ml-3"
           @click="updateHouse(row.item.id)"
         >
         </b-icon>
@@ -74,12 +74,12 @@ export default {
       time_lower: "",
       time_upper: "",
       fields: [
-        { key: "numerical", label: "numerical" },
-        { key: "cost", label: "cost" },
-        { key: "description", label: "description" },
-        { key: "created_at", label: "created_at" },
-        { key: "updated_at", label: "updated_at" },
-        { key: "action", label: "action" },
+        { key: "numerical", label: "STT" },
+        { key: "cost", label: "Giá" },
+        { key: "description", label: "Mô tả" },
+        { key: "created_at", label: "Thời gian tạo" },
+        { key: "updated_at", label: "Thời gian cập nhật" },
+        { key: "action", label: "Tùy chọn" },
       ],
       paginate: {
         perPage: 10,
@@ -128,4 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cursor {
+  cursor: pointer;
+}
 </style>

@@ -22,7 +22,7 @@ export default {
         ],
         datasets: [
           {
-            label: "Revenue",
+            label: "Doanh thu",
             borderWidth: 1,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",

@@ -1,6 +1,6 @@
 
 export const state = {
-  isLoading: true
+  isLoading: false
 };
 
 export const getters = {

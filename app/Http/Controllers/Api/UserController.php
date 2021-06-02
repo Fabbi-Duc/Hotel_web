@@ -105,4 +105,10 @@ class UserController extends ApiController
         $result = $this->userRepository->createPark($request->all());
         return $result;
     }
+
+    public function getCountUser()
+    {
+        $result = $this->userRepository->getCountUser();
+        return $result;
+    }
 }

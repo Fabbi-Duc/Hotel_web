@@ -46,6 +46,7 @@ Route::delete('/user/{id}', [UserController::class, 'deleteUser'])->name('delete
 Route::get('/user/detail/{id}', [UserController::class, 'getInfoUser'])->name('getInfoUser');
 Route::post('/user/create', [UserController::class, 'createUser'])->name('createUser');
 Route::post('/user/update', [UserController::class, 'updateUser'])->name('updateUser');
+Route::get('/get-count-user', [UserController::class, 'getCountUser'])->name('getCountUser');
 Route::post('/food/create', [UserController::class, 'createFood'])->name('createFood');
 Route::post('/food/update', [UserController::class, 'updateFood'])->name('updateFood');
 Route::get('/food/{id}', [UserController::class, 'getInfoFood'])->name('getInfoFood');
@@ -135,3 +136,4 @@ Route::get('/customer-count', [CustomerController::class, 'getCountCustomer'])->
 Route::get('/revenue', [BillsController::class, 'getRevenue'])->name('getRevenue');
 Route::get('/getRevenueByMonth', [BillsController::class, 'getRevenueByMonth'])->name('getRevenueByMonth');
 Route::get('/get-list-bills', [BillsController::class, 'getListBills'])->name('getListBills');
+Route::get('get-count-room-ByMonth', [CustomerController::class, 'getCountRoomByMonth'])->name('getCountRoomByMonth');

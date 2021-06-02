@@ -4,7 +4,7 @@ export default [
     _children: [
       {
         _name: "CSidebarNavItem",
-        name: "Dashboard",
+        name: "Trang chủ",
         to: "/dashboard",
         icon: "cil-speedometer",
         badge: {
@@ -30,43 +30,43 @@ export default [
       // },
       {
         _name: "CSidebarNavDropdown",
-        name: "User",
+        name: "Nhân viên",
         icon: "cil-puzzle",
         items: [
           {
-            name: "Users List",
+            name: "Danh sách Nhân viên",
             to: "/users"
           },
           {
-            name: "Users Create",
+            name: "Tạo mới Nhân viên",
             to: "user/create"
           }
         ]
       },
       {
         _name: "CSidebarNavDropdown",
-        name: "Room",
+        name: "Phòng",
         route: "/rooms",
         icon: "cil-puzzle",
         items: [
           {
-            name: "Rooms List",
+            name: "Danh sách phòng",
             to: "/rooms/list"
           },
           {
-            name: "Room Create",
+            name: "Tạo mới phòng",
             to: "/rooms/create"
           }
         ]
       },
       {
         _name: "CSidebarNavDropdown",
-        name: "Customer",
+        name: "Khách hàng",
         route: "/customers",
         icon: "cil-puzzle",
         items: [
           {
-            name: "Customers List",
+            name: "Danh sách khách hàng",
             to: "/customers/list"
           },
           // {
@@ -77,40 +77,40 @@ export default [
       },
       {
         _name: "CSidebarNavDropdown",
-        name: "Houseware",
+        name: "Kho",
         route: "/houseware",
         icon: "cil-puzzle",
         items: [
           {
-            name: "Houseware List",
+            name: "Danh sách đồ dùng",
             to: "/list-houseware"
           },
           {
-            name: "Coupon Houseware Create",
+            name: "Tạo mới phiếu nhập đồ dùng",
             to: "/coupon-houseware"
           },
           {
-            name: "Coupon Houseware List",
+            name: "Danh sách phiếu nhập đồ dùng",
             to: "/list-coupon-houseware"
           }
         ]
       },
       {
         _name: "CSidebarNavDropdown",
-        name: "Ingredients",
+        name: "Thực phẩm",
         route: "/ingredients",
         icon: "cil-puzzle",
         items: [
           {
-            name: "Ingredients List",
+            name: "Danh sách thực phẩm",
             to: "/list-ingredients"
           },
           {
-            name: "Coupon Ingredients Create",
+            name: "Tạo mới phiếu nhập thực phẩm",
             to: "/coupon-ingredients"
           },
           {
-            name: "Coupon Ingredients List",
+            name: "DS phiếu nhập thực phẩm",
             to: "/list-coupon-ingredients"
           }
         ]
@@ -118,13 +118,13 @@ export default [
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "List Export Houseware",
+        name: "DS Phiếu xuất đồ dùng",
         to: "/get-list-export-houseware"
       },
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "List Export Ingredients",
+        name: "DS Phiếu xuất thực phẩm",
         to: "/get-list-export-ingredients"
       }
     ]

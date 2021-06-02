@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Room;
 
 class Customers extends Authenticatable implements JWTSubject
 {
@@ -24,7 +25,7 @@ class Customers extends Authenticatable implements JWTSubject
 
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token',   
     ];
     public function getJWTIdentifier()
     {
@@ -39,5 +40,10 @@ class Customers extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'rooms_customers', 'customer_id', 'room_id');
     }
 }

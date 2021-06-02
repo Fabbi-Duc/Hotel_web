@@ -168,8 +168,12 @@ export default {
   },
   methods: {
     deletRoom(id) {
-      this.$store.dispatch("user/deleteUser", id);
-      this.getUsers();
+      if (confirm('xoa')) {
+        this.$store.dispatch("common/setIsLoading", true);
+        this.$store.dispatch("user/deleteUser", id);
+        this.getUsers();
+        this.$store.dispatch("common/setIsLoading", false);
+      }
     },
     async getUsers() {
       const params = {

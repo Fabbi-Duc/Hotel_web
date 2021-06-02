@@ -27,4 +27,6 @@ interface UserRepositoryInterface extends RepositoryInterface
     public function getInfoFood($id);
 
     public function createPark($data);
+
+    public function getCountUser();
 }
