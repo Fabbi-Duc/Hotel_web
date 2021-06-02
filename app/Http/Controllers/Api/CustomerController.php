@@ -215,7 +215,7 @@ class CustomerController extends ApiController
     {
         $data = $request->all();
         $result = $this->customerRepository->updatePark($data);
-        Mail::to($data['email'])->send(new SendMailPark($data['park_id']));
+        // Mail::to($data['email'])->send(new SendMailPark($data['park_id']));
         return $result;
     }
 

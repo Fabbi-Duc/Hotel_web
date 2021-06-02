@@ -3,76 +3,136 @@
     <template v-if="isLoading">
       <AppLoading />
     </template>
-    <template>
+    <template v-else>
       <!-- <h3>Số lượng</h3> -->
-      <b-row>
-      <b-col cols="12" md="3">
-        <div class="wrap wrap--color1">
-          <div class="wrap__label">
-            <div class="d-flex justify-content-between align-items-center">
-              <p>{{ countRoom }}</p>
-              <div class="wrap__button" @click.prevent="nextPage('RoomList')">
-                View
+      <b-row v-if="user && user.position == 0">
+        <b-col cols="12" md="3">
+          <div class="wrap wrap--color1">
+            <div class="wrap__label">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>{{ countRoom }}</p>
+                <div class="wrap__button" @click.prevent="nextPage('RoomList')">
+                  View
+                </div>
               </div>
+              Phòng
             </div>
-            Phòng
           </div>
-        </div>
-      </b-col>
-      <b-col cols="12" md="3">
-        <div class="wrap wrap--color2">
-          <div class="wrap__label">
-            <div class="d-flex justify-content-between align-items-center">
-              <p>{{ countCustomer }}</p>
-              <div
-                class="wrap__button"
-                @click.prevent="nextPage('CustomersList')"
-              >
-                View
+        </b-col>
+        <b-col cols="12" md="3">
+          <div class="wrap wrap--color2">
+            <div class="wrap__label">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>{{ countCustomer }}</p>
+                <div
+                  class="wrap__button"
+                  @click.prevent="nextPage('CustomersList')"
+                >
+                  View
+                </div>
               </div>
+              Khách hàng
             </div>
-            Khách hàng
+          </div>
+        </b-col>
+        <b-col cols="12" md="3">
+          <div class="wrap wrap--color3">
+            <div class="wrap__label">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>
+                  {{
+                    parseInt(AllRevenue) > 0
+                      ? Intl.NumberFormat()
+                          .format(AllRevenue)
+                          .replace(/\./g, ",")
+                      : Intl.NumberFormat()
+                          .format(AllRevenue)
+                          .replace(/\./g, ",")
+                  }}Đ
+                </p>
+                <div class="wrap__button">View</div>
+              </div>
+              Tổng doanh thu
+            </div>
+          </div>
+        </b-col>
+        <b-col cols="12" md="3">
+          <div class="wrap wrap--color4">
+            <div class="wrap__label">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>{{ countUser }}</p>
+                <div class="wrap__button" @click.prevent="nextPage('Users')">
+                  View
+                </div>
+              </div>
+              Nhân viên
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+      <div else>
+        <div class="d-flex position-relative">
+          <div class="start_time mr-3">
+            <label for="">Ngày bắt đầu</label>
+            <br />
+            <input type="datetime-local" class="form-control" />
+          </div>
+          <div class="start_time ml-3 mr-3">
+            <label for="">Ngày kết thúc</label>
+            <br />
+            <input type="datetime-local" class="form-control" />
+          </div>
+          <div>
+            <button
+              class="form-control ml-3 position-absolute"
+              style="
+                background-color: blue;
+                color: white;
+                width: 100px;
+                bottom: 0;
+              "
+              @click="search()"
+            >
+              Tìm kiếm
+            </button>
+          </div>
+          <div style="margin-left: 120px" v-if="check_in">
+            <button
+              class="form-control ml-3 position-absolute"
+              style="
+                background-color: green;
+                color: white;
+                width: 100px;
+                bottom: 0;
+              "
+              @click="checkIn"
+            >
+              Check In
+            </button>
+          </div>
+          <div style="margin-left: 120px" v-if="!check_in">
+            <button
+              class="form-control ml-3 position-absolute"
+              style="
+                background-color: gray;
+                color: white;
+                width: 100px;
+                bottom: 0;
+              "
+              @click="checkOut"
+            >
+              Check Out
+            </button>
           </div>
         </div>
-      </b-col>
-      <b-col cols="12" md="3">
-        <div class="wrap wrap--color3">
-          <div class="wrap__label">
-            <div class="d-flex justify-content-between align-items-center">
-              <p>
-                {{
-                  parseInt(AllRevenue) > 0
-                    ? Intl.NumberFormat().format(AllRevenue).replace(/\./g, ",")
-                    : Intl.NumberFormat()
-                        .format(AllRevenue)
-                        .replace(/\./g, ",")
-                }}Đ
-              </p>
-              <div class="wrap__button">View</div>
-            </div>
-            Tổng doanh thu
-          </div>
-        </div>
-      </b-col>
-      <b-col cols="12" md="3">
-        <div class="wrap wrap--color4">
-          <div class="wrap__label">
-            <div class="d-flex justify-content-between align-items-center">
-              <p>{{ countUser }}</p>
-              <div class="wrap__button" @click.prevent="nextPage('Users')">View</div>
-            </div>
-            Nhân viên
-          </div>
-        </div>
-      </b-col>
-    </b-row>
+      </div>
     </template>
     <br /><br />
-    <h3>Số lượng khách hàng / tháng</h3>
-    <LineChart />
+    <h3 v-if="user && user.position == 0">Số lượng khách hàng / tháng</h3>
+    <LineChart v-if="user && user.position == 0" />
     <br /><br />
-    <h3>Doanh thu / tháng</h3>
-    <BarChart />
+    <h3 v-if="user && user.position == 0">Doanh thu / tháng</h3>
+    <BarChart v-if="user && user.position == 0" />
   </div>
 </template>
 
@@ -80,6 +140,7 @@
 import LineChart from "../views/ChartDashboard/LineChart.vue";
 import BarChart from "../views/ChartDashboard/BarChart.vue";
 import { mapGetters } from "vuex";
+import moment from "moment";
 export default {
   name: "Dashboard",
   components: {
@@ -91,7 +152,9 @@ export default {
       countRoom: null,
       countCustomer: null,
       AllRevenue: null,
-      countUser: null
+      countUser: null,
+      user: null,
+      check_in: null,
     };
   },
   computed: {
@@ -99,12 +162,29 @@ export default {
       isLoading: "common/isLoading",
     }),
   },
-  created() {
+  async created() {
     this.$store.dispatch("common/setIsLoading", true);
-    this.getCount();
+    await this.getCount();
+    await this.$store.dispatch("auth/getAccount").then((res) => {
+      this.user = res.data;
+    });
+    await this.checkTimeSheet();
     this.$store.dispatch("common/setIsLoading", false);
   },
   methods: {
+    async checkTimeSheet() {
+      await this.$store
+      .dispatch("user/checkTimeSheet", this.user.id)
+      .then((res) => {
+        if (res.data) {
+          if (res.check_in) {
+            this.check_in = false;
+          } else {
+            this.check_in = true;
+          }
+        }
+      });
+    },
     color(value) {
       let $color;
       if (value <= 25) {
@@ -133,8 +213,29 @@ export default {
       });
       this.$store.dispatch("user/getCountUser").then((response) => {
         this.countUser = response.count;
-      })
+      });
     },
+    checkIn() {
+      let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
+      const params = {
+        user_id: this.user.id,
+        time: time,
+      };
+      this.$store.dispatch("user/checkIn", params).then(() => {
+        this.checkTimeSheet();
+      });
+    },
+    checkOut() {
+      let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
+      const params = {
+        user_id: this.user.id,
+        time: time,
+      };
+      this.$store.dispatch("user/checkOut", params).then(() => {
+        this.checkTimeSheet();
+      });
+    },
+    search() {},
   },
 };
 </script>

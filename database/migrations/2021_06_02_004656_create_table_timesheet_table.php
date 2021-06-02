@@ -16,8 +16,8 @@ class CreateTableTimesheetTable extends Migration
         Schema::create('timesheet', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->date('time_check_in')->nullable();
-            $table->date('time_check_out')->nullable();
+            $table->dateTime('time_check_in')->nullable();
+            $table->dateTime('time_check_out')->nullable();
             $table->date('day');
             $table->integer('status');
             $table->timestamps();

@@ -68,7 +68,7 @@ Route::get('/rooms', [RoomController::class, 'getRoomFloor'])->name('getRoomFloo
 Route::post('/customer/book-room', [CustomerController::class, 'bookRoom'])->name('bookRoom');
 Route::get('/room-customer/{id}', [CustomerController::class, 'getInfoRoomCustomer'])->name('getInfoRoomCustomer');
 Route::get('/customer/{id}', [CustomerController::class, 'getInfoCustomer'])->name('getInfoCustomer');
-Route::post('/customer/{room_customer_id}', [CustomerController::class, 'updateBookRoom'])->name('updateBookRoom');
+Route::get('/customer-update/{room_customer_id}', [CustomerController::class, 'updateBookRoom'])->name('updateBookRoom');
 Route::get('/pay', [CustomerController::class, 'pay'])->name('pay');
 Route::get('/detail-bill/{id}', [CustomerController::class, 'detailBill'])->name('detailBill');
 Route::post('/food', [CustomerController::class, 'food'])->name('food');
@@ -141,3 +141,8 @@ Route::get('get-count-room-ByMonth', [CustomerController::class, 'getCountRoomBy
 Route::get('/payOnline', [CustomerController::class, 'payOnline'])->name('payOnline');
 Route::get('/timesheet', [CustomerController::class, 'getTimeSheet'])->name('getTimeSheet');
 Route::post('/create-pay', [CustomerController::class, 'createPay'])->name('createPay');
+Route::get('/check-timesheet/{id}', [UserController::class, 'checkTimeSheet'])->name('checkTimeSheet');
+Route::get('/check-in', [UserController::class, 'checkIn'])->name('checkIn');
+Route::get('/check-out', [UserController::class, 'checkOut'])->name('checkOut');
+Route::get('/get-time-sheet', [UserController::class, 'getTimeSheet'])->name('getTimeSheet');
+

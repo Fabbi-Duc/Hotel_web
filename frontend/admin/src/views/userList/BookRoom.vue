@@ -142,7 +142,7 @@
              <div class="option">
               <label for="">Tiền cọc</label>
               <ValidationProvider
-                name="End Time"
+                name="Deposit"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -237,8 +237,9 @@ export default {
         await this.$store
           .dispatch("customer/updateBookRoom", this.user_id)
           .then(() => {
-            this.$router.push({ name: "Room" });
-            this.updatePark();
+            // alert("Dat phong thanh cong");
+            // this.$router.push({ name: "Room" });
+            this.getQrCode();
           });
       }
     },

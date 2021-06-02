@@ -186,13 +186,8 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
     public function getInfoRoomCustomer($id)
     {
         try {
-            $room = DB::table('rooms_customers')->where('room_id', $id)->where('status', 1)->get();
-
-            foreach ($room as $data) {
-                $name = $this->model->where('id', $data->customer_id)->get('name');
-                $data->name = $name[0]->name;
-            }
-
+            $room = DB::table('rooms_customers')->leftJoin('customers', 'rooms_customers.customer_id', '=', 'customers.id')
+                            ->where('rooms_customers.room_id', $id)->where('rooms_customers.status', 1)->get();
             return [
                 'success' => true,
                 'data' => $room
@@ -212,6 +207,7 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
             $data = $this->model->find($customer->customer_id);
             $data->start_time = $customer->start_time;
             $data->end_time = $customer->end_time;
+            $data->money = $customer->money;
             return [
                 'success' => true,
                 'data' => $data,
@@ -227,10 +223,10 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
     public function updateBookRoom($room_customer_id)
     {
         try {
-            $customer = DB::table('rooms_customers')->find($room_customer_id);
+            $customer = DB::table('rooms_customers')->where('customer_id', $room_customer_id)->where('status', 1)->first();
             DB::table('rooms')->where('id', $customer->room_id)->update(['status' => 3]);
-            DB::table('rooms_customers')->where('id', $room_customer_id)->update(['status' => 2]);
-            DB::table('bills')->where('id', $customer->room_id)->update(['status' => 2]);
+            DB::table('rooms_customers')->where('customer_id', $room_customer_id)->where('status', 1)->update(['status' => 2]);
+            DB::table('bills')->where('id', $customer->room_id)->where('status', 1)->update(['status' => 2]);
             return [
                 'success' => true,
             ];
@@ -287,6 +283,7 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
     public function pay($room_id, $params)
     {
         try {
+            dd($params['cost_houseware']);
             DB::table('rooms_customers')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3]);
             DB::table('rooms')->where('id', $room_id)->update(['status' => 1]);
             DB::table('bills')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3, 'price' => $params['cost_houseware']]);

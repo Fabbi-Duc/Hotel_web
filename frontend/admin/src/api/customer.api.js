@@ -41,8 +41,8 @@ export const getInfoCustomer = id => {
 
 export const updateBookRoom = id => {
   return request({
-    url: "/customer/" + id,
-    method: "post"
+    url: "/customer-update/" + id,
+    method: "get"
   });
 };
 
