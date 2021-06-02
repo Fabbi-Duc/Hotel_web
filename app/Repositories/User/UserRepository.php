@@ -81,7 +81,9 @@ class UserRepository extends RepositoryAbstract implements UserRepositoryInterfa
                     'gender' => $data['gender'],
                     'email' => $data['email'],
                     'birthday' => $data['birthday'],
-                    'image_user' => $data['image_url']
+                    'image_user' => $data['image_url'],
+                    'shift' => $data['shift'],
+                    'salary' => $data['salary'],
                 ]
             );
 
@@ -111,6 +113,8 @@ class UserRepository extends RepositoryAbstract implements UserRepositoryInterfa
             $user->email = $data['email'];
             $user->birthday = $data['birthday'];
             $user->password = bcrypt($data['password']);
+            $user->shift = $data['shift'];
+            $user->salary = $data['salary'];
             $user->save();
 
             return [

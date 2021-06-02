@@ -109,6 +109,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { sendNotificationFirebase } from "@/api/notification.api";
 
 export default {
   components: {
@@ -151,6 +152,19 @@ export default {
         .dispatch("ingredients/completeExportHouseware", this.id)
         .then(() => {
           alert("Ban da cap nhat thanh cong");
+           sendNotificationFirebase({
+            device_type: "3",
+            body: "Don cua ban da duoc chap nhan",
+            user_id: "3",
+            title: "Export Houseware",
+          })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+            window.location.reload()
         });
     },
     async refuse() {
@@ -158,7 +172,19 @@ export default {
         .dispatch("ingredients/refuseExportHouseware", this.id)
         .then(() => {
           alert("Ban da cap nhat thanh cong");
-          window.location.reload()
+           sendNotificationFirebase({
+            device_type: "3",
+            body: "Don cua ban da bi tu choi",
+            user_id: "3",
+            title: "Export Houseware",
+          })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+            window.location.reload()
         });
     },
   },

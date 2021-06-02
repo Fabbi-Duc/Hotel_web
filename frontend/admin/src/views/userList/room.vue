@@ -83,10 +83,6 @@
             Book Room
           </button>
           <button class="btn-danger" v-else @click="pay(room.id)">Pay</button>
-          <b-modal ref="my-modal" title="BootstrapVue" centered>
-            <p class="my-4">COST ROOM : {{cost_room}}</p>
-            <p class="my-4">COST FOOD : {{cost_food}}</p>
-          </b-modal>
         </div>
       </div>
     </div>
@@ -154,12 +150,12 @@ export default {
       this.$router.push({ name: "BookRoom", params: { id: id } });
     },
     async pay(id) {
-      console.log(id);
-      await this.$store.dispatch("user/pay", id).then((res) => {
-        (this.cost_room = res.data), (this.cost_food = res.money);
-        alert("Ban da thanh toan thanh cong");
-      });
-      window.location.reload()
+      this.$router.push({ name: "Pay", params: { id: id } });
+      // await this.$store.dispatch("user/pay", id).then((res) => {
+      //   (this.cost_room = res.data), (this.cost_food = res.money);
+      //   alert("Ban da thanh toan thanh cong");
+      // });
+      // window.location.reload()
     },
   },
 };

@@ -167,6 +167,7 @@ export default {
             .catch((error) => {
               console.log(error);
             });
+            window.location.reload()
         });
     },
     async refuse() {
@@ -174,6 +175,18 @@ export default {
         .dispatch("houseware/refuseExportHouseware", this.id)
         .then(() => {
           alert("Ban da cap nhat thanh cong");
+          sendNotificationFirebase({
+            device_type: "5",
+            body: "Don cua ban da bi tu choi",
+            user_id: "5",
+            title: "Export Houseware",
+          })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           window.location.reload()
         });
     },

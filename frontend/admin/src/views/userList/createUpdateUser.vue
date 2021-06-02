@@ -119,6 +119,26 @@
             </div>
             <div class="row">
               <div class="form-group col">
+                <label for="">Ca làm việc</label>
+                <br />
+                <ValidationProvider
+                  name="Gender"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <b-form-select
+                    class="type__select form-control col"
+                    v-model="shift"
+                    :options="shiftOptions"
+                  />
+                  <div class="text-left">
+                    <span class="warning">{{ errors[0] }}</span>
+                  </div>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
                 <label for="">Email</label>
                 <br />
                 <ValidationProvider
@@ -127,6 +147,22 @@
                   v-slot="{ errors }"
                 >
                   <input type="email" v-model="email" class="form-control" />
+                  <div class="text-left">
+                    <span class="warning">{{ errors[0] }}</span>
+                  </div>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="">Salary</label>
+                <br />
+                <ValidationProvider
+                  name="Salary"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <input type="number" min="4000000" v-model="salary" class="form-control" />
                   <div class="text-left">
                     <span class="warning">{{ errors[0] }}</span>
                   </div>
@@ -189,6 +225,12 @@ export default {
       phone: null,
       email: null,
       gender: null,
+      shift: null,
+      salary: null,
+      shiftOptions: [
+        { value: 1, text: "Ca sáng" },
+        { value: 2, text: "Ca tối" },
+      ],
       genderOptions: [
         { value: 0, text: "Male" },
         { value: 1, text: "Female" },
@@ -214,6 +256,8 @@ export default {
           email: this.email,
           phone: this.phone,
           image_url: this.pictureUrl,
+          shift: this.shift,
+          salary: this.salary,
         };
         await this.$store.dispatch("user/updateUser", params);
       } else {
@@ -227,6 +271,8 @@ export default {
           phone: this.phone,
           image_url: this.pictureUrl,
           password: 123456,
+          shift: this.shift,
+          salary: this.salary,
           remember_token: null,
           email_verified_at: null
         };
@@ -255,6 +301,8 @@ export default {
           (this.birthday = res.data.birthday),
           (this.email = res.data.email),
           (this.pictureUrl = res.data.image_user);
+          this.shift = res.data.shift;
+          this.salary = res.data.salary;
       });
     },
   },

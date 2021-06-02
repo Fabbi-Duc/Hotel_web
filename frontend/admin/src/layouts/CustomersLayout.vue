@@ -61,6 +61,7 @@
             <a href="#news">News</a>
             <a href="/food" v-if="isFood">Contact</a>
             <a href="/food">About</a>
+            <button @click="chat()">Chat</button>
             <button @click="clean()" v-if="isFood">Clean</button>
             <button @click="getLocation()" class="ml-3">Share Location</button>
             <button @click="logoutCustomer()" class="ml-3">Logout</button>
@@ -151,35 +152,71 @@ export default {
     this.getUser();
   },
   methods: {
+    ...mapActions("firebase", ["createRoom"]),
+
+    async chat() {
+      // let data = {
+      //   userId: this.user.id,
+      //   user: {
+      //     name: this.user.name,
+      //     createdAt: new Date()
+      //   }
+      // };
+      // await this.$store
+      //   .dispatch("firebase/createUser", data)
+      //   .then(() => {
+      //     console.log('success');
+      //   })
+      //   .catch(() => {
+      //     console.log("error");
+      //   });
+      let data = {
+        userId: ["admin-10", this.user.id.toString()],
+        users: [
+          {
+            id: this.user.id.toString(),
+            data: {
+              name: this.user.name,
+              createdAt: new Date(),
+            },
+          },
+        ],
+      };
+      await this.$store
+        .dispatch("firebase/createRoom", data)
+        .then((result) => {
+          this.$router.push({ name: "Chat", params: { id: result } });
+        })
+        .catch(() => {
+          console.log("error");
+        });
+    },
     async getUser() {
       await store
         .dispatch("customer/getCustomerFood", this.user.id)
         .then((res) => {
           if (res.success) {
             this.isFood = true;
-            this.room_id = res.data
+            this.room_id = res.data;
           }
         });
     },
     async clean() {
       await store.dispatch("customer/clean", this.room_id).then(() => {
-        alert('Vui long cho doi nguoi don phong toi');
+        alert("Vui long cho doi nguoi don phong toi");
         sendNotificationFirebase({
-            device_type: "1",
-            body:
-              "Khach hang " +
-              this.user.name +
-              " da dat don phong",
-            user_id: "1",
-            title: "Clean",
+          device_type: "1",
+          body: "Khach hang " + this.user.name + " da dat don phong",
+          user_id: "1",
+          title: "Clean",
+        })
+          .then((response) => {
+            console.log(response);
           })
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-      })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     },
     getLocation() {
       let self = this;

@@ -1,104 +1,119 @@
 <template>
   <div>
-    <b-row class="mb-3">
-      <b-col cols="3">
-        <label for="">FirstName</label>
-        <br />
-        <input type="text" v-model="firstName" />
-      </b-col>
-      <b-col cols="3">
-        <label for="">LastName</label>
-        <br />
-        <input type="text" v-model="lastName" />
-      </b-col>
-      <b-col cols="3">
-        <label for="">Position</label>
-        <br />
+    <template v-if="isLoading">
+      <AppLoading />
+    </template>
+    <template v-else>
+      <b-row class="mb-3" v-if="users">
+        <b-col cols="3">
+          <label for="">FirstName</label>
+          <br />
+          <input type="text" v-model="firstName" />
+        </b-col>
+        <b-col cols="3">
+          <label for="">LastName</label>
+          <br />
+          <input type="text" v-model="lastName" />
+        </b-col>
+        <b-col cols="3">
+          <label for="">Position</label>
+          <br />
+          <b-form-select
+            class="position__select"
+            v-model="position"
+            :options="positions"
+            @change="customPaginate()"
+          />
+        </b-col>
+        <b-col>
+          <button
+            class="position-absolute btn-primary"
+            style="bottom: 0"
+            @click="search()"
+          >
+            Search
+          </button>
+        </b-col>
+      </b-row>
+      <div
+        class="d-flex f-w3 record justify-content-start align-items-center"
+        v-if="users"
+      >
         <b-form-select
-          class="position__select"
-          v-model="position"
-          :options="positions"
+          class="record__select"
+          v-model="paginate.perPage"
+          :options="records"
           @change="customPaginate()"
         />
-      </b-col>
-      <b-col>
-        <button
-          class="position-absolute btn-primary"
-          style="bottom: 0"
-          @click="search()"
-        >
-          Search
-        </button>
-      </b-col>
-    </b-row>
-    <div class="d-flex f-w3 record justify-content-start align-items-center">
-      <b-form-select
-        class="record__select"
-        v-model="paginate.perPage"
-        :options="records"
-        @change="customPaginate()"
-      />
-      <span>Number of records returned</span>
-    </div>
-    <b-table
-      striped
-      hover
-      :items="users"
-      :fields="fields"
-      :current-page="paginate.currentPage"
-    >
-      <template #cell(numerical)="row">
-        {{
-          ++row.index + (Number(paginate.page) - 1) * Number(paginate.perPage)
-        }}
-      </template>
-      <template #cell(position)="row">
-        <span v-if="row.item.position == 0">admin</span>
-        <span v-if="row.item.position == 1">sanitation worker</span>
-        <span v-if="row.item.position == 2">guard</span>
-        <span v-if="row.item.position == 3">chef</span>
-        <span v-if="row.item.position == 4">inventory management</span>
-        <span v-if="row.item.position == 5">receptionists</span>
-      </template>
-      <template #cell(gender)="row">
-        <span>
-          {{ row.item.gender == 1 ? "male" : "female" }}
-        </span>
-      </template>
-      <template #cell(action)="row">
-        <b-icon
-          icon="trash"
-          variant="danger"
-          font-scale="1.5"
-          class="deleteRoom"
-          @click="deletRoom(row.item.id)"
-        >
-        </b-icon>
-        <b-icon
-          icon="pencil-square"
-          variant="dark"
-          font-scale="1.5"
-          class="updateRoom"
-          @click="
-            $router.push({ name: 'UsersUpdate', params: { id: row.item.id } })
-          "
-        >
-        </b-icon>
-      </template>
-    </b-table>
-    <div class="pagination">
-      <b-pagination
-        v-model="paginate.page"
-        :total-rows="paginate.total"
-        :per-page="paginate.perPage"
-        @change="changePage"
+        <span>Number of records returned</span>
+      </div>
+      <b-table
+        striped
+        hover
+        :items="users"
+        :fields="fields"
+        :current-page="paginate.currentPage"
+        v-if="users"
       >
-      </b-pagination>
-    </div>
+        <template #cell(numerical)="row">
+          {{
+            ++row.index + (Number(paginate.page) - 1) * Number(paginate.perPage)
+          }}
+        </template>
+        <template #cell(position)="row">
+          <span v-if="row.item.position == 0">admin</span>
+          <span v-if="row.item.position == 1">sanitation worker</span>
+          <span v-if="row.item.position == 2">guard</span>
+          <span v-if="row.item.position == 3">chef</span>
+          <span v-if="row.item.position == 4">inventory management</span>
+          <span v-if="row.item.position == 5">receptionists</span>
+        </template>
+        <template #cell(gender)="row">
+          <span>
+            {{ row.item.gender == 1 ? "male" : "female" }}
+          </span>
+        </template>
+        <template #cell(shift)="row">
+          <span>
+            {{ row.item.shift == 1 ? "Ca sáng" : "Ca tối" }}
+          </span>
+        </template>
+        <template #cell(action)="row">
+          <b-icon
+            icon="trash"
+            variant="danger"
+            font-scale="1.5"
+            class="deleteRoom"
+            @click="deletRoom(row.item.id)"
+          >
+          </b-icon>
+          <b-icon
+            icon="pencil-square"
+            variant="dark"
+            font-scale="1.5"
+            class="updateRoom"
+            @click="
+              $router.push({ name: 'UsersUpdate', params: { id: row.item.id } })
+            "
+          >
+          </b-icon>
+        </template>
+      </b-table>
+      <div class="pagination" v-if="users">
+        <b-pagination
+          v-model="paginate.page"
+          :total-rows="paginate.total"
+          :per-page="paginate.perPage"
+          @change="changePage"
+        >
+        </b-pagination>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -123,6 +138,8 @@ export default {
         { key: "gender", label: "gender" },
         { key: "phone", label: "phone" },
         { key: "email", label: "email" },
+        { key: "shift", label: "Ca làm việc" },
+        { key: "salary", label: "Lương" },
         { key: "action", label: "action" },
       ],
       users: null,
@@ -139,13 +156,19 @@ export default {
       },
     };
   },
-
-  mounted() {
-    this.getUsers();
+  computed: {
+    ...mapGetters({
+      isLoading: "common/isLoading",
+    }),
+  },
+  async created() {
+    this.$store.dispatch("common/setIsLoading", true);
+    await this.getUsers();
+    this.$store.dispatch("common/setIsLoading", false);
   },
   methods: {
     deletRoom(id) {
-      this.$store.dispatch('user/deleteUser', id);
+      this.$store.dispatch("user/deleteUser", id);
       this.getUsers();
     },
     async getUsers() {

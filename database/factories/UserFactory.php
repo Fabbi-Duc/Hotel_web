@@ -33,6 +33,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt(123456), // password
             'birthday' => '2021-04-29',
+            'shift' => random_int(1,2),
+            'salary' => 5000000,
             'remember_token' => Str::random(10),
         ];
     }

@@ -311,6 +311,16 @@ const routes = [
         component: view("ingredients/approveExportIngredients")
       },
       {
+        path: "pay/:id",
+        name: "Pay",
+        meta: {
+          layout: "MainLayout",
+          requiredAuth: true
+        },
+        props: true,
+        component: view("pay")
+      },
+      {
         path: "room/book/:id",
         name: "BookRoom",
         meta: {
@@ -485,7 +495,17 @@ const routes = [
       requiredAuth: false
     },
     component: view("Food"),
-  }
+  },
+  {
+    path: "/chat/:id",
+    name: "Chat",
+    meta: {
+      layout: "MainLayout",
+      requiredAuth: true
+    },
+    prop: true,
+    component: view("chat")
+  },
 ];
 
 export default routes;
