@@ -124,6 +124,7 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
             $room->room_id = $id['id'];
             $room->start_time = $time['start_time'];
             $room->end_time = $time['end_time'];
+            $room->money = $id['money'];
             $room->save();
 
             $bill->room_id = $id['id'];
@@ -146,51 +147,28 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
         }
     }
 
-    public function bookRoomOnline($data, $id, $time)
+    public function bookRoomOnline($data, $id)
     {
         try {
-            $start_time = $time['start_time'];
-            $end_time = $time['end_time'];
-            $dataRoom = DB::table('rooms_customers')->where('room_id', $id['id'])->get();
-            foreach ($dataRoom as $room) {
-                if ($room->start_time <= $start_time && $room->end_time >= $start_time) {
-
-                    return [
-                        'success' => false,
-                        'message' => 'Start Time not suitable'
-                    ];
-                } else if ($room->start_time <= $end_time && $room->end_time >= $end_time) {
-
-                    return [
-                        'success' => false,
-                        'message' => 'End Time not suitable'
-                    ];
-                } else if ($room->start_time >= $start_time && $room->end_time <= $end_time) {
-                    return [
-                        'success' => false,
-                        'message' => 'Start Time and End Time not suitable'
-                    ];
-                }
-            }
-
             $room = new RoomsCustomer;
             $bill = new Bills;
             $room->customer_id = $data['user_id'];
             $room->status = 1;
-            $room->room_id = $id['id'];
-            $room->start_time = $time['start_time'];
-            $room->end_time = $time['end_time'];
+            $room->room_id = $id->room_id;
+            $room->start_time = $id->start_time;
+            $room->end_time = $id->end_time;
+            $room->money = $id->money;
             $room->save();
 
-            $bill->room_id = $id['id'];
-            $bill->start_time = $time['start_time'];
-            $bill->end_time = $time['end_time'];
+            $bill->room_id = $id->room_id;
+            $bill->start_time = $id->start_time;
+            $bill->end_time = $id->end_time;
             $bill->status = 1;
             $bill->save();
 
-            $room = DB::table('rooms')->where('id', $id['id'])->first();
+            $room = DB::table('rooms')->where('id', $id->room_id)->first();
             if ($room->status == 1) {
-                DB::table('rooms')->where('id', $id['id'])->update(['status' => 2]);
+                DB::table('rooms')->where('id', $id->room_id)->update(['status' => 2]);
             };
 
 
@@ -295,6 +273,7 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
                 'hour' => $datediff,
                 'name' => $name,
                 'start_time' => $room->start_time,
+                'deposit' => $room->money,
                 'end_time' => $room->end_time
             ];
         } catch (\Exception $e) {

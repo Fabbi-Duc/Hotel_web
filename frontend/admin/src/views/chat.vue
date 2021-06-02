@@ -2,8 +2,15 @@
   <div>
     <div>
       <p
-        v-for="(message, index) in this.firebaseMessages"
+        v-for="(room, index) in this.firebaseListRoom"
         :key="index"
+      >
+        {{ room.name }}
+      </p>
+      --------------
+      <p
+        v-for="(message) in this.firebaseMessages"
+        :key="message.id"
       >
         {{ message.data().message + "," + message.data().userName }}
       </p>
@@ -38,7 +45,8 @@ export default {
   computed: {
     ...mapGetters({
       firebaseRoom: "firebase/room",
-      firebaseMessages: "firebase/messages"
+      firebaseMessages: "firebase/messages",
+      firebaseListRoom: "firebase/listRoom"
     })
   },
   async created() {
@@ -46,10 +54,10 @@ export default {
       this.user = res.data;
     });
     await this.getRoomInfo();
-    await console.log(this.firebaseRoom);
+    await this.getListRoom(this.user.id.toString());
   },
   methods: {
-    ...mapActions("firebase", ["createMessage", "getRoom"]),
+    ...mapActions("firebase", ["createMessage", "getRoom", "getListRoom"]),
 
     async sendMessage() {
       let data = {

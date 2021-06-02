@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoomServiceClean;
 use App\Models\Room;
+use App\Models\Pay;
 
 class CustomerController extends ApiController
 {
@@ -58,7 +59,7 @@ class CustomerController extends ApiController
     public function bookRoom(Request $request)
     {
         $data = $request->only('name', 'email', 'birthday', 'password', 'gender', 'identity_card', 'phone');
-        $id = $request->only('id');
+        $id = $request->only('id', 'money');
         $time = $request->only('start_time', 'end_time');
         $result = $this->customerRepository->bookRoom($data, $id, $time);
         return $result;
@@ -67,10 +68,17 @@ class CustomerController extends ApiController
     public function bookRoomOnline(Request $request)
     {
         $data = $request->only('user_id');
-        $id = $request->only('id');
-        $time = $request->only('start_time', 'end_time');
-        $result = $this->customerRepository->bookRoomOnline($data, $id, $time);
-        return $result;
+        if ($request->code == "00") {
+            $id = DB::table('pay')->where('user_id', $data['user_id'])->first();
+            DB::table('pay')->where('user_id', $data['user_id'])->delete();
+            $result = $this->customerRepository->bookRoomOnline($data, $id);
+            return $result;
+        }
+
+        DB::table('pay')->where('user_id', $data['user_id'])->delete();
+        return [
+            'success' => false,
+        ];
     }
 
     public function getInfoRoomCustomer($id)
@@ -89,6 +97,45 @@ class CustomerController extends ApiController
     {
         $result = $this->customerRepository->updateBookRoom($room_customer_id);
         return $result;
+    }
+
+    public function createPay(Request $request)
+    {
+        $data = $request->all();
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        $dataRoom = DB::table('rooms_customers')->where('room_id', $data['room_id'])->get();
+        foreach ($dataRoom as $room) {
+            if ($room->start_time <= $start_time && $room->end_time >= $start_time) {
+
+                return [
+                    'success' => false,
+                    'message' => 'Start Time not suitable'
+                ];
+            } else if ($room->start_time <= $end_time && $room->end_time >= $end_time) {
+
+                return [
+                    'success' => false,
+                    'message' => 'End Time not suitable'
+                ];
+            } else if ($room->start_time >= $start_time && $room->end_time <= $end_time) {
+                return [
+                    'success' => false,
+                    'message' => 'Start Time and End Time not suitable'
+                ];
+            }
+        }
+        $pay = new Pay();
+        $pay->user_id = $data['user_id'];
+        $pay->room_id = $data['room_id'];
+        $pay->start_time = $data['start_time'];
+        $pay->end_time = $data['end_time'];
+        $pay->money = $data['money'];
+        $pay->save();
+
+        return [
+            'success' => true,
+        ];
     }
 
     public function pay(Request $request)
@@ -212,5 +259,79 @@ class CustomerController extends ApiController
             'type_3' => $room_type_id_3,
             'type_4' => $room_type_id_4
         ]);
+    }
+    
+    public function payOnline(Request $request)
+    {
+        $data = $request->all();
+        session($data);
+
+        $url = $this->paymentOnline($data['money']);
+
+        return $this->sendSuccess($url);
+    }
+
+    public function paymentOnline($total)
+    {
+        $vnp_Url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        // $vnp_Returnurl = env('URL_FRONTEND');
+        $vnp_Returnurl = 'http://localhost:8087/customer';
+        $vnp_TmnCode = "44EGMVWE"; //Mã website tại VNPAY
+        $vnp_HashSecret = "EJXFWXQOHENORBEKJJDXQVQOEFSXMOTJ"; //Chuỗi bí mật
+
+        $vnp_TxnRef = date("YmdHis"); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = "Thanh toán hóa đơn phí dich vụ";
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $total * 100;
+        $vnp_Locale = 'vn';
+        $vnp_IpAddr = request()->ip();
+
+        $inputData = array(
+            "vnp_Version" => "2.0.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . $key . "=" . $value;
+            } else {
+                $hashdata .= $key . "=" . $value;
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            // $vnpSecureHash = md5($vnp_HashSecret . $hashdata);
+            $vnpSecureHash = hash('sha256', $vnp_HashSecret . $hashdata);
+            $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
+        }
+        return $vnp_Url;
+    }
+
+    public function getTimeSheet(Request $request)
+    {
+        $data = $request->all();
+        $date = date("Y-m-d 18:00:00", strtotime($data['day']));
+        $date1 = date("Y-m-d 06:00:00", strtotime('+1 day', strtotime($data['day'])));
+        dd($date1);
     }
 }

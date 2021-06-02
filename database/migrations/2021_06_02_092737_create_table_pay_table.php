@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableTimesheetTable extends Migration
+class CreateTablePayTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateTableTimesheetTable extends Migration
      */
     public function up()
     {
-        Schema::create('timesheet', function (Blueprint $table) {
+        Schema::create('pay', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->date('time_check_in')->nullable();
-            $table->date('time_check_out')->nullable();
-            $table->date('day');
-            $table->integer('status');
+            $table->integer('room_id');
+            $table->date('start_time');
+            $table->date('end_time');
+            $table->integer('money');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateTableTimesheetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('timesheet');
+        Schema::dropIfExists('pay');
     }
 }

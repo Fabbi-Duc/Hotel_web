@@ -1,8 +1,11 @@
-import { listCustomers, 
-          bookRoom, getInfoCustomer, updateBookRoom, 
-          registerCustomer, getFood, order, listOrder, 
-          listFoodOrder, updateOrder, bookRoomOnline, 
-          listClean, updateClean, listPark, updatePark, getCustomerFood, clean, getCountCustomer, detailBill, pay, getCountRoomByMonth } from "@/api/customer.api";
+import {
+  listCustomers,
+  bookRoom, getInfoCustomer, updateBookRoom,
+  registerCustomer, getFood, order, listOrder,
+  listFoodOrder, updateOrder, bookRoomOnline,
+  listClean, updateClean, listPark, updatePark, getCustomerFood, clean, getCountCustomer, detailBill, pay, getCountRoomByMonth, payOnline
+  , payCreate
+} from "@/api/customer.api";
 
 export const state = {
   listCustomer: null,
@@ -228,12 +231,12 @@ export const actions = {
   getCountCustomer({ commit }) {
     return new Promise((resolve, reject) => {
       getCountCustomer()
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
     })
   },
   detailBill({ commit }, id) {
@@ -263,13 +266,37 @@ export const actions = {
   getCountRoomByMonth({ commit }) {
     return new Promise((resolve, reject) => {
       getCountRoomByMonth()
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
     })
   },
 
+  payOnline({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      payOnline(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  payCreate({ commit }, params) {
+    console.log(params);
+    return new Promise((resolve, reject) => {
+      payCreate(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 }

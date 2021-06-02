@@ -20,8 +20,10 @@ import { loadVeeValidate } from "@/plugins/vee-validate";
 import "./registerServiceWorker";
 import { BootstrapVue,  BootstrapVueIcons} from 'bootstrap-vue';
 import components from "./commons/component";
+import Toasted from 'vue-toasted';
 
 
+Vue.use(Toasted)
 Vue.use(BootstrapVue);
 Vue.use(components);
 Vue.use(BootstrapVueIcons)

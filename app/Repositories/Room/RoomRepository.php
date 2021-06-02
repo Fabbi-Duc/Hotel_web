@@ -156,8 +156,15 @@ class RoomRepository extends RepositoryAbstract implements RoomRepositoryInterfa
 
     public function updateRoom($data, $id) {
         try {
-            $room = $this->model;
-            $room->update($data, $id);
+            $room = $this->model->where('id', $id);
+            $room->update([
+                'name' => $data['name'],
+                'floor' => $data['floor'],
+                'room_type_id' => $data['status'],
+                'image_url' => $data['image_url'],
+                'decription' => $data['decription'],
+                'code_room' => $data['code_room'],
+            ]);
         } catch (\Exception $e) {
             return [
                 'success' => false,

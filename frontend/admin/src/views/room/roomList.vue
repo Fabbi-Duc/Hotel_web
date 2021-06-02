@@ -142,7 +142,7 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.getRoom();
     this.getRoomType();
   },
@@ -175,7 +175,6 @@ export default {
     async getRoomType() {
       await this.$store.dispatch("room/getRoomType").then((respone) => {
         this.roomType = respone.listRoomTypes;
-        console.log(this.roomType);
       });
     },
     async deletRoom(id) {

@@ -296,7 +296,7 @@ export default {
     },
     chooseImage(event) {
       this.imageData = event.target.files[0];
-      var storage = firebase.storage();
+      var storage = firebase.firebaseApp.storage();
       var storageRef = storage.ref();
       const imgRef = storageRef.child(`imagesRoom/${this.imageData.name}`);
       imgRef.put(this.imageData).then(() => {

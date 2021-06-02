@@ -91,7 +91,7 @@ export default {
   methods: {
     getTokenFirebase() {
       const self = this;
-      const messaging = firebase.messaging();
+      const messaging = firebase.firebaseApp.messaging();
       messaging
         .requestPermission()
         .then(function () {
