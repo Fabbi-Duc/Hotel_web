@@ -21,7 +21,12 @@
         </b-col>
         <b-col cols="12" md="4" class="text-right">
           <b-icon icon="twitter" class="header__contact__icon--right"></b-icon>
-          <a href="https://www.facebook.com/nguyendinhtan5555/"><b-icon icon="facebook" class="header__contact__icon--right"></b-icon></a>
+          <a href="https://www.facebook.com/nguyendinhtan5555/"
+            ><b-icon
+              icon="facebook"
+              class="header__contact__icon--right"
+            ></b-icon
+          ></a>
           <b-icon
             icon="instagram"
             class="header__contact__icon--right"
@@ -46,16 +51,27 @@
             />
           </b-col>
           <b-col md="8" class="header__nav__top text-right">
-            <a style="cursor: pointer" class="active" @click="home()">Trang chủ</a>
+            <a style="cursor: pointer" class="active" @click="home()"
+              >Trang chủ</a
+            >
             <a href="/food" v-if="isFood">Đặt đồ ăn</a>
             <!-- <a href="/food">About</a> -->
             <!-- <button @click="chat()">Chat</button> -->
             <a style="cursor: pointer" @click="clean()" v-if="isFood">Clean</a>
-            <b-button @click="chat()" variant="success" class="button-action">Chat với lễ tân</b-button>
+            <b-button @click="chat()" variant="success" class="button-action"
+              >Chat với lễ tân</b-button
+            >
             <!-- <button @click="getLocation()" class="ml-3">Share Location</button> -->
-            <b-button  @click="getLocation()" variant="info" class="button-action">Chia sẻ vị trí</b-button>
+            <b-button
+              @click="getLocation()"
+              variant="info"
+              class="button-action"
+              >Chia sẻ vị trí</b-button
+            >
             <!-- <button @click="logoutCustomer()" class="ml-3">Logout</button> -->
-            <b-button  @click="logoutCustomer()" variant="dark">Đăng xuất</b-button>
+            <b-button @click="logoutCustomer()" variant="dark"
+              >Đăng xuất</b-button
+            >
           </b-col>
         </b-row>
       </div>
@@ -112,7 +128,12 @@
               <span class="go">GO</span>
             </div>
             <div
-            style="background-color: blue; width: 150px; padding: 10px 0; margin-left: 29px"
+              style="
+                background-color: blue;
+                width: 150px;
+                padding: 10px 0;
+                margin-left: 29px;
+              "
               class="fb-share-button"
               data-href="https://2cc28894e19d.ngrok.io"
               data-layout="button_count"
@@ -133,37 +154,107 @@
         </div>
       </div>
     </div>
+    <div
+      class="room-chat position-fixed"
+      v-if="isChat"
+      id="chat-room"
+      style="
+        bottom: 0;
+        right: 0;
+        width: 300px;
+        height: 500px;
+        background-color: white;
+        border: 2px solid black;
+        padding-bottom: 70px;
+        overflow: auto;
+        z-index: 2;
+      "
+    >
+      <p v-for="(room, index) in this.firebaseListRoom" :key="index">
+        {{ room.name }}
+      </p>
+      --------------
+      <p
+        style="padding: 10px 0"
+        v-for="message in this.firebaseMessages"
+        :key="message.id"
+        class="d-flex justify-content-between align-items-center"
+      >
+        <span class="user-name" v-if="user.name == message.data().userName">{{
+          message.data().userName
+        }}</span>
+        <span class="user-admin" v-if="user.name !== message.data().userName"
+          >admin</span
+        >
+        <span class="message text-left">{{ message.data().message }}</span>
+      </p>
+      <div>
+        <input
+          type="text"
+          class="form-control position-fixed"
+          style="
+            bottom: 0;
+            height: 50px;
+            width: 300px;
+            right: 0;
+            border: 2px solid black;
+          "
+          v-model="message"
+        />
+        <b-icon
+          icon="cursor-fill"
+          scale="1.5"
+          class="position-fixed"
+          style="right: 20px; bottom: 15px; cursor: pointer"
+          @click="sendMessage"
+        ></b-icon>
+      </div>
+      <b-icon icon="x-circle" class="position-fixed" scale="2" style="right: 20px; bottom: 480px" @click="closeChat"></b-icon>
+    </div>
   </div>
 </template>
 
 <script>
 import store from "@/store";
 import { sendNotificationFirebase } from "@/api/notification.api";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Customer",
   data() {
     return {
       isFood: false,
       room_id: null,
+      room_chat: null,
       user: null,
+      message: '',
+      isChat: false,
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      firebaseRoom: "firebase/room",
+      firebaseMessages: "firebase/messages",
+      firebaseListRoom: "firebase/listRoom",
+    }),
   },
 
   async created() {
     await store.dispatch("auth/getAccountCustomer").then((res) => {
       this.user = res.data;
     });
-    this.getUser();
+    await this.getUser();
+    await this.getListRoom(this.user.id.toString());
   },
   methods: {
     home() {
-      this.$router.push({ name: 'Customer' })
+      this.$router.push({ name: "Customer" });
     },
 
-    ...mapActions("firebase", ["createRoom"]),
+    ...mapActions("firebase", ["createRoom", "getRoom", "getListRoom"]),
 
     async chat() {
+      this.isChat = true;
       let data = {
         userId: ["admin-10", this.user.id.toString()],
         users: [
@@ -179,11 +270,38 @@ export default {
       await this.$store
         .dispatch("firebase/createRoom", data)
         .then((result) => {
-          this.$router.push({ name: "Chat", params: { id: result } });
+          // this.$router.push({ name: "Chat", params: { id: result } });
+          this.room_chat = result;
+          this.getRoomInfo();
         })
         .catch(() => {
           console.log("error");
         });
+    },
+    async sendMessage() {
+      let data = {
+        roomId: this.room_chat,
+        message: {
+          userId: this.user.id,
+          userName: this.user.name,
+          message: this.message,
+          createdAt: new Date(),
+        },
+      };
+      await this.$store
+        .dispatch("firebase/createMessage", data)
+        .then(() => {
+          this.message = "";
+          document.getElementById('chat-room').scrollIntoView(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async getRoomInfo() {
+      await this.getRoom({
+        roomId: this.room_chat
+      });
     },
     async getUser() {
       await store
@@ -194,6 +312,9 @@ export default {
             this.room_id = res.data;
           }
         });
+    },
+    closeChat() {
+      this.isChat = false;
     },
     async clean() {
       await store.dispatch("customer/clean", this.room_id).then(() => {

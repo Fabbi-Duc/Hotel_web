@@ -30,7 +30,7 @@
             v-model="message"
           />
           <b-icon
-            icon="trash"
+            icon="cursor-fill"
             class="position-absolute"
             style="right: 20px; bottom: 10px"
             @click="sendMessage"
