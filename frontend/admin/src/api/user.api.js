@@ -108,3 +108,25 @@ export const createPark = params => {
   });
 };
 
+export const checkTimeSheet = id => {
+  return request({
+    url: "/check-timesheet/" + id,
+    method: "get",
+  });
+};
+
+export const checkIn = params => {
+  return request({
+    url: "/check-in",
+    method: "get",
+    params
+  });
+};
+
+export const checkOut = params => {
+  return request({
+    url: "/check-out",
+    method: "get",
+    params
+  });
+};

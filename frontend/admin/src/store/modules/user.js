@@ -1,6 +1,9 @@
-import { listUsers, bookRoom, deleteUser, 
-          createUser, updateUser, getInfoUser, 
-          pay, createFood, updateFood, listFood, getInfoFood, deleteFood, createPark, getCountUser } from "@/api/user.api";
+import {
+  listUsers, bookRoom, deleteUser,
+  createUser, updateUser, getInfoUser,
+  pay, createFood, updateFood, listFood, getInfoFood, deleteFood, createPark,
+  getCountUser, checkTimeSheet, checkIn, checkOut
+} from "@/api/user.api";
 
 export const state = {
   listUsers: null,
@@ -59,7 +62,7 @@ export const actions = {
     });
   },
 
-  deleteUser ({ commit }, id) {
+  deleteUser({ commit }, id) {
     return new Promise((resolve, reject) => {
       deleteUser(id)
         .then(response => {
@@ -71,7 +74,7 @@ export const actions = {
     });
   },
 
-  pay ({ commit }, id) {
+  pay({ commit }, id) {
     return new Promise((resolve, reject) => {
       pay(id)
         .then(response => {
@@ -83,7 +86,7 @@ export const actions = {
     });
   },
 
-  createUser ({ commit }, params) {
+  createUser({ commit }, params) {
     return new Promise((resolve, reject) => {
       createUser(params)
         .then(response => {
@@ -95,7 +98,7 @@ export const actions = {
     });
   },
 
-  updateUser ({ commit }, params) {
+  updateUser({ commit }, params) {
     return new Promise((resolve, reject) => {
       updateUser(params)
         .then(response => {
@@ -107,7 +110,7 @@ export const actions = {
     });
   },
 
-  listFood ({ commit }, params) {
+  listFood({ commit }, params) {
     return new Promise((resolve, reject) => {
       listFood(params)
         .then(response => {
@@ -119,7 +122,7 @@ export const actions = {
     });
   },
 
-  updateFood ({ commit }, params) {
+  updateFood({ commit }, params) {
     return new Promise((resolve, reject) => {
       updateFood(params)
         .then(response => {
@@ -131,7 +134,7 @@ export const actions = {
     });
   },
 
-  createFood ({ commit }, params) {
+  createFood({ commit }, params) {
     return new Promise((resolve, reject) => {
       createFood(params)
         .then(response => {
@@ -143,7 +146,7 @@ export const actions = {
     });
   },
 
-  getInfoFood ({ commit }, id) {
+  getInfoFood({ commit }, id) {
     return new Promise((resolve, reject) => {
       getInfoFood(id)
         .then(response => {
@@ -155,7 +158,7 @@ export const actions = {
     });
   },
 
-  deleteFood ({ commit }, id) {
+  deleteFood({ commit }, id) {
     return new Promise((resolve, reject) => {
       deleteFood(id)
         .then(response => {
@@ -167,7 +170,7 @@ export const actions = {
     });
   },
 
-  createPark ({ commit }, params) {
+  createPark({ commit }, params) {
     return new Promise((resolve, reject) => {
       console.log(params);
       createPark(params)
@@ -183,12 +186,48 @@ export const actions = {
   getCountUser({ commit }) {
     return new Promise((resolve, reject) => {
       getCountUser()
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
     })
-  }
+  },
+
+  checkTimeSheet({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      checkTimeSheet(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  checkIn({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      checkIn(data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  checkOut({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      checkOut(data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
 }

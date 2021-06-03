@@ -61,7 +61,6 @@ import nav_receptionists from "./_nav-receptionists";
 import nav_chef from "./_nav-chef";
 import nav_guard from "./_nav-guard";
 import nav_clean from "./_nav-clean";
-// import { sendNotificationFirebase } from "@/api/notification.api";
 import firebase from "@/plugins/firebase";
 
 export default {
@@ -89,16 +88,17 @@ export default {
     };
   },
   methods: {
-    getTokenFirebase() {
+    async getTokenFirebase() {
       const self = this;
       const messaging = firebase.firebaseApp.messaging();
-      messaging
+      await messaging
         .requestPermission()
         .then(function () {
           return messaging.getToken();
         })
         .then(function (token) {
           self.tokenBrowse = token;
+          console.log(token);
           self.$store.dispatch("notification/saveDeviceToken", {
             user_id: self.user.id,
             device_token: token,

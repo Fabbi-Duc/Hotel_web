@@ -42,12 +42,13 @@ class TimeSheetPm extends Command
     {
         try {
             $users = User::where('shift', 2)->select('id')->get();
-
+            DB::table('timesheet')->update(['status' => 2]);
             $arr = [];
             foreach($users as $user) {
                 $arr[] = [
                     'user_id' => $user->id,
-                    'day' => now()
+                    'day' => now(),
+                    'status' => 1,
                 ];
             }
 

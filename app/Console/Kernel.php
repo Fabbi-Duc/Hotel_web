@@ -28,9 +28,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('emails:send')->everyMinute();
 
         $schedule->command('timeSheetAm:create')->everyMinute();
-        $schedule->command('timeSheetAm:create')->dailyAt('05:00');
-        $schedule->command('timeSheetPm:create')->everyMinute();
-        $schedule->command('timeSheetAm:create')->dailyAt('17:00');
+        // $schedule->command('timeSheetAm:create')->dailyAt('06:00');
+        // $schedule->command('timeSheetPm:create')->everyMinute();
+        // $schedule->command('timeSheetAm:create')->dailyAt('18:00');
     }
 
     /**

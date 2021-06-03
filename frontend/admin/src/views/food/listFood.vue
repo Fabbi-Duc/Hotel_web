@@ -29,7 +29,7 @@
         Create Food
       </b-button>
     </b-form>
-    <div class="row">
+    <div class="row" v-if="listFood.length >= 1">
       <div class="col-3 mt-3" v-for="(food, index) in listFood" :key="index">
         <div class="d-flex justify-content-center flex-column">
           <div class="image w-100" style="height: 200px">
@@ -209,8 +209,8 @@ export default {
     };
   },
 
-  created() {
-    this.getListFood();
+  async created() {
+    await this.getListFood();
   },
   methods: {
     async getListFood() {
