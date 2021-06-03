@@ -224,9 +224,11 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
     {
         try {
             $customer = DB::table('rooms_customers')->where('customer_id', $room_customer_id)->where('status', 1)->first();
+            $start_time = $customer->start_time;
             DB::table('rooms')->where('id', $customer->room_id)->update(['status' => 3]);
             DB::table('rooms_customers')->where('customer_id', $room_customer_id)->where('status', 1)->update(['status' => 2]);
-            DB::table('bills')->where('id', $customer->room_id)->where('status', 1)->update(['status' => 2]);
+            DB::table('bills')->where('room_id', $customer->room_id)->where('status', 1)
+                    ->where('start_time', $start_time)->update(['status' => 2]);
             return [
                 'success' => true,
             ];
@@ -283,7 +285,6 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
     public function pay($room_id, $params)
     {
         try {
-            dd($params['cost_houseware']);
             DB::table('rooms_customers')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3]);
             DB::table('rooms')->where('id', $room_id)->update(['status' => 1]);
             DB::table('bills')->where('room_id', $room_id)->where('status', 2)->update(['status' => 3, 'price' => $params['cost_houseware']]);
@@ -348,7 +349,7 @@ class CustomerRepository extends RepositoryAbstract implements CustomerRepositor
             $service_food->room_id = $room->room_id;
             $service_food->start_time = $room->start_time;
             $service_food->end_time = $room->end_time;
-            $service_food->status = 1;
+            $service_food->status = 2;
             $service_food->cost = 0;
             $service_food->save();
 

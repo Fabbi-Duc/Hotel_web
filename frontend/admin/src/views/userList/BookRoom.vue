@@ -237,8 +237,8 @@ export default {
         await this.$store
           .dispatch("customer/updateBookRoom", this.user_id)
           .then(() => {
-            // alert("Dat phong thanh cong");
-            // this.$router.push({ name: "Room" });
+            alert("Dat phong thanh cong");
+            this.$router.push({ name: "Room" });
             this.getQrCode();
           });
       }
