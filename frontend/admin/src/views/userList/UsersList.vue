@@ -16,7 +16,7 @@
           <input type="text" v-model="lastName" />
         </b-col>
         <b-col cols="3">
-          <label for="">Position</label>
+          <label for="">Chức vụ</label>
           <br />
           <b-form-select
             class="position__select"
@@ -31,7 +31,7 @@
             style="bottom: 0"
             @click="search()"
           >
-            Search
+            Tìm kiếm
           </button>
         </b-col>
       </b-row>
@@ -61,16 +61,11 @@
           }}
         </template>
         <template #cell(position)="row">
-          <span v-if="row.item.position == 0">admin</span>
-          <span v-if="row.item.position == 1">sanitation worker</span>
-          <span v-if="row.item.position == 2">guard</span>
-          <span v-if="row.item.position == 3">chef</span>
-          <span v-if="row.item.position == 4">inventory management</span>
-          <span v-if="row.item.position == 5">receptionists</span>
+          <span>{{positions[row.item.position].text}}</span>
         </template>
         <template #cell(gender)="row">
           <span>
-            {{ row.item.gender == 1 ? "male" : "female" }}
+            {{ row.item.gender == 1 ? "Nam" : "Nữ" }}
           </span>
         </template>
         <template #cell(shift)="row">
@@ -122,25 +117,25 @@ export default {
       lastName: null,
       position: null,
       positions: [
-        { value: 0, text: "guard" },
-        { value: 1, text: "sanitation worker" },
-        { value: 2, text: "receptionists" },
-        { value: 3, text: "chef" },
-        { value: 4, text: "inventory management" },
-        { value: 5, text: "admin" },
+        { value: 0, text: "Admin" },
+        { value: 1, text: "Nhân viên vệ sinh" },
+        { value: 2, text: "Nhân viên tư vấn" },
+        { value: 3, text: "Đầu bếp" },
+        { value: 4, text: "Bảo vệ" },
+        { value: 5, text: "Lễ tân" },
       ],
       fields: [
-        { key: "numerical", label: "numerical" },
+        { key: "numerical", label: "STT" },
         { key: "firstname", label: "firstname" },
         { key: "lastname", label: "lastname" },
-        { key: "birthday", label: "birthday" },
-        { key: "position", label: "position" },
-        { key: "gender", label: "gender" },
-        { key: "phone", label: "phone" },
+        { key: "birthday", label: "Ngày sinh" },
+        { key: "position", label: "Chức vụ" },
+        { key: "gender", label: "Giới tính" },
+        { key: "phone", label: "SDT" },
         { key: "email", label: "email" },
         { key: "shift", label: "Ca làm việc" },
         { key: "salary", label: "Lương" },
-        { key: "action", label: "action" },
+        { key: "action", label: "Hành động" },
       ],
       users: null,
       records: [

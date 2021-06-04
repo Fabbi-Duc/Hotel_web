@@ -32,17 +32,19 @@ export const bookRoomOnline = params => {
   });
 };
 
-export const getInfoCustomer = id => {
+export const getInfoCustomer = params => {
   return request({
-    url: "/customer/" + id,
-    method: "get"
+    url: "/customer-info",
+    method: "get",
+    params
   })
 }
 
-export const updateBookRoom = id => {
+export const updateBookRoom = params => {
   return request({
-    url: "/customer-update/" + id,
-    method: "get"
+    url: "/customer-update",
+    method: "get",
+    params
   });
 };
 
@@ -172,4 +174,25 @@ export const payCreate = data => {
   });
 };
 
+export const getHistory = params => {
+  return request({
+    url: "/get-history",
+    method: "get",
+    params
+  });
+};
 
+export const deleteBill = id => {
+  return request({
+    url: "/delete-bill/" + id,
+    method: "get",
+  });
+};
+
+export const updateBill = params => {
+  return request({
+    url: "/update-bill",
+    method: "post",
+    params
+  });
+};

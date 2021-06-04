@@ -3,7 +3,8 @@ import {
   bookRoom, getInfoCustomer, updateBookRoom,
   registerCustomer, getFood, order, listOrder,
   listFoodOrder, updateOrder, bookRoomOnline,
-  listClean, updateClean, listPark, updatePark, getCustomerFood, clean, getCountCustomer, detailBill, pay, getCountRoomByMonth, payOnline
+  listClean, updateClean, listPark, updatePark, getCustomerFood, clean, getCountCustomer, detailBill, pay, 
+  getCountRoomByMonth, payOnline, getHistory, deleteBill, updateBill
   , payCreate
 } from "@/api/customer.api";
 
@@ -72,9 +73,9 @@ export const actions = {
     });
   },
 
-  getInfoCustomer({ commit }, id) {
+  getInfoCustomer({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getInfoCustomer(id)
+      getInfoCustomer(params)
         .then(response => {
           resolve(response);
         })
@@ -84,9 +85,9 @@ export const actions = {
     });
   },
 
-  updateBookRoom({ commit }, id) {
+  updateBookRoom({ commit }, params) {
     return new Promise((resolve, reject) => {
-      updateBookRoom(id)
+      updateBookRoom(params)
         .then(response => {
           resolve(response);
         })
@@ -288,9 +289,44 @@ export const actions = {
   },
 
   payCreate({ commit }, params) {
-    console.log(params);
     return new Promise((resolve, reject) => {
       payCreate(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getHistory({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getHistory(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  deleteBill({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      deleteBill(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  updateBill({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      updateBill(params)
         .then(response => {
           resolve(response);
         })

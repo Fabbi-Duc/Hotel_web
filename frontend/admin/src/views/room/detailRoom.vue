@@ -5,8 +5,16 @@
         {{ ++row.index }}
       </template>
       <template #cell(name)="row">
-        <span @click="bookRoom(row.item.id)">
+        <span @click="bookRoom(row.item.id, row.item.start_time)">
           {{ row.item.name }}
+        </span>
+      </template>
+      <template #cell(status)="row">
+        <span v-if="row.item.status == 2">
+          Đang ở
+        </span>
+        <span v-if="row.item.status == 1">
+          Đang thuê
         </span>
       </template>
     </b-table>
@@ -26,10 +34,11 @@ export default {
         { value: 4, text: "Normal Two" },
       ],
       fields: [
-        { key: "numerical", label: "Numerical" },
-        { key: "name", label: "Name" },
-        { key: "start_time", label: "Start Time" },
-        { key: "end_time", label: "End Time" },
+        { key: "numerical", label: "STT" },
+        { key: "name", label: "Tên người dùng" },
+        { key: "start_time", label: "Thời gian bắt đầu" },
+        { key: "end_time", label: "Thời gian kết thúc" },
+        { key: "status", label: "Trạng thái" },
       ],
       records: [
         { value: 5, text: "5" },
@@ -49,10 +58,10 @@ export default {
         this.customer_room = res.data;
       });
     },
-    bookRoom(id) {
+    bookRoom(id, start_time) {
       this.$router.push({
         name: "BookRoomUpdate",
-        params: { id: this.id, user_id: id },
+        params: { id: this.id, user_id: id, start: start_time },
       });
     },
   },

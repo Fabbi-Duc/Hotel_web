@@ -130,3 +130,88 @@ export const checkOut = params => {
     params
   });
 };
+
+export const getTimeSheet = params => {
+  return request({
+    url: "/get-time-sheet",
+    method: "get",
+    params
+  });
+};
+
+export const createUpdateTimeSheet = params => {
+  return request({
+    url: "/create-update-timesheet",
+    method: "post",
+    params
+  });
+};
+
+export const getInfoListUpdateTimeSheet = params => {
+  return request({
+    url: "/list-info-update-timesheet",
+    method: "get",
+    params
+  });
+};
+
+export const getListUpdateTimeSheet = params => {
+  return request({
+    url: "/list-update-timesheet",
+    method: "get",
+    params
+  });
+};
+
+export const deleteUpdateTimeSheet = id => {
+  return request({
+    url: "/delete-update-timesheet/" + id,
+    method: "delete",
+  });
+};
+
+export const updateUpdateTimeSheet = params => {
+  return request({
+    url: "/update-update-timesheet",
+    method: "post",
+    params
+  });
+};
+
+export const successUpdateTimeSheet = params => {
+  return request({
+    url: "/success-update-timesheet",
+    method: "post",
+    params
+  });
+};
+
+export const refuseUpdateTimeSheet = params => {
+  return request({
+    url: "/refuse-update-timesheet",
+    method: "post",
+    params
+  });
+};
+
+export const getTimeSheetMounth = id => {
+  return request({
+    url: "/mounth-timesheet/" + id,
+    method: "get"
+  });
+};
+
+export const getRoom = id => {
+  return request({
+    url: "/get-room/" + id,
+    method: "get"
+  });
+};
+
+export const updateChangeRoom = params => {
+  return request({
+    url: "/update-change-room",
+    method: "get",
+    params
+  });
+};

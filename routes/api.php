@@ -67,8 +67,8 @@ Route::get('/customer/list', [CustomerController::class, 'getCustomersList'])->n
 Route::get('/rooms', [RoomController::class, 'getRoomFloor'])->name('getRoomFloor');
 Route::post('/customer/book-room', [CustomerController::class, 'bookRoom'])->name('bookRoom');
 Route::get('/room-customer/{id}', [CustomerController::class, 'getInfoRoomCustomer'])->name('getInfoRoomCustomer');
-Route::get('/customer/{id}', [CustomerController::class, 'getInfoCustomer'])->name('getInfoCustomer');
-Route::get('/customer-update/{room_customer_id}', [CustomerController::class, 'updateBookRoom'])->name('updateBookRoom');
+Route::get('/customer-info', [CustomerController::class, 'getInfoCustomer'])->name('getInfoCustomer');
+Route::get('/customer-update', [CustomerController::class, 'updateBookRoom'])->name('updateBookRoom');
 Route::get('/pay', [CustomerController::class, 'pay'])->name('pay');
 Route::get('/detail-bill/{id}', [CustomerController::class, 'detailBill'])->name('detailBill');
 Route::post('/food', [CustomerController::class, 'food'])->name('food');
@@ -145,4 +145,16 @@ Route::get('/check-timesheet/{id}', [UserController::class, 'checkTimeSheet'])->
 Route::get('/check-in', [UserController::class, 'checkIn'])->name('checkIn');
 Route::get('/check-out', [UserController::class, 'checkOut'])->name('checkOut');
 Route::get('/get-time-sheet', [UserController::class, 'getTimeSheet'])->name('getTimeSheet');
-
+Route::get('/get-history', [CustomerController::class, 'getHistory'])->name('getHistory');
+Route::get('/delete-bill/{id}', [CustomerController::class, 'deleteBill'])->name('deleteBill');
+Route::post('/update-bill', [CustomerController::class, 'updateBill'])->name('updateBill');
+Route::post('/create-update-timesheet', [UserController::class, 'createUpdateTimesheet'])->name('createUpdateTimesheet');
+Route::get('/list-info-update-timesheet', [UserController::class, 'getInfoListUpdateTimeSheet'])->name('getInfoListUpdateTimeSheet');
+Route::get('/list-update-timesheet', [UserController::class, 'getListUpdateTimeSheet'])->name('getListUpdateTimeSheet');
+Route::delete('/delete-update-timesheet/{id}', [UserController::class, 'deleteUpdateTimeSheet'])->name('deleteUpdateTimeSheet');
+Route::post('/update-update-timesheet', [UserController::class, 'updateUpdateTimesheet'])->name('updateUpdateTimesheet');
+Route::post('/success-update-timesheet', [UserController::class, 'successTimeSheet'])->name('successTimeSheet');
+Route::post('/refuse-update-timesheet', [UserController::class, 'refuseTimeSheet'])->name('refuseTimeSheet');
+Route::get('/mounth-timesheet/{id}', [UserController::class, 'getTimeSheetMounth'])->name('getTimeSheetMounth');
+Route::get('/get-room/{id}', [UserController::class, 'getRoom'])->name('getRoom');
+Route::get('/update-change-room', [UserController::class, 'updateChangeRoom'])->name('updateChangeRoom');

@@ -24,13 +24,13 @@
                 accept="image/*"
               />
               <div class="text-center posision-absolute w-100 text-center">
-                Add Image
+                Tải ảnh lên
               </div>
             </label>
           </div>
           <div class="col-8">
             <div class="form-group">
-              <label for="">Name</label>
+              <label for="">Tên</label>
               <br />
               <ValidationProvider
                 name="Name"
@@ -45,7 +45,7 @@
             </div>
             <div class="row">
               <div class="form-group col">
-                <label for="">Floor</label>
+                <label for="">Tầng</label>
                 <br />
                 <ValidationProvider
                   name="Floor"
@@ -65,7 +65,7 @@
             </div>
             <div class="row">
               <div class="form-group col">
-                <label for="">Type</label>
+                <label for="">Loại</label>
                 <br />
                 <ValidationProvider
                   name="Type"
@@ -83,7 +83,7 @@
                 </ValidationProvider>
               </div>
               <div class="form-group col">
-                <label for="">Status</label>
+                <label for="">Trạng thái</label>
                 <br />
                 <ValidationProvider
                   name="Status"
@@ -108,7 +108,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_first_hour: 2000000 VND"
+                  placeholder="Giá giờ đầu: 2000000 VND"
                 />
               </div>
               <div class="form-group col">
@@ -116,7 +116,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_last_hour: 1500000 VND"
+                  placeholder="Giá giờ sau: 1500000 VND"
                 />
               </div>
             </div>
@@ -127,7 +127,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_first_hour: 1000000 VND"
+                  placeholder="Giá giờ đầu: 1000000 VND"
                 />
               </div>
               <div class="form-group col">
@@ -135,7 +135,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_last_hour: 700000 VND"
+                  placeholder="Giá giờ sau: 700000 VND"
                 />
               </div>
             </div>
@@ -146,7 +146,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_first_hour: 700000 VND"
+                  placeholder="Giá giờ đầu: 700000 VND"
                 />
               </div>
               <div class="form-group col">
@@ -154,7 +154,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_last_hour: 500000 VND"
+                  placeholder="Giá giờ sau: 500000 VND"
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_first_hour: 2500000 VND"
+                  placeholder="Giá giờ đầu: 2500000 VND"
                 />
               </div>
               <div class="form-group col">
@@ -174,7 +174,7 @@
                   type="text"
                   class="form-control"
                   disabled
-                  placeholder="Cost_last_hour: 2000000 VND"
+                  placeholder="Giá giờ sau: 2000000 VND"
                 />
               </div>
             </div>
@@ -182,7 +182,7 @@
           
         </div>
         <div class="form-group mt-3">
-          <label for="">Decription</label>
+          <label for="">Mô tả</label>
           <br />
           <ValidationProvider
             name="Decription"
@@ -244,9 +244,9 @@ export default {
         { value: 2, text: "2" },
       ],
       statusOptions: [
-        { value: 1, text: "Empty" },
-        { value: 2, text: "Hired" },
-        { value: 3, text: "Reserve" },
+        { value: 1, text: "Trống" },
+        { value: 2, text: "Đã được đặt" },
+        { value: 3, text: "Đã có người ở" },
       ],
     };
   },
@@ -277,7 +277,6 @@ export default {
     },
 
     async update() {
-      console.log(this.nameRoom);
       if (this.id) {
         const params = {
           name: this.name,

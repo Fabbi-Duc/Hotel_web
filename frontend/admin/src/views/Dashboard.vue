@@ -70,17 +70,17 @@
           </div>
         </b-col>
       </b-row>
-      <div else>
+      <div v-if="user.position != 0">
         <div class="d-flex position-relative">
           <div class="start_time mr-3">
             <label for="">Ngày bắt đầu</label>
             <br />
-            <input type="datetime-local" class="form-control" />
+            <input type="date" class="form-control" v-model="start_time" />
           </div>
           <div class="start_time ml-3 mr-3">
             <label for="">Ngày kết thúc</label>
             <br />
-            <input type="datetime-local" class="form-control" />
+            <input type="date" class="form-control" v-model="end_time" />
           </div>
           <div>
             <button
@@ -125,7 +125,191 @@
             </button>
           </div>
         </div>
+        <div style="margin-top: 40px">
+          <b-table
+            striped
+            hover
+            :items="time_sheet"
+            :fields="fields"
+            :current-page="paginate.currentPage"
+            v-if="time_sheet"
+          >
+            <template #cell(numerical)="row">
+              {{
+                ++row.index +
+                (Number(paginate.page) - 1) * Number(paginate.perPage)
+              }}
+            </template>
+            <template #cell(time_check_in)="row">
+              <span v-if="row.item.time_check_in">
+                {{ formatTime(row.item.time_check_in) }}
+              </span>
+            </template>
+            <template #cell(time_check_out)="row">
+              <span v-if="row.item.time_check_out">
+                {{ formatTime(row.item.time_check_out) }}
+              </span>
+            </template>
+            <template #cell(late)="row">
+              <span
+                v-if="
+                  formatTime(row.item.time_check_in) >
+                    formatTime('2017-06-01T06:00') && user.shift == 1
+                "
+              >
+                {{
+                  Math.floor(
+                    (formatTimeHour(row.item.time_check_in) -
+                      formatTimeHour("2017-06-01T06:00")) /
+                      60
+                  )
+                }}:{{
+                  formatTimeHour(row.item.time_check_in) -
+                  formatTimeHour("2017-06-01T06:00") -
+                  60 *
+                    Math.floor(
+                      (formatTimeHour(row.item.time_check_in) -
+                        formatTimeHour("2017-06-01T06:00")) /
+                        60
+                    )
+                }}
+              </span>
+              <span
+                v-if="
+                  row.item.time_check_in > formatTime('2017-06-01T18:00') &&
+                  user.shift == 2
+                "
+              >
+                {{
+                  Math.floor(
+                    (formatTimeHour(row.item.time_check_in) -
+                      formatTimeHour("2017-06-01T18:00")) /
+                      60
+                  )
+                }}:{{
+                  formatTimeHour(row.item.time_check_in) -
+                  formatTimeHour("2017-06-01T18:00") -
+                  60 *
+                    Math.floor(
+                      (formatTimeHour(row.item.time_check_in) -
+                        formatTimeHour("2017-06-01T18:00")) /
+                        60
+                    )
+                }}
+              </span>
+            </template>
+            <template #cell(soon)="row">
+              <span
+                v-if="
+                  formatTime(row.item.time_check_out) <
+                  formatTime('2017-06-01T17:30')
+                "
+              >
+                {{
+                  Math.floor(
+                    (formatTimeHour("2017-06-01T17:30") -
+                      formatTimeHour(row.item.time_check_out)) /
+                      60
+                  )
+                }}:{{
+                  formatTimeHour("2017-06-01T17:30") -
+                  formatTimeHour(row.item.time_check_out) -
+                  60 *
+                    Math.floor(
+                      (formatTimeHour("2017-06-01T17:30") -
+                        formatTimeHour(row.item.time_check_out)) /
+                        60
+                    )
+                }}
+              </span>
+              <span
+                v-if="
+                  formatTimeHour(row.item.time_check_out) <
+                    formatTimeHourTomorrow('2017-06-01T05:30') &&
+                  user.shift == 2
+                "
+              >
+                {{
+                  Math.floor(
+                    (formatTimeHourTomorrow("2017-06-01T05:30") -
+                      formatTimeHour(row.item.time_check_out)) /
+                      60
+                  )
+                }}:{{
+                  formatTimeHourTomorrow("2017-06-01T05:30") -
+                  formatTimeHour(row.item.time_check_out) -
+                  60 *
+                    Math.floor(
+                      (formatTimeHourTomorrow("2017-06-01T05:30") -
+                        formatTimeHour(row.item.time_check_out)) /
+                        60
+                    )
+                }}
+              </span>
+            </template>
+            <template #cell(status)="row">
+              <button
+                class="form-control"
+                @click="updateTime(row.item.id)"
+                style="background-color: gray; width: 150px; color: white"
+              >
+                Bổ sung công
+              </button>
+            </template>
+          </b-table>
+          <div class="pagination" v-if="time_sheet">
+            <b-pagination
+              v-model="paginate.page"
+              :total-rows="paginate.total"
+              :per-page="paginate.perPage"
+              @change="changePage"
+            >
+            </b-pagination>
+          </div>
+        </div>
       </div>
+      <b-modal
+        ref="modal-work-day"
+        title="Cập nhật ngày công"
+        centered
+        hide-footer
+      >
+        <label for="">Ngày giờ bắt đầu</label>
+        <br />
+        <input
+          type="datetime-local"
+          v-model="work_start_time"
+          class="form-control"
+        />
+        <br />
+        <label for="">Ngày giờ kết thúc</label>
+        <br />
+        <input
+          type="datetime-local"
+          v-model="work_end_time"
+          class="form-control"
+        />
+        <br />
+        <label for="">Lý do</label>
+        <br />
+        <textarea
+          name=""
+          id=""
+          v-model="description"
+          style="height: 100px"
+          class="form-control"
+        />
+        <br />
+        <div class="de-flex justify-content-center" style="margin-top: 20px">
+          <button
+            class="form-control"
+            style="background-color: blue; color: white"
+            @click="createUpdateTimesheet()"
+          >
+            Cập nhật
+          </button>
+        </div>
+      </b-modal>
     </template>
     <br /><br />
     <h3 v-if="user && user.position == 0">Số lượng khách hàng / tháng</h3>
@@ -141,6 +325,7 @@ import LineChart from "../views/ChartDashboard/LineChart.vue";
 import BarChart from "../views/ChartDashboard/BarChart.vue";
 import { mapGetters } from "vuex";
 import moment from "moment";
+import { sendNotificationFirebase } from "@/api/notification.api";
 export default {
   name: "Dashboard",
   components: {
@@ -155,6 +340,27 @@ export default {
       countUser: null,
       user: null,
       check_in: null,
+      start_time: null,
+      end_time: null,
+      time_sheet: null,
+      work_start_time: null,
+      work_end_time: null,
+      description: null,
+      time_sheet_id: null,
+      fields: [
+        { key: "numerical", label: "STT" },
+        { key: "day", label: "Ngày" },
+        { key: "time_check_in", label: "Thời gian bắt đầu" },
+        { key: "time_check_out", label: "Thời gian kết thúc" },
+        { key: "late", label: "Đến muộn" },
+        { key: "soon", label: "Về sớm" },
+        { key: "status", label: "Trạng thái" },
+      ],
+      paginate: {
+        perPage: 10,
+        total: 50,
+        page: 1,
+      },
     };
   },
   computed: {
@@ -169,21 +375,59 @@ export default {
       this.user = res.data;
     });
     await this.checkTimeSheet();
+    await this.getTimeSheet();
     this.$store.dispatch("common/setIsLoading", false);
   },
   methods: {
-    async checkTimeSheet() {
-      await this.$store
-      .dispatch("user/checkTimeSheet", this.user.id)
-      .then((res) => {
-        if (res.data) {
-          if (res.check_in) {
-            this.check_in = false;
-          } else {
-            this.check_in = true;
-          }
+    updateTime(id) {
+      this.time_sheet_id = id;
+      this.$refs["modal-work-day"].show();
+    },
+    createUpdateTimesheet() {
+      const params = {
+        time_sheet_id: this.time_sheet_id,
+        work_start_time: this.work_start_time,
+        work_end_time: this.work_end_time,
+        description: this.description,
+      };
+
+      this.$store.dispatch("user/createUpdateTimeSheet", params).then((res) => {
+        this.$refs["modal-work-day"].hide();
+        if (res.success) {
+          this.$toasted.show("Bổ sung công thành công", {
+            duration: 3000,
+          });
+          sendNotificationFirebase({
+            device_type: "0",
+            body: "Nhân viên" + this.user.lastname + 'đã tạo đơn bổ sung công',
+            user_id: "0",
+            title: "Bổ sung công",
+          })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          this.$toasted.show("Bạn đã tạo đơn rồi", {
+            duration: 3000,
+          });
         }
       });
+    },
+    async checkTimeSheet() {
+      await this.$store
+        .dispatch("user/checkTimeSheet", this.user.id)
+        .then((res) => {
+          if (res.data) {
+            if (res.check_in) {
+              this.check_in = false;
+            } else {
+              this.check_in = true;
+            }
+          }
+        });
     },
     color(value) {
       let $color;
@@ -215,6 +459,22 @@ export default {
         this.countUser = response.count;
       });
     },
+    formatTime(time) {
+      return moment(time).format("HH:mm");
+    },
+    formatTimeHour(time) {
+      return (
+        Number(moment(time).format("HH") * 60) +
+        Number(moment(time).format("mm"))
+      );
+    },
+    formatTimeHourTomorrow(time) {
+      return (
+        Number(moment(time).format("HH") * 60) +
+        24 * 60 +
+        Number(moment(time).format("mm"))
+      );
+    },
     checkIn() {
       let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
       const params = {
@@ -223,6 +483,7 @@ export default {
       };
       this.$store.dispatch("user/checkIn", params).then(() => {
         this.checkTimeSheet();
+        this.getTimeSheet();
       });
     },
     checkOut() {
@@ -233,9 +494,28 @@ export default {
       };
       this.$store.dispatch("user/checkOut", params).then(() => {
         this.checkTimeSheet();
+        this.getTimeSheet();
       });
     },
-    search() {},
+    async search() {
+      this.getTimeSheet();
+    },
+    async getTimeSheet() {
+      const params = {
+        user_id: this.user.id,
+        start_time: this.start_time,
+        end_time: this.end_time,
+        page: this.paginate.page,
+      };
+      await this.$store.dispatch("user/getTimeSheet", params).then((res) => {
+        this.time_sheet = res.data.data;
+        this.paginate.total = res.data.total;
+      });
+    },
+    async changePage(value) {
+      thia.paginate.paginate = value;
+      await this.getTimeSheet();
+    },
   },
 };
 </script>

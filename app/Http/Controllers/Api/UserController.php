@@ -9,6 +9,7 @@ use App\Mail\SendMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\TimeSheet;
+use App\Models\UpdateTimesheet;
 
 class UserController extends ApiController
 {
@@ -139,8 +140,8 @@ class UserController extends ApiController
     {
         // dd($request->all());
         DB::table('timesheet')->where('user_id', $request->user_id)
-                              ->where('status', 1)
-                              ->update(['time_check_in' => $request->time]);
+            ->where('status', 1)
+            ->update(['time_check_in' => $request->time]);
 
         return [
             'success' => true
@@ -151,8 +152,8 @@ class UserController extends ApiController
     {
         // dd($request->all());
         DB::table('timesheet')->where('user_id', $request->user_id)
-                              ->where('status', 1)
-                              ->update(['time_check_out' => $request->time]);
+            ->where('status', 1)
+            ->update(['time_check_out' => $request->time]);
 
         return [
             'success' => true
@@ -163,22 +164,199 @@ class UserController extends ApiController
     {
         $data = $request->all();
         $list = DB::table('timesheet')->where('user_id', $data['user_id']);
-        if(!empty($data['start_time'])) {
-            $list = $list->where('day', '>=',$data['start_time']);
+        if (!empty($data['start_time'])) {
+            $list = $list->where('day', '>=', $data['start_time']);
         }
 
-        if(!empty($data['end_time'])) {
-            $list = $list->where('day', '<=',$data['end_time']);
+        if (!empty($data['end_time'])) {
+            $list = $list->where('day', '<=', $data['end_time']);
         }
 
-        if(empty($data['start_time']) && empty($data['end_time'])) {
+        if (empty($data['start_time']) && empty($data['end_time'])) {
             $start_time = date("Y-m-01", strtotime(now()));
-            $list = $list->where('day', '>', $start_time);
+            $list = $list->where('day', '>=', $start_time);
         }
 
         return [
             'success' => true,
-            'data' => $list->get(),
+            'data' => $list->paginate(10),
+        ];
+    }
+
+    public function createUpdateTimesheet(Request $request)
+    {
+        $list = DB::table('update_timesheet')->where('time_sheet_id', $request->time_sheet_id)->first();
+        if ($list) {
+            return [
+                'success' => false,
+            ];
+        };
+        $timesheet = new UpdateTimesheet();
+        $timesheet->start_time_update = $request->work_start_time;
+        $timesheet->end_time_update = $request->work_end_time;
+        $timesheet->description = $request->description;
+        $timesheet->time_sheet_id = $request->time_sheet_id;
+        $timesheet->status_update = 1;
+        $timesheet->save();
+
+        return [
+            'success' => true
+        ];
+    }
+
+    public function deleteUpdateTimeSheet($id)
+    {
+        DB::table('update_timesheet')->where('time_sheet_id', $id)->delete();
+
+        return [
+            'success' => true
+        ];
+    }
+
+    public function updateUpdateTimesheet(Request $request)
+    {
+        DB::table('update_timesheet')->where('time_sheet_id', $request->id)->update([
+            'start_time_update' => $request->work_start_time,
+            'end_time_update' => $request->work_end_time,
+            'description' => $request->description,
+            'status_update' => 1
+        ]);
+
+        return [
+            'success' => true
+        ];
+    }
+
+    public function updateStatusTimeSheet(Request $request)
+    {
+        DB::table('update_timesheet')->where('id', $request->id)->update([
+            'status' => $request->status,
+        ]);
+
+        return [
+            'success' => true
+        ];
+    }
+
+    public function getListUpdateTimeSheet(Request $request)
+    {
+        $list = DB::table('update_timesheet')->join('timesheet', 'update_timesheet.time_sheet_id', '=', 'timesheet.id');
+        if (!empty($request->status)) {
+            $list = $list->where('status', $request->status);
+        }
+
+        return [
+            'success' => true,
+            'data' => $list->paginate(10),
+        ];
+    }
+
+    public function getInfoListUpdateTimeSheet(Request $request)
+    {
+        $list = DB::table('update_timesheet')->join('timesheet', 'update_timesheet.time_sheet_id', '=', 'timesheet.id')
+            ->where('timesheet.user_id', $request->user_id);
+        if (!empty($request->status)) {
+            $list = $list->where('update_timesheet.status', $request->status);
+        }
+
+        return [
+            'success' => true,
+            'data' => $list->paginate(10),
+        ];
+    }
+
+    public function successTimeSheet(Request $request)
+    {
+        DB::table('update_timesheet')->where('time_sheet_id', $request->id)->update(['status_update' => 3]);
+        DB::table('timesheet')->where('id', $request->id)
+            ->update(['time_check_in' => $request->start_time, 'time_check_out' => $request->end_time]);
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function refuseTimeSheet(Request $request)
+    {
+        DB::table('update_timesheet')->where('time_sheet_id', $request->id)->update(['status_update' => 2]);
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public  function getTimeSheetMounth($id)
+    {
+        $date = getdate();
+        $month = $date['mon'];
+        $timesheet = DB::table('timesheet')->where('user_id', $id)->where('status', 2)->get();
+        $total_time = 0;
+        foreach ($timesheet as $time) {
+            if ($time) {
+                $month_time = date("m", strtotime($time->day));
+                if ($month_time == $month) {
+                    if ($time->time_check_in && $time->time_check_out) {
+                        $first_date = strtotime($time->time_check_in);
+                        $second_date = strtotime($time->time_check_out);
+                        $datediff = abs($second_date - $first_date);
+                        $total_time += $datediff;
+                    }
+                }
+            }
+        };
+        $user = DB::table('users')->where('id', $id)->first();
+        return [
+            'success' => true,
+            'total_time' => $total_time / 3600,
+            'name' => $user->lastname,
+            'salary' => $user->salary
+        ];
+    }
+
+    public function getRoom($id)
+    {
+        $room_customer_id = DB::table('rooms_customers')->where('room_id', $id)->where('status', 2)->first();
+        $list = [];
+        $room = DB::table('rooms')->where('status', '<>', 3)->get();
+        foreach ($room as $room_id) {
+            if ($room_id->status == 1) {
+                array_push($list, $room_id);
+            } else if ($room_id->status == 2) {
+                $list_room = DB::table('rooms_customers')->where('room_id', $room_id->id)->get();
+                foreach ($list_room as $list_room_id) {
+                    if ($list_room_id->start_time <= $room_customer_id->end_time) {
+                        continue;
+                    } else if ($list_room_id->end_time >= $room_customer_id->start_time) {
+                        continue;
+                    }
+                    array_push($list, $room_id);
+                }
+            }
+        }
+
+        return [
+            'success' => true,
+            'list' => $list,
+        ];
+    }
+
+    public function updateChangeRoom(Request $request)
+    {
+        // $room_customer_id = DB::table('rooms_customers')->where('room_id', $request->room_id)->where('status', 2)->first();
+        DB::table('rooms_customers')->where('room_id', $request->room_id)->where('status', 2)->update(['room_id' => $request->id]);
+        $code = DB::table('rooms')->where('id', $request->room_id)->first()->code_room;
+        DB::table('rooms')->where('id', $request->id)->update(['status' => 3, 'code_room' => $code]);
+        DB::table('rooms')->where('id', $request->room_id)->update(['code_room' => 'nguyenduc05021998@gmail.com']);
+        DB::table('bills')->where('room_id', $request->room_id)->where('status', 2)->update(['room_id' => $request->id]);
+        DB::table('room_service_food')->where('room_id', $request->room_id)->where('status', 1)->update(['room_id' => $request->id]);
+        $list = DB::table('rooms_customers')->where('room_id', $request->room_id)->where('status', 1)->first();
+        if (!$list) {
+            DB::table('rooms')->where('id', $request->room_id)->update(['status' => 1]);
+        } else {
+            DB::table('rooms')->where('id', $request->room_id)->update(['status' => 2]);
+        }
+        return [
+            'success' => true,
         ];
     }
 }

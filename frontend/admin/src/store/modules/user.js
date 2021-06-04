@@ -2,7 +2,9 @@ import {
   listUsers, bookRoom, deleteUser,
   createUser, updateUser, getInfoUser,
   pay, createFood, updateFood, listFood, getInfoFood, deleteFood, createPark,
-  getCountUser, checkTimeSheet, checkIn, checkOut
+  getCountUser, checkTimeSheet, checkIn, checkOut, getTimeSheet, createUpdateTimeSheet, getInfoListUpdateTimeSheet,
+  deleteUpdateTimeSheet, updateUpdateTimeSheet, getListUpdateTimeSheet, successUpdateTimeSheet, refuseUpdateTimeSheet,
+  getTimeSheetMounth, getRoom, updateChangeRoom
 } from "@/api/user.api";
 
 export const state = {
@@ -230,4 +232,136 @@ export const actions = {
         });
     })
   },
+
+  getTimeSheet({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      getTimeSheet(data)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  createUpdateTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      createUpdateTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  getInfoListUpdateTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getInfoListUpdateTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  getListUpdateTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getListUpdateTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  deleteUpdateTimeSheet({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      deleteUpdateTimeSheet(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  updateUpdateTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      updateUpdateTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  successUpdateTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      successUpdateTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  refuseUpdateTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      refuseUpdateTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+  getTimeSheetMounth({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      getTimeSheetMounth(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  getRoom({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      getRoom(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  updateChangeRoom({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      updateChangeRoom(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
 }
