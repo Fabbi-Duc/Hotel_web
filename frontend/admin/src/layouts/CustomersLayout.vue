@@ -154,62 +154,110 @@
         </div>
       </div>
     </div>
-    <div
-      class="room-chat position-fixed"
-      v-if="isChat"
-      id="chat-room"
-      style="
-        bottom: 0;
-        right: 0;
-        width: 300px;
-        height: 500px;
-        background-color: white;
-        border: 2px solid black;
-        padding-bottom: 70px;
-        overflow: auto;
-        z-index: 2;
-      "
-    >
-      <p v-for="(room, index) in this.firebaseListRoom" :key="index">
-        {{ room.name }}
-      </p>
-      --------------
-      <p
-        style="padding: 10px 0"
-        v-for="message in this.firebaseMessages"
-        :key="message.id"
-        class="d-flex justify-content-between align-items-center"
+    <div v-if="isChat">
+      <div
+        class="label position-fixed"
+        style="
+          z-index: 12;
+          background-color: #ffffff;
+          right: 40px;
+          bottom: 450px;
+          padding: 20px 0 20px 20px;
+          width: 300px;
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+        "
       >
-        <span class="user-name" v-if="user.name == message.data().userName">{{
+        ADMIN
+      </div>
+      <b-icon
+        icon="x-circle"
+        class="position-fixed"
+        scale="2"
+        style="right: 50px; bottom: 475px; z-index: 1000; cursor: pointer"
+        @click="closeChat"
+      ></b-icon>
+      <div
+        class="room-chat position-fixed"
+        id="chat-room"
+        style="
+          bottom: 0;
+          right: 40px;
+          width: 300px;
+          height: 500px;
+          padding-bottom: 60px;
+          background-color: white;
+          overflow: scroll;
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+          padding: 50px 20px 50px 20px;
+          box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+            rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+            rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+            box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+          z-index: 10;
+        "
+      >
+        <!-- <div
+          style=""
+          v-for="(room, index) in this.firebaseListRoom"
+          :key="index"
+        >
+          {{ room.name }}
+        </div>
+        -------------- -->
+        <div style="padding: 10px 0" class="d-flex flex-column">
+          <!-- <span class="user-name" v-if="user.name == message.data().userName">{{
           message.data().userName
         }}</span>
         <span class="user-admin" v-if="user.name !== message.data().userName"
           >admin</span
-        >
-        <span class="message text-left">{{ message.data().message }}</span>
-      </p>
-      <div>
-        <input
-          type="text"
-          class="form-control position-fixed"
-          style="
+        > -->
+          <div
+            v-for="message in this.firebaseMessages"
+            :key="message.id"
+            class=""
+          >
+            <p
+              class="message"
+              :class="[
+                user.name == message.data().userName
+                  ? 'message-user'
+                  : 'message-admin',
+              ]"
+            >
+              {{ message.data().message }}
+            </p>
+              <!-- {{ message.data().createdAt.toDate() }} -->
+          </div>
+        </div>
+        <div>
+          <input
+            autofocus
+            type="text"
+            class="form-control position-fixed"
+            style="
             bottom: 0;
             height: 50px;
-            width: 300px;
-            right: 0;
-            border: 2px solid black;
+            width: 280px;
+            right: 50px;
+            padding-right: 35px;
+            border-radius: 20px;
+            background: #f0f2f5
+            color: #FFF;
           "
-          v-model="message"
-        />
-        <b-icon
-          icon="cursor-fill"
-          scale="1.5"
-          class="position-fixed"
-          style="right: 20px; bottom: 15px; cursor: pointer"
-          @click="sendMessage"
-        ></b-icon>
+            v-model="message"
+          />
+          <b-icon
+            icon="cursor-fill"
+            scale="1.5"
+            class="position-fixed"
+            style="right: 60px; bottom: 18px; cursor: pointer"
+            @click="sendMessage"
+          ></b-icon>
+        </div>
       </div>
-      <b-icon icon="x-circle" class="position-fixed" scale="2" style="right: 20px; bottom: 480px" @click="closeChat"></b-icon>
     </div>
   </div>
 </template>
@@ -226,7 +274,7 @@ export default {
       room_id: null,
       room_chat: null,
       user: null,
-      message: '',
+      message: "",
       isChat: false,
     };
   },
@@ -292,7 +340,7 @@ export default {
         .dispatch("firebase/createMessage", data)
         .then(() => {
           this.message = "";
-          document.getElementById('chat-room').scrollIntoView(false);
+          document.getElementById("chat-room").scrollIntoView(false);
         })
         .catch((error) => {
           console.log(error);
@@ -300,7 +348,7 @@ export default {
     },
     async getRoomInfo() {
       await this.getRoom({
-        roomId: this.room_chat
+        roomId: this.room_chat,
       });
     },
     async getUser() {
@@ -395,6 +443,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#chat-room::-webkit-scrollbar {
+  
+}
+.message {
+  margin-bottom: 10px;
+  display: block;
+  max-width: 160px;
+  border-radius: 23px;
+}
+.message-admin {
+  float: left;
+  text-align: left;
+  padding: 10px;
+  background-color: #e4e6eb;
+  color: #050505;
+}
+.message-user {
+  text-align: left;
+  padding: 10px;
+  background-color: #0084ff;
+  color: white;
+  // width: 150px;
+  float: right;
+  word-wrap: break-word;
+  border-radius: 23px;
+}
 .footer {
   height: 400px;
   width: 100%;
