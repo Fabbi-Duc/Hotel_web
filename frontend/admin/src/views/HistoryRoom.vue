@@ -1,7 +1,7 @@
 <template>
   <div
     class="history-room"
-    style="margin-top: 170px; margin-bottom: 160px; padding: 0 50px"
+    style="margin-top: 170px; margin-bottom: 240px; padding: 0 50px"
   >
     <label for="" style="font-weight: bold; font-size: 20px"
       >Lịch sử thuê phòng</label
