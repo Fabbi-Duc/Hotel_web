@@ -45,6 +45,7 @@ export default {
   width: 100%;
   height: 200px;
   margin-bottom: 30px;
+  margin-top: 30px;
 }
 .image {
   width: 100%;

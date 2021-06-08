@@ -58,13 +58,13 @@
         <span v-if="row.item.room_type_id == 3">{{ types[2].text }}</span>
         <span v-if="row.item.room_type_id == 4">{{ types[3].text }}</span>
       </template>
-      <template #cell(cost_first_hour)="row">
+      <template #cell(cost_first_hour)="row" v-if="roomType">
         <span v-if="row.item.room_type_id == 1">{{ roomType[0].cost_first_hour }}</span>
         <span v-if="row.item.room_type_id == 2">{{ roomType[1].cost_first_hour }}</span>
         <span v-if="row.item.room_type_id == 3">{{ roomType[2].cost_first_hour }}</span>
         <span v-if="row.item.room_type_id == 4">{{ roomType[3].cost_first_hour }}</span>
       </template>
-      <template #cell(cost_next_hour)="row">
+      <template #cell(cost_next_hour)="row" v-if="roomType"> 
         <span v-if="row.item.room_type_id == 1">{{ roomType[0].cost_next_hour }}</span>
         <span v-if="row.item.room_type_id == 2">{{ roomType[1].cost_next_hour }}</span>
         <span v-if="row.item.room_type_id == 3">{{ roomType[2].cost_next_hour }}</span>
@@ -117,15 +117,15 @@ export default {
         { value: 4, text: "Vip Double Room" },
       ],
       fields: [
-        { key: "numerical", label: "Numerical" },
-        { key: "name", label: "Name" },
-        { key: "room_type_id", label: "Type" },
+        { key: "numerical", label: "STT" },
+        { key: "name", label: "Tên" },
+        { key: "room_type_id", label: "Loại" },
         { key: "code_room", label: "Code" },
-        { key: "status", label: "Status" },
-        { key: "cost_first_hour", label: "Cost First Hour" },
-        { key: "cost_next_hour", label: "Cost Next Hour" },
-        { key: "floor", label: "Floor" },
-        { key: "action", label: "Action" },
+        { key: "status", label: "Trạng thái" },
+        { key: "cost_first_hour", label: "Giá giờ đầu" },
+        { key: "cost_next_hour", label: "Giá giờ sau" },
+        { key: "floor", label: "Tầng" },
+        { key: "action", label: "Hành động" },
       ],
       records: [
         { value: 5, text: "5" },
@@ -142,9 +142,9 @@ export default {
     };
   },
 
-  created() {
-    this.getRoom();
-    this.getRoomType();
+  async created() {
+    await this.getRoom();
+    await this.getRoomType();
   },
   methods: {
     async getRoom() {

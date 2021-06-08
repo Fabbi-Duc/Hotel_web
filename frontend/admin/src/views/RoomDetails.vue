@@ -262,40 +262,38 @@ export default {
       await this.getListPark();
     },
     async bookRoom() {
-      const params = {
-        user_id: this.user.id,
-        id: this.$route.query.room_id,
-        start_time: this.checkIn,
-        end_time: this.checkOut,
-      };
       if (this.checkOut <= this.checkIn) {
         alert("Ngay ket thuc phai lon hon ngay bat dau");
         return;
       }
-      this.$refs["modal-money"].show();
-      // await this.$store
-      //   .dispatch("customer/bookRoomOnline", params)
-      //   .then((respone) => {
-      //     if (!respone.success) {
-      //       alert(respone.message);
-      //       return;
-      //     } else {
-      //       alert("Ban da dat phong thanh cong");
-      //       sendNotificationFirebase({
-      //         device_type: '5',
-      //         body: 'Khach hang ' + this.user.name + ' da dat phong',
-      //         user_id: '5',
-      //         title: 'Book Room'
-      //       })
-      //         .then((response) => {
-      //           console.log(response);
-      //         })
-      //         .catch((error) => {
-      //           console.log(error);
-      //         });
-      //       this.$refs["my-modal"].show();
-      //     }
-      //   });
+      if (this.$route.query.room_customer_id) {
+        const params = {
+          room_id: this.$route.query.room_id,
+          room_customer_id: this.$route.query.room_customer_id,
+          start_time: this.checkIn,
+          end_time: this.checkOut,
+        };
+        this.$store.dispatch("customer/updateBill", params).then((res) => {
+          if (res.success) {
+            this.$router.push({ name: "History" });
+            this.$toasted.show("Bạn đã đổi phòng thành công", {
+              duration: 2000,
+            });
+          } else {
+            this.$toasted.show(res.message, {
+              duration: 2000,
+            });
+          }
+        });
+      } else {
+        const params = {
+          user_id: this.user.id,
+          id: this.$route.query.room_id,
+          start_time: this.checkIn,
+          end_time: this.checkOut,
+        };
+        this.$refs["modal-money"].show();
+      }
     },
   },
 };

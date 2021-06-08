@@ -176,7 +176,7 @@ export default {
     ValidationProvider,
   },
 
-  props: ["id", "user_id"],
+  props: ["id", "user_id", "start"],
   data() {
     return {
       name: null,
@@ -234,8 +234,12 @@ export default {
             this.getQrCode();
           });
       } else {
+        const params = {
+          user_id: this.user_id,
+          start_time: this.start,
+        }
         await this.$store
-          .dispatch("customer/updateBookRoom", this.user_id)
+          .dispatch("customer/updateBookRoom", params)
           .then(() => {
             alert("Dat phong thanh cong");
             this.$router.push({ name: "Room" });
@@ -245,8 +249,12 @@ export default {
     },
 
     async getInfoCustomer(customer_id) {
+      const params = {
+        customer_id: customer_id,
+        start_time: this.start,
+      }
       await this.$store
-        .dispatch("customer/getInfoCustomer", customer_id)
+        .dispatch("customer/getInfoCustomer", params)
         .then((res) => {
           this.name = res.data.name;
           this.email = res.data.email;

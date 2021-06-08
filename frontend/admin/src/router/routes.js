@@ -350,7 +350,7 @@ const routes = [
         component: view("Food"),
       },
       {
-        path: "room/book/:id/:user_id",
+        path: "room/book/:id/:user_id/:start",
         name: "BookRoomUpdate",
         meta: {
           layout: "MainLayout",
@@ -386,6 +386,15 @@ const routes = [
           requiredAuth: true
         },
         component: view("messages/Messages")
+      },
+      {
+        path: "timesheet-month",
+        name: "TimesheetMonth",
+        meta: {
+          layout: "MainLayout",
+          requiredAuth: true
+        },
+        component: view("TimesheetMonth")
       },
       {
         path: "messages/:id",
@@ -450,6 +459,24 @@ const routes = [
         },
         component: view("adminChat")
       },
+      {
+        path: "/list-info-updatetimesheet",
+        name: "ListInfoUpdateTimeSheet",
+        meta: {
+          layout: "MainLayout",
+          requiredAuth: true
+        },
+        component: view("ListInfoUpdateTimeSheet"),
+      },
+      {
+        path: "/list-updatetimesheet",
+        name: "ListUpdateTimeSheet",
+        meta: {
+          layout: "MainLayout",
+          requiredAuth: true
+        },
+        component: view("listUpdateTimeSheet"),
+      },
     ]
   },
   {
@@ -513,6 +540,15 @@ const routes = [
       requiredAuth: false
     },
     component: view("Food"),
+  },
+  {
+    path: "/history",
+    name: "History",
+    meta: {
+      layout: "CustomersLayout",
+      requiredAuth: false
+    },
+    component: view("HistoryRoom"),
   },
   {
     path: "/chat/:id",

@@ -60,32 +60,95 @@
         </div>
         <div class="btn justify-content-center align-items-center d-flex">
           <button
-            v-if="room.status == 2"
+            v-if="room.status != 1"
             class="btn-info mr-3"
             @click="
               $router.push({ name: 'RoomDetailBook', params: { id: room.id } })
             "
           >
-            Detail
+            Chi tiết
           </button>
           <button
             v-if="room.status == 3"
             class="btn-info mr-3"
             @click="$router.push({ name: 'RoomFood', params: { id: room.id } })"
           >
-            Food
+            Đặt món
           </button>
           <button
             class="btn-primary"
             @click="bookRoom(room.id)"
             v-if="room.status != 3"
           >
-            Book Room
+            Đặt phòng
           </button>
-          <button class="btn-danger" v-else @click="pay(room.id)">Pay</button>
+          <button
+            class="btn-danger"
+            v-if="room.status == 3"
+            @click="pay(room.id)"
+          >
+            Thanh toán
+          </button>
+          <button
+            class="btn-danger ml-3"
+            v-if="room.status == 3"
+            @click="changeRoom(room.id)"
+          >
+            Đổi phòng
+          </button>
         </div>
       </div>
     </div>
+    <b-modal
+      title="Danh sách phòng có thể đặt"
+      hide-footer
+      centered
+      ref="modal-change-room"
+    >
+      <div class="d-flex flex-wrap justify-content-center align-item-center">
+        <div
+          v-for="(list, index) in list_room"
+          :key="index"
+          class="
+            position-relative
+            d-flex
+            flex-column
+            justify-content-center
+            align-item-center
+            mr-3
+            mt-3
+            image
+          "
+          style="width: 200px; height: 200px"
+        >
+          <img
+            :src="list.image_url"
+            alt=""
+            class="image"
+          />
+          <div
+            class="price-room position-absolute w-100 h-100 text-center"
+            style="background-color: black; left: 0; bottom: 25px"
+          >
+            <p style="color: white; font-size: 20px">
+              {{ list.name }}
+            </p>
+            <p style="color: white; font-size: 20px">
+              {{ room_type[list.room_type_id].text }}
+            </p>
+            <p style="color: white; font-size: 10px">
+              Cost First Hour:
+              {{ cost_first_hour[list.room_type_id - 1].value }} VND
+            </p>
+            <p style="color: white; font-size: 10px">
+              Cost Next Hour:
+              {{ cost_next_hour[list.room_type_id - 1].value }} VND
+            </p>
+          </div>
+          <button @click="changeRoomId(list.id)">Đổi phòng</button>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -94,7 +157,9 @@ export default {
   data() {
     return {
       rooms: null,
+      list_room: null,
       floor: 1,
+      room_id: null,
       type: "",
       cost_room: null,
       cost_food: null,
@@ -149,13 +214,28 @@ export default {
     bookRoom(id) {
       this.$router.push({ name: "BookRoom", params: { id: id } });
     },
+    async changeRoom(id) {
+      await this.$store.dispatch("user/getRoom", id).then((res) => {
+        this.list_room = res.list;
+      });
+      this.room_id = id;
+      this.$refs["modal-change-room"].show();
+    },
+    changeRoomId(id) {
+      const params = {
+        id: id,
+        room_id: this.room_id,
+      }
+      this.$store.dispatch('user/updateChangeRoom', params).then(async () => {
+        this.$refs["modal-change-room"].hide();
+        await this.getRoom();
+        this.$toasted.show("Đổi phòng thành công", {
+        duration: 3000,
+      });
+      })
+    },
     async pay(id) {
       this.$router.push({ name: "Pay", params: { id: id } });
-      // await this.$store.dispatch("user/pay", id).then((res) => {
-      //   (this.cost_room = res.data), (this.cost_food = res.money);
-      //   alert("Ban da thanh toan thanh cong");
-      // });
-      // window.location.reload()
     },
   },
 };

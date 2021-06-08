@@ -36,7 +36,7 @@ class NotificationController extends ApiController
         $notification->body = $request->body;
         $notification->save();
         $numberNotification = DB::table('user_notifications')->where('user_id', $request->user_id)->where('status', 1)->count();
-        $registration = DB::table('user_device_tokens')->where('device_type', $request->all()['device_type'])->select('device_token')->get();
+        $registration = DB::table('user_device_tokens')->where('device_type', $request->device_type)->select('device_token')->get();
         $registration_ids = [];
         foreach($registration as $registration_id) {
             array_push($registration_ids, $registration_id->device_token);

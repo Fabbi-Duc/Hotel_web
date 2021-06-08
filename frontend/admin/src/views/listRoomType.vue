@@ -131,17 +131,27 @@ export default {
       this.$store.dispatch("room/getListRooms", params).then((response) => {
         this.rooms = response.listRoom.data;
         this.paginate.total = response.listRoom.total;
-        console.log(this.rooms);
       });
     },
     roomDetail(id, status) {
-      this.$router.push({
-        name: "RoomDetails",
-        query: {
-          room_id: id,
-          room_status: status,
-        },
-      });
+      if (this.$route.query.room_customer_id) {
+        this.$router.push({
+          name: "RoomDetails",
+          query: {
+            room_id: id,
+            room_status: status,
+            room_customer_id: this.$route.query.room_customer_id
+          },
+        });
+      } else {
+        this.$router.push({
+          name: "RoomDetails",
+          query: {
+            room_id: id,
+            room_status: status,
+          },
+        });
+      }
     },
     async changePage(value) {
       this.paginate.page = value;

@@ -43,7 +43,15 @@ class TimeSheetAm extends Command
     {
         try {
             $users = User::where('shift', 1)->select('id')->get();
-            
+            $list = DB::table('rooms_customers')->where('status', 1)->where('start_time', '<', getdate())->get(); 
+            DB::table('rooms_customers')->where('status', 1)->where('start_time', '<', getdate())->update(['status' => 3]);
+            foreach($list as $list_id) {
+                $room = DB::table('rooms_customers')->where('room_id', $list_id->room_id)->where('status', 2)->first();
+                $room_id = DB::table('rooms_customers')->where('room_id', $list_id->room_id)->where('status', 1)->first();
+                if(!$room_id && !$room) {
+                    DB::table('rooms')->where('id', $list_id->room_id)->update(['status' => 1]);
+                }
+            }
             DB::table('timesheet')->update(['status' => 2]);
             $arr = [];
             foreach($users as $user) {

@@ -87,15 +87,15 @@ class CustomerController extends ApiController
         return $result;
     }
 
-    public function getInfoCustomer($id)
+    public function getInfoCustomer(Request $request)
     {
-        $result = $this->customerRepository->getInfoCustomer($id);
+        $result = $this->customerRepository->getInfoCustomer($request->all());
         return $result;
     }
 
-    public function updateBookRoom($room_customer_id)
+    public function updateBookRoom(Request $request)
     {
-        $result = $this->customerRepository->updateBookRoom($room_customer_id);
+        $result = $this->customerRepository->updateBookRoom($request->all());
         return $result;
     }
 
@@ -327,11 +327,23 @@ class CustomerController extends ApiController
         return $vnp_Url;
     }
 
-    public function getTimeSheet(Request $request)
+    public function getHistory(Request $request) 
     {
-        $data = $request->all();
-        $date = date("Y-m-d 18:00:00", strtotime($data['day']));
-        $date1 = date("Y-m-d 06:00:00", strtotime('+1 day', strtotime($data['day'])));
-        dd($date1);
+        $result = $this->customerRepository->getHistory($request->all());
+
+        return $result;
+    }
+    public function deleteBill($id)
+    {
+        $result = $this->customerRepository->deleteBill($id);
+
+        return $result;
+    }
+
+    public function updateBill(Request $request)
+    {
+        $result = $this->customerRepository->updateBill($request->all());
+
+        return $result;
     }
 }

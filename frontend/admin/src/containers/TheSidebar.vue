@@ -39,9 +39,14 @@
       :content-to-render="$options.nav_chef"
     />
     <CRenderFunction
-      v-if="user && user.position == 2"
+      v-if="user && user.position == 4"
       flat
       :content-to-render="$options.nav_guard"
+    />
+    <CRenderFunction
+      v-if="user && user.position == 2"
+      flat
+      :content-to-render="$options.nav_chat"
     />
     <CRenderFunction
       v-if="user && user.position == 1"
@@ -61,6 +66,7 @@ import nav_receptionists from "./_nav-receptionists";
 import nav_chef from "./_nav-chef";
 import nav_guard from "./_nav-guard";
 import nav_clean from "./_nav-clean";
+import nav_chat from "./_nav-chat";
 import firebase from "@/plugins/firebase";
 
 export default {
@@ -70,6 +76,7 @@ export default {
   nav_chef,
   nav_guard,
   nav_clean,
+  nav_chat,
   async created() {
     await this.getUser();
     await this.getTokenFirebase();
@@ -109,8 +116,8 @@ export default {
           console.log("Unable to get permission to notify.", err);
         });
     },
-    getUser() {
-      this.$store.dispatch("auth/getAccount").then((res) => {
+    async getUser() {
+      await this.$store.dispatch("auth/getAccount").then((res) => {
         this.user = res.data;
       });
     },

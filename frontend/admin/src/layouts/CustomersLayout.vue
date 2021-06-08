@@ -39,7 +39,7 @@
           class="header__nav__wrap justify-content-between align-items-center"
         >
           <b-col
-            md="4"
+            md="2"
             class="header__nav__brand d-flex justify-content-start align-items-center"
           >
             <img
@@ -50,11 +50,12 @@
               style="cursor: pointer"
             />
           </b-col>
-          <b-col md="8" class="header__nav__top text-right">
+          <b-col md="10" class="header__nav__top text-right">
             <a style="cursor: pointer" class="active" @click="home()"
               >Trang chủ</a
             >
             <a href="/food" v-if="isFood">Đặt đồ ăn</a>
+            <a href="/history">Lịch sử thuê phòng</a>
             <!-- <a href="/food">About</a> -->
             <!-- <button @click="chat()">Chat</button> -->
             <a style="cursor: pointer" @click="clean()" v-if="isFood">Clean</a>
@@ -292,7 +293,6 @@ export default {
       this.user = res.data;
     });
     await this.getUser();
-    await this.getListRoom(this.user.id.toString());
   },
   methods: {
     home() {

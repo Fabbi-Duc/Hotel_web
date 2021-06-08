@@ -329,8 +329,6 @@ export default {
           });
         window.location.replace("/customer");
       });
-    } else {
-      console.log("loi");
     }
   },
   computed: {
@@ -347,12 +345,22 @@ export default {
     },
     nextPage(type) {
       this.$store.dispatch("common/setIsLoading", true);
-      this.$router.push({
-        name: "ListRoomType",
-        query: {
-          type_room_id: type,
-        },
-      });
+      if (this.$route.query.room_customer_id) {
+        this.$router.push({
+          name: "ListRoomType",
+          query: {
+            type_room_id: type,
+            room_customer_id: this.$route.query.room_customer_id,
+          },
+        });
+      } else {
+        this.$router.push({
+          name: "ListRoomType",
+          query: {
+            type_room_id: type,
+          },
+        });
+      }
       this.$store.dispatch("common/setIsLoading", false);
     },
   },

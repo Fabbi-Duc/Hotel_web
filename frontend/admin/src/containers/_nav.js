@@ -126,6 +126,18 @@ export default [
         icon: "cil-puzzle",
         name: "DS Phiếu xuất thực phẩm",
         to: "/get-list-export-ingredients"
+      },
+      {
+        _name: "CSidebarNavItem",
+        icon: "cil-puzzle",
+        name: "DS Phiếu bổ sung công",
+        to: "/list-updatetimesheet"
+      },
+      {
+        _name: "CSidebarNavItem",
+        icon: "cil-puzzle",
+        name: "DS công trong tháng",
+        to: "/timesheet-month"
       }
     ]
   }
