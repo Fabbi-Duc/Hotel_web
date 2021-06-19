@@ -190,7 +190,6 @@ export default {
         data: this.options
       };
       this.$store.dispatch('houseware/createCouponHouseware', params)
-      console.log(this.options);
     },
     exportPdf() {
       this.$refs.pdfCouponHouseware.generateReport();

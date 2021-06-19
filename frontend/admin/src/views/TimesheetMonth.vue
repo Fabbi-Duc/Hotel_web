@@ -78,13 +78,13 @@ export default {
       });
     },
    async getListTimeSheet(id) {
-      await this.$store.dispatch("user/getTimeSheetMounth", id).then((res) => {
+      await this.$store.dispatch("user/getTimeSheetMounth", id).then(async (res) => {
         let info_option = {
           name: res.name,
           salary: res.salary,
           total_time: res.total_time ? (res.total_time).toFixed(2) : null,
         };
-        this.info.push(info_option);
+        await this.info.push(info_option);
       });
     },
     async changePage(value) {

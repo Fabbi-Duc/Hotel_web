@@ -153,6 +153,7 @@
             <template #cell(late)="row">
               <span
                 v-if="
+                row.item.time_check_in &&
                   formatTime(row.item.time_check_in) >
                     formatTime('2017-06-01T06:00') && user.shift == 1
                 "
@@ -176,6 +177,7 @@
               </span>
               <span
                 v-if="
+                row.item.time_check_in &&
                   row.item.time_check_in > formatTime('2017-06-01T18:00') &&
                   user.shift == 2
                 "
@@ -201,8 +203,9 @@
             <template #cell(soon)="row">
               <span
                 v-if="
+                row.item.time_check_out &&
                   formatTime(row.item.time_check_out) <
-                  formatTime('2017-06-01T17:30')
+                  formatTime('2017-06-01T17:30') && user.shift == 1
                 "
               >
                 {{
@@ -224,6 +227,7 @@
               </span>
               <span
                 v-if="
+                row.item.time_check_out &&
                   formatTimeHour(row.item.time_check_out) <
                     formatTimeHourTomorrow('2017-06-01T05:30') &&
                   user.shift == 2
@@ -403,12 +407,6 @@ export default {
             user_id: "0",
             title: "Bổ sung công",
           })
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
         } else {
           this.$toasted.show("Bạn đã tạo đơn rồi", {
             duration: 3000,

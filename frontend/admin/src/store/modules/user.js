@@ -174,7 +174,6 @@ export const actions = {
 
   createPark({ commit }, params) {
     return new Promise((resolve, reject) => {
-      console.log(params);
       createPark(params)
         .then(response => {
           resolve(response);

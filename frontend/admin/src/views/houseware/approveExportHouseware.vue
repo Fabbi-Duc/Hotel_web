@@ -161,12 +161,6 @@ export default {
             user_id: "5",
             title: "Export Houseware",
           })
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
             window.location.reload()
         });
     },

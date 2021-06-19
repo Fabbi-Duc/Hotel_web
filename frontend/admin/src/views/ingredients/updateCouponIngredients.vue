@@ -2,7 +2,7 @@
   <div>
     <ValidationObserver v-slot="{ handleSubmit }">
       <form @submit.prevent="handleSubmit(onSubmit)" class="form" ref="form">
-        <label for="">Description</label>
+        <label for="">Mô tả</label>
         <textarea
           type="text"
           class="form-control"
@@ -16,10 +16,10 @@
         >
           <div class="col-3 position-relative d-flex">
             <div class="w-100">
-              <label for="">Houseware</label>
+              <label for="">Thực phẩm</label>
               <br />
               <ValidationProvider
-                name="Houseware"
+                name="Ingredients"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -71,7 +71,7 @@
             </div>
           </div>
           <div class="w-100 col-3">
-            <label for="">Quantity</label>
+            <label for="">Số lượng</label>
             <br />
             <ValidationProvider
               name="Quantity"
@@ -90,7 +90,7 @@
             </ValidationProvider>
           </div>
           <div class="w-100 col-2">
-            <label for="">Quantity Return</label>
+            <label for="">Số lượng trả lại</label>
             <br />
             <ValidationProvider
               name="Quantity Return"
@@ -109,7 +109,7 @@
             </ValidationProvider>
           </div>
           <div class="w-100 col-3">
-            <label for="">Cost</label>
+            <label for="">Giá</label>
             <br />
             <div
               class="d-flex align-items-center"

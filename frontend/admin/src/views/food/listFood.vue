@@ -259,7 +259,6 @@ export default {
       this.isUpdate = true;
       this.food_id = food_id;
       await this.$store.dispatch("user/getInfoFood", food_id).then((res) => {
-        console.log(res);
         this.name_food = res.data.name;
         this.type_food = res.data.type;
         this.cost_food = res.data.cost;

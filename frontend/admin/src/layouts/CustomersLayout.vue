@@ -373,12 +373,6 @@ export default {
           user_id: "1",
           title: "Clean",
         })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       });
     },
     getLocation() {

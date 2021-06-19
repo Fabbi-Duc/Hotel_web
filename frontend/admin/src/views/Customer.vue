@@ -321,12 +321,6 @@ export default {
           user_id: "5",
           title: "Đặt phòng",
         })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
         window.location.replace("/customer");
       });
     }
