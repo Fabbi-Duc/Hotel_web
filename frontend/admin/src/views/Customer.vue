@@ -20,14 +20,14 @@
       >
         <!-- Text slides with image -->
         <b-carousel-slide
-          caption="First slide"
-          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+          caption=""
+          text=""
           img-src="https://picsum.photos/1024/480/?image=52"
         ></b-carousel-slide>
 
         <!-- Slides with custom text -->
         <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-          <h1>Welcome to Hotel</h1>
+          <h1>Chào mừng bạn đến với khách sạn Diva Hotel</h1>
         </b-carousel-slide>
 
         <!-- Slides with image only -->
@@ -50,11 +50,9 @@
         </b-carousel-slide>
 
         <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
+        <b-carousel-slide caption="" img-blank img-alt="Blank image">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            eros felis, tincidunt a tincidunt eget, convallis vel est. Ut
-            pellentesque ut lacus vel interdum.
+        
           </p>
         </b-carousel-slide>
         <!-- <div class="book__options position-absolute">
@@ -101,8 +99,8 @@
         </b-row>
       </div> -->
       </b-carousel>
-      <div class="list__room">
-        <h2 class="list__room__label text-center">ROOMS & SUITS</h2>
+      <div class="list__room mt-5">
+        <h2 class="list__room__label text-center">Phòng thường & Phòng vip</h2>
         <div class="list__room__line text-center"></div>
         <div class="list__room__wrap">
           <b-row class="text-center">
@@ -115,7 +113,7 @@
               <div class="list__room__wrap__item__img">
                 <span class="list__room__wrap__item__price position-absolute">
                   <span class="list__room__wrap__item__price--label"
-                    >Starting from</span
+                    >Giá trung bình</span
                   >
                   <span class="list__room__wrap__item__price--value">450$</span>
                 </span>
@@ -130,15 +128,14 @@
               </div>
               <div class="list__room__wrap__item__content">
                 <h5 class="list__room__wrap__item__content-title">
-                  Single rooms normal
+                  Phòng đơn thường
                 </h5>
                 <div class="list__room__wrap__item__content-line"></div>
                 <p class="list__room__wrap__item__content-description">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's.
+                  Giường đơn: 0,9m x 2m, Chăn có vỏ bọc, Đệm dày 10cm, có ga bọc, Điện thoại bàn, Đèn trên gương soi, Nước nóng
                 </p>
                 <div class="list__room__wrap__item__content-details">
-                  List Rooms
+                  Danh sách
                 </div>
               </div>
             </b-col>
@@ -151,7 +148,7 @@
               <div class="list__room__wrap__item__img">
                 <span class="list__room__wrap__item__price position-absolute">
                   <span class="list__room__wrap__item__price--label"
-                    >Starting from</span
+                    >Giá trung bình</span
                   >
                   <span class="list__room__wrap__item__price--value">450$</span>
                 </span>
@@ -166,15 +163,14 @@
               </div>
               <div class="list__room__wrap__item__content">
                 <h5 class="list__room__wrap__item__content-title">
-                  Double room normals
+                  Phòng đôi thường
                 </h5>
                 <div class="list__room__wrap__item__content-line"></div>
                 <p class="list__room__wrap__item__content-description">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's.
+                  Giường đôi: 0,9m x 2m, Chăn có vỏ bọc, Đệm dày 10cm, có ga bọc, Điện thoại bàn, Đèn trên gương soi, Nước nóng
                 </p>
                 <div class="list__room__wrap__item__content-details">
-                  List Rooms
+                  Danh sách
                 </div>
               </div>
             </b-col>
@@ -187,7 +183,7 @@
               <div class="list__room__wrap__item__img">
                 <span class="list__room__wrap__item__price position-absolute">
                   <span class="list__room__wrap__item__price--label"
-                    >Starting from</span
+                    >Giá trung bình</span
                   >
                   <span class="list__room__wrap__item__price--value">450$</span>
                 </span>
@@ -202,15 +198,14 @@
               </div>
               <div class="list__room__wrap__item__content">
                 <h5 class="list__room__wrap__item__content-title">
-                  VIP single rooms
+                  Phòng đơn vip
                 </h5>
                 <div class="list__room__wrap__item__content-line"></div>
                 <p class="list__room__wrap__item__content-description">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's.
+                  Giường đơn: 0,9m x 2m, Chăn có vỏ bọc, Đệm dày 10cm, có ga bọc, Điện thoại bàn, Đèn trên gương soi, Nước nóng
                 </p>
                 <div class="list__room__wrap__item__content-details">
-                  List Rooms
+                  Danh sách
                 </div>
               </div>
             </b-col>
@@ -223,7 +218,7 @@
               <div class="list__room__wrap__item__img">
                 <span class="list__room__wrap__item__price position-absolute">
                   <span class="list__room__wrap__item__price--label"
-                    >Starting from</span
+                    >Giá trung bình</span
                   >
                   <span class="list__room__wrap__item__price--value">450$</span>
                 </span>
@@ -238,15 +233,14 @@
               </div>
               <div class="list__room__wrap__item__content">
                 <h5 class="list__room__wrap__item__content-title">
-                  VIP double rooms
+                  Phòng vip đôi
                 </h5>
                 <div class="list__room__wrap__item__content-line"></div>
                 <p class="list__room__wrap__item__content-description">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's.
+                  Giường đôi: 0,9m x 2m, Chăn có vỏ bọc, Đệm dày 10cm, có ga bọc, Điện thoại bàn, Đèn trên gương soi, Nước nóng
                 </p>
                 <div class="list__room__wrap__item__content-details">
-                  List Rooms
+                  Danh sách
                 </div>
               </div>
             </b-col>
@@ -522,6 +516,7 @@ export default {
           text-shadow: 1px 1px 1px rgb(243, 243, 243);
           &--label {
             display: block;
+            font-size: 25px;
           }
         }
         &__img {

@@ -1,16 +1,29 @@
 <template>
   <div id="login-customer">
-    <div class="login-box">
-      <h1>Login</h1>
-      <div class="textbox">
-        <input type="text" placeholder="Email" v-model="formSignIn.email">
-      </div>
-      <div class="textbox">
-        <input type="password" placeholder="Password" v-model="formSignIn.password">
-      </div>
-      <input type="button" class="btn" value="Sign In" @click="login">
-      <input type="button" class="btn" value="Register" @click="register">
-    </div>
+    <ValidationObserver ref="form" v-slot="{ handleSubmit }">
+      <form class="login-box" @submit.prevent="handleSubmit(login)">
+        <h1>Đăng nhập</h1>
+        <ValidationProvider
+          name="メールアドレス"
+          rules="required|email"
+          v-slot="{ errors }"
+        >
+          <div class="textbox">
+            <input type="text" placeholder="Email" v-model="formSignIn.email" />
+          </div>
+          <span class="error text-left f-w3">{{ errors[0] }}</span>
+        </ValidationProvider>
+        <div class="textbox">
+          <input
+            type="password"
+            placeholder="Mật khẩu"
+            v-model="formSignIn.password"
+          />
+        </div>
+        <input type="button" class="btn" value="Đăng nhập" @click="login" />
+        <input type="button" class="btn" value="Đăng ký" @click="register" />
+      </form>
+    </ValidationObserver>
   </div>
 </template>
 <script>
@@ -21,20 +34,20 @@ export default {
     return {
       formSignIn: {
         email: null,
-        password: null
-      }
-    }
+        password: null,
+      },
+    };
   },
   methods: {
     async register() {
       console.log(1);
-      await this.$router.push({name : 'RegisterCustomer'});
+      await this.$router.push({ name: "RegisterCustomer" });
     },
     ...mapActions("auth", ["loginCustomer"]),
     async login() {
       await this.loginCustomer(this.formSignIn)
         .then(() => {
-          this.$router.push({ name: 'Customer' });
+          this.$router.push({ name: "Customer" });
         })
         .catch(() => {});
     },
@@ -51,7 +64,7 @@ export default {
 #login-customer {
   width: 100vw;
   height: 100vh;
-  background: url('../assets/image/bg.jpg') no-repeat;
+  background: url("../assets/image/bg.jpg") no-repeat;
   background-size: cover;
 }
 .login-box {

@@ -42,12 +42,12 @@
             type="text"
             class="form-control position-fixed"
             v-model="message"
-            style="bottom: 50px; right: 30px; width: 100%"
+            style="bottom: 50px; right: 30px; width: 60%"
           />
           <b-icon
             icon="cursor-fill"
             class="position-fixed"
-            style="right: 50px; bottom: 60px"
+            style="right: 50px; bottom: 60px; cursor: pointer"
             @click="sendMessage"
           ></b-icon>
         </div>

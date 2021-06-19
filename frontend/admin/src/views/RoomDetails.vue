@@ -53,29 +53,29 @@
             placeholder="Enter cmnd"
             required
           ></b-form-input> -->
-          <label for="" class="text-left">CHECK-IN:</label>
+          <label for="" class="text-left">Thời gian bắt đầu</label>
           <input
             type="datetime-local"
             v-model="checkIn"
             class="book__options__input form-control"
           />
-          <label for="" class="text-left">CHECK-OUT:</label>
+          <label for="" class="text-left">Thời gian kết thúc</label>
           <input
             type="datetime-local"
             v-model="checkOut"
             class="book__options__input form-control"
           />
-          <label for="" class="text-left">INITIAL PRICE:</label>
+          <label for="" class="text-left">Giá gốc:</label>
           <div class="text-left price">400$</div>
-          <label for="" class="text-left">YOUR PRICE:</label>
+          <label for="" class="text-left">Giá khuyến mãi:</label>
           <div class="text-left price">350$</div>
-          <div class="btn__book-room" @click="bookRoom()">BOOK ROOM</div>
+          <div class="btn__book-room" @click="bookRoom()">Đặt phòng</div>
         </b-col>
       </b-row>
     </div>
     <div class="detail-room" v-if="customer_room" style="padding: 30px">
       <label for="" style="font-weight: bold; font-size: 20px">
-        List of customers who are renting rooms</label
+        Danh sách khách hàng đang thuê phòng trọ</label
       >
       <b-table striped hover :items="customer_room" :fields="fields">
         <template #cell(numerical)="row">
@@ -166,10 +166,10 @@ export default {
       floor: "",
       money: null,
       fields: [
-        { key: "numerical", label: "Numerical" },
-        { key: "name", label: "Name" },
-        { key: "start_time", label: "Start Time" },
-        { key: "end_time", label: "End Time" },
+        { key: "numerical", label: "STT" },
+        { key: "name", label: "Tên" },
+        { key: "start_time", label: "Thời gian vào" },
+        { key: "end_time", label: "Thời gian ra" },
       ],
       images: [
         "https://vinapad.com/wp-content/uploads/2018/09/noi-that-phong-ngu-khach-san-5-sao-2.jpg",

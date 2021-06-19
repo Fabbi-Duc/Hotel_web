@@ -58,7 +58,7 @@
             <a href="/history">Lịch sử thuê phòng</a>
             <!-- <a href="/food">About</a> -->
             <!-- <button @click="chat()">Chat</button> -->
-            <a style="cursor: pointer" @click="clean()" v-if="isFood">Clean</a>
+            <a style="cursor: pointer" @click="clean()" v-if="isFood">Yêu cầu dọn vệ sinh</a>
             <b-button @click="chat()" variant="success" class="button-action"
               >Chat với lễ tân</b-button
             >
@@ -82,7 +82,7 @@
       <div class="footer__wrap">
         <b-row>
           <b-col md="4" class="text-center">
-            <h5 class="footer__wrap__contact">CONTACT</h5>
+            <h5 class="footer__wrap__contact">LIÊN HỆ</h5>
             <p class="footer__wrap__address">
               9 Crosby Street, New York City, NY
             </p>
@@ -114,19 +114,16 @@
             </div>
           </b-col>
           <b-col md="4" class="text-center">
-            <h5 class="footer__wrap__name">VINTAGE</h5>
+            <h5 class="footer__wrap__name">TIÊU CHÍ</h5>
             <p class="footer__wrap__description">
-              Lorem ipsum dolor sit amet, consecteturadipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-              consectetura iolor sit amet.
+              DIVA HOTEL luôn không ngừng đẩy mạnh hoạt động và phát triển, cả về sản phẩm, dịch vụ và đội ngũ, nhằm đáp ứng tốt nhất nhu cầu của khách hàng.
             </p>
           </b-col>
           <b-col md="4" class="text-center">
-            <h5 class="footer__wrap__share">NEWSLETTER</h5>
+            <h5 class="footer__wrap__share">ĐÓNG GÓP</h5>
             <div class="footer__wrap__send-mail">
               <input type="text" placeholder="E-Mail" />
-              <span class="go">GO</span>
+              <span class="go">GỬI</span>
             </div>
             <div
               style="
@@ -151,7 +148,7 @@
           </b-col>
         </b-row>
         <div class="footer__copyright text-center mt-5">
-          © 2021 QODE INTERACTIVE, ALL RIGHTS RESERVED
+          © 2021 DIVA HOTEL, ALL RIGHTS RESERVED
         </div>
       </div>
     </div>
