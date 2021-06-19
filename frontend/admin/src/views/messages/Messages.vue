@@ -84,7 +84,6 @@ export default {
         })
         .then(function(token) {
           self.tokenBrowse = token;
-          console.log(token);
           self.$store.dispatch("notification/saveDeviceToken", {
             user_id: 1,
             device_token: token
@@ -99,12 +98,6 @@ export default {
     },
     sendNotificationFirebase() {
       sendNotificationFirebase({ tokenBrowse: this.tokenBrowse })
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
     copyTestingCode() {
       let testingCodeToCopy = document.querySelector("#testing-code");

@@ -228,12 +228,6 @@ export default {
             user_id: "3",
             title: "Food",
           })
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
         });
       }
       else if (this.room_id) {

@@ -105,7 +105,6 @@ export default {
         })
         .then(function (token) {
           self.tokenBrowse = token;
-          console.log(token);
           self.$store.dispatch("notification/saveDeviceToken", {
             user_id: self.user.id,
             device_token: token,

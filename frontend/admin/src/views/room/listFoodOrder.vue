@@ -10,13 +10,13 @@
         <div class="food mb-3 w-100">
           <img :src="food.image_url" alt="" class="w-100" />
         </div>
-        <div class="text-center">Name: {{ food.name }}</div>
-        <div class="text-center">Quantity: {{ food.count }}</div>
+        <div class="text-center">Tên: {{ food.name }}</div>
+        <div class="text-center">Số lượng: {{ food.count }}</div>
       </div>
     </div>
 
     <div class="btn-submit text-center">
-      <button class="submit btn-success" @click="complete()">Complele</button>
+      <button class="submit btn-success" @click="complete()">Xác nhận</button>
     </div>
   </div>
 </template>

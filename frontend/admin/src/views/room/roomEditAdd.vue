@@ -203,9 +203,8 @@
         </div>
         <div class="d-flex justify-content-center form-group">
           <button class="btn btn-primary mr-3">
-            {{ id ? "Update" : "Create" }}
+            {{ id ? "Cập nhật" : "Tạo mới" }}
           </button>
-          <button class="btn btn-info">Update Room Types</button>
         </div>
       </form>
     </ValidationObserver>

@@ -2,12 +2,12 @@
   <div v-if="rooms">
     <b-row class="mb-3">
       <b-col cols="3">
-        <label for="">Name</label>
+        <label for="">Tên</label>
         <br />
         <input type="text" v-model="name" />
       </b-col>
       <b-col cols="3">
-        <label for="">Type</label>
+        <label for="">Loại</label>
         <br />
         <b-form-select
           class="type__select"
@@ -22,7 +22,7 @@
           style="bottom: 0"
           @click="search()"
         >
-          Search
+          Tìm kiếm
         </button>
       </b-col>
     </b-row>
@@ -48,9 +48,9 @@
         }}
       </template>
       <template #cell(status)="row">
-        <span v-if="row.item.status == 1">Empty</span>
-        <span v-if="row.item.status == 2" style="color: red">Hired</span>
-        <span v-if="row.item.status == 3" style="color: orange">Reserve</span>
+        <span v-if="row.item.status == 1">Trống</span>
+        <span v-if="row.item.status == 2" style="color: red">Đang ở</span>
+        <span v-if="row.item.status == 3" style="color: orange">Đã được đặt</span>
       </template>
       <template #cell(room_type_id)="row">
         <span v-if="row.item.room_type_id == 1">{{ types[0].text }}</span>

@@ -4,7 +4,7 @@ export default [
     _children: [
       {
         _name: "CSidebarNavItem",
-        name: "Dashboard",
+        name: "Trang chủ",
         to: "/dashboard",
         icon: "cil-speedometer",
         badge: {
@@ -15,7 +15,7 @@ export default [
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "ListClean",
+        name: "DS các phòng cần dọn",
         to: "/list-clean"
       },
       {

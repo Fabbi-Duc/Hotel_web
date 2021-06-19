@@ -4,7 +4,7 @@ export default [
     _children: [
       {
         _name: "CSidebarNavItem",
-        name: "Dashboard",
+        name: "Trang chủ",
         to: "/dashboard",
         icon: "cil-speedometer",
         badge: {
@@ -15,20 +15,26 @@ export default [
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "Room",
+        name: "DS phòng",
         to: "/rooms"
       },
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "Export Houseware",
+        name: "Tạo đơn xuất kho",
         to: "/export-houseware"
       },
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "List Export Houseware",
+        name: "DS đơn xuất kho",
         to: "/list-export-houseware"
+      },
+      {
+        _name: "CSidebarNavItem",
+        icon: "cil-puzzle",
+        name: "DS bổ sung công",
+        to: "/list-info-updatetimesheet"
       }
     ]
   }

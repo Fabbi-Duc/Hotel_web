@@ -126,8 +126,8 @@ export default {
       ],
       fields: [
         { key: "numerical", label: "STT" },
-        { key: "firstname", label: "firstname" },
-        { key: "lastname", label: "lastname" },
+        { key: "firstname", label: "Họ" },
+        { key: "lastname", label: "Tên" },
         { key: "birthday", label: "Ngày sinh" },
         { key: "position", label: "Chức vụ" },
         { key: "gender", label: "Giới tính" },

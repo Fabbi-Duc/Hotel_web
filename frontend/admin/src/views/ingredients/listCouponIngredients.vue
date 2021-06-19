@@ -2,19 +2,19 @@
   <div>
     <div class="row">
       <div class="col-4">
-        <label for="">Time lower</label>
+        <label for="">Từ ngày</label>
         <br />
         <input type="date" class="form-control" v-model="time_lower" />
       </div>
       <div class="col-4">
-        <label for="">Time upper</label>
+        <label for="">Đến ngày</label>
         <br />
         <input type="date" class="form-control" v-model="time_upper" />
       </div>
       <div class="position-relative">
         <div class="position-absolute" style="bottom: 0">
-          <button class="btn-info ml-3" style="height: 35px" @click="getList()">
-            Search
+          <button class="btn-info ml-3" style="height: 35px; width: 100px" @click="getList()">
+            Tìm kiếm
           </button>
         </div>
       </div>
@@ -74,12 +74,12 @@ export default {
       time_lower: "",
       time_upper: "",
       fields: [
-        { key: "numerical", label: "numerical" },
-        { key: "cost", label: "cost" },
-        { key: "description", label: "description" },
-        { key: "created_at", label: "created_at" },
-        { key: "updated_at", label: "updated_at" },
-        { key: "action", label: "action" },
+        { key: "numerical", label: "STT" },
+        { key: "cost", label: "Giá" },
+        { key: "description", label: "Mô tả" },
+        { key: "created_at", label: "Ngày tạo" },
+        { key: "updated_at", label: "Ngày cập nhật" },
+        { key: "action", label: "Hành động" },
       ],
       paginate: {
         perPage: 10,

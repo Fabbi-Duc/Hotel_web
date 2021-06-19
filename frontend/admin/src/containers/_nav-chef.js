@@ -4,7 +4,7 @@ export default [
     _children: [
       {
         _name: "CSidebarNavItem",
-        name: "Dashboard",
+        name: "Trang chủ",
         to: "/dashboard",
         icon: "cil-speedometer",
         badge: {
@@ -15,32 +15,33 @@ export default [
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "ListOrder",
+        name: "Danh sách order",
         to: "/list-food-order"
       },
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "ListFood",
+        name: "Danh sách món ăn",
         to: "/list-food"
       },
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "Export Ingredients",
+        name: "Tạo đơn xuất kho",
         to: "/export-ingredients"
       },
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "List Export Ingredients",
+        name: "DS đơn xuất kho",
         to: "/list-export-ingredients"
       },
+      ,
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
-        name: "Room Chat",
-        to: "/admin/chat"
+        name: "DS bổ sung công",
+        to: "/list-info-updatetimesheet"
       }
     ]
   }

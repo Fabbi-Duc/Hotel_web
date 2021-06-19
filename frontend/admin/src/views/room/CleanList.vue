@@ -9,7 +9,7 @@
         <img :src="list.image_url" alt="" class="image">
         <div class="text-center name d-flex justify-content-center align-items-center mt-3">
           P{{ list.name }}
-          <button class="btn-info ml-3" @click="clean(list.room_id)">Clean</button>
+          <button class="btn-info ml-3" @click="clean(list.room_id)">Xác nhận dọn</button>
         </div>
       </div>
     </div>

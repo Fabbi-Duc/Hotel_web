@@ -49,7 +49,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.id);
     this.getInfoCustomerRoom(this.id);
   },
   methods: {

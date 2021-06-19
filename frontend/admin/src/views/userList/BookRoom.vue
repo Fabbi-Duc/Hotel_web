@@ -14,7 +14,7 @@
         <form @submit.prevent="handleSubmit(bookRoom)" class="form" ref="form">
           <div class="m-auto">
             <div class="option">
-              <label for="">Name</label>
+              <label for="">Tên</label>
               <ValidationProvider
                 name="Name"
                 rules="required"
@@ -39,12 +39,12 @@
                 </div>
               </ValidationProvider>
             </div>
-            <div class="park mb-3">
+            <!-- <div class="park mb-3">
               <label for="">Park ID</label>
               <input type="text" class="form-control" v-model="park_id">
-            </div>
+            </div> -->
             <div class="option">
-              <label for="">Birthday</label>
+              <label for="">Ngày sinh</label>
               <ValidationProvider
                 name="Birthday"
                 rules="required"
@@ -58,7 +58,7 @@
             </div>
             <div class="option row">
               <b-col>
-                <label for="">Gender</label>
+                <label for="">Giới tính</label>
                 <ValidationProvider
                   name="Birthday"
                   rules="required"
@@ -75,7 +75,7 @@
                 </ValidationProvider>
               </b-col>
               <b-col>
-                <label for="">Phone</label>
+                <label for="">Số điện thoại</label>
                 <ValidationProvider
                   name="Phone"
                   rules="required"
@@ -106,7 +106,7 @@
               </ValidationProvider>
             </div>
             <div class="option">
-              <label for="">Start Time</label>
+              <label for="">Thời gian bắt đầu</label>
               <ValidationProvider
                 name="Start Time"
                 rules="required"
@@ -123,7 +123,7 @@
               </ValidationProvider>
             </div>
             <div class="option">
-              <label for="">End Time</label>
+              <label for="">Thời gian kết thúc</label>
               <ValidationProvider
                 name="End Time"
                 rules="required"
@@ -159,7 +159,7 @@
             </div>
           </div>
           <div class="m-auto d-flex justify-content-center">
-            <button type="submit" class="btn btn-info">Create</button>
+            <button type="submit" class="btn btn-info">Trao phòng</button>
           </div>
         </form>
       </ValidationObserver>
@@ -230,7 +230,6 @@ export default {
             }
             alert("Dat phong thanh cong");
             this.$router.push({ name: "Room" });
-            this.updatePark();
             this.getQrCode();
           });
       } else {

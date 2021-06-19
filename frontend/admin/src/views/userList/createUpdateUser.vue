@@ -24,14 +24,14 @@
                 accept="image/*"
               />
               <div class="text-center posision-absolute w-100 text-center">
-                Add Image
+                Thêm ảnh
               </div>
             </label>
           </div>
           <div class="col-8">
             <div class="form-group row">
               <div class="col-6">
-                <label for="">First Name</label>
+                <label for="">Họ</label>
                 <br />
                 <ValidationProvider
                   name="First Name"
@@ -49,7 +49,7 @@
                 </ValidationProvider>
               </div>
               <div class="col-6">
-                <label for="">Last Name</label>
+                <label for="">Tên</label>
                 <br />
                 <ValidationProvider
                   name="Last Name"
@@ -65,7 +65,7 @@
             </div>
             <div class="form-group row">
               <div class="col-6">
-                <label for="">Phone</label>
+                <label for="">Số điện thoại</label>
                 <br />
                 <ValidationProvider
                   name="Phone"
@@ -79,7 +79,7 @@
                 </ValidationProvider>
               </div>
               <div class="col-6">
-                <label for="">Position</label>
+                <label for="">Chức vụ</label>
                 <br />
                 <ValidationProvider
                   name="Position"
@@ -99,7 +99,7 @@
             </div>
             <div class="row">
               <div class="form-group col">
-                <label for="">Gender</label>
+                <label for="">Giới tính</label>
                 <br />
                 <ValidationProvider
                   name="Gender"
@@ -155,7 +155,7 @@
             </div>
             <div class="row">
               <div class="form-group col">
-                <label for="">Salary</label>
+                <label for="">Lương</label>
                 <br />
                 <ValidationProvider
                   name="Salary"
@@ -171,7 +171,7 @@
             </div>
             <div class="row">
               <div class="form-group col">
-                <label for="">Birthday</label>
+                <label for="">Ngày sinh</label>
                 <br />
                 <ValidationProvider
                   name="Birthday"
@@ -188,8 +188,8 @@
           </div>
         </div>
         <div class="d-flex justify-content-center form-group">
-          <button class="btn btn-primary mr-3" @click="update()">
-            {{ id ? "Update" : "Create" }}
+          <button class="btn btn-primary mr-3">
+            {{ id ? "Cập nhật" : "Tạo mới" }}
           </button>
         </div>
       </form>
@@ -267,9 +267,10 @@ export default {
           shift: this.shift,
           salary: this.salary,
         };
-        await this.$store.dispatch("user/updateUser", params);
-        this.$store.dispatch("common/setIsLoading", true);
-        this.$router.push({ name: "Users" })
+        await this.$store.dispatch("user/updateUser", params).then(() => {
+          this.$store.dispatch("common/setIsLoading", true);
+          this.$router.push({ name: "Users" });
+        });
         this.$store.dispatch("common/setIsLoading", false);
       } else {
         const params = {
@@ -287,12 +288,12 @@ export default {
           remember_token: null,
           email_verified_at: null
         };
-        await this.$store.dispatch("user/createUser", params);
-        this.$store.dispatch("common/setIsLoading", true);
-        this.$router.push({ name: "Users" })
+        await this.$store.dispatch("user/createUser", params).then(() => {
+          this.$store.dispatch("common/setIsLoading", true);
+          this.$router.push({ name: "Users" })
+        });
         this.$store.dispatch("common/setIsLoading", false);
       }
-      this.$router.push({ name: "Users" })
     },
     chooseImage(event) {
       this.imageData = event.target.files[0];
