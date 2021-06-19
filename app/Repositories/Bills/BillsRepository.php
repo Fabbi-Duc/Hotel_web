@@ -42,7 +42,7 @@ class BillsRepository extends RepositoryAbstract implements BillsRepositoryInter
             $start_month = date("Y-m-01 00:00:00", strtotime($dt['dt']));
             $end_month = date("Y-m-t 23:59:59", strtotime($dt['dt']));
             $revenues = DB::table("bills")
-            ->where('status', '=', 2)
+            ->where('status', '=', 3)
             ->where('start_time', '>=', $start_month)
             ->where('start_time', '<=', $end_month)
             ->where('end_time', '>=', $start_month)

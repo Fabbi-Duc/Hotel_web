@@ -6,7 +6,7 @@
     <template v-else>
       <div class="row position-relative" style="margin-top: 120px">
         <div class="col-4">
-          <label for="">Name</label>
+          <label for="">Tên phòng</label>
           <input type="text" class="form-control" v-model="name" />
         </div>
         <div>
@@ -15,7 +15,7 @@
             @click="search()"
             style="bottom: 0; height: 33px"
           >
-            Search
+            Tìm kiếm
           </button>
         </div>
       </div>
@@ -44,11 +44,11 @@
                 {{ room.name }}
               </p>
               <p style="color: white; font-size: 15px">
-                Cost First Hour:
+                Giá giờ đầu:
                 {{ cost_first_hour[room.room_type_id - 1].value }} VND
               </p>
               <p style="color: white; font-size: 15px">
-                Cost Next Hour:
+                Giá các giờ tiếp theo:
                 {{ cost_next_hour[room.room_type_id - 1].value }} VND
               </p>
             </div>

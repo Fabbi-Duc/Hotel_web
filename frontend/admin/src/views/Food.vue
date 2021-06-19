@@ -3,7 +3,7 @@
     <div class="content" style="margin-top: 150px">
       <b-row class="mt-5">
         <b-col md="9" v-if="listFood">
-          <h2 style="text-transform: uppercase" class="mb-4">List of dishes</h2>
+          <h2 style="text-transform: uppercase" class="mb-4">Danh sách các món ăn</h2>
           <b-row
             class=""
             style="
@@ -61,7 +61,7 @@
           </div>
         </b-col>
         <b-col md="3">
-          <h2 class="text-center mb-4">CART</h2>
+          <h2 class="text-center mb-4">Giỏ hàng</h2>
           <div v-if="listFoodSelected.length > 0">
             <div class="food__selected text-center">
               <div
@@ -90,16 +90,16 @@
                 </div>
               </div>
               <div class="delete-all-cart" @click="deleteAllCart">
-                DELETE ALL
+                Xóa tất cả
               </div>
             </div>
             <div class="total-price text-center">
-              <div class="total-price__label">TOTAL PRICE</div>
+              <div class="total-price__label">Tổng tiền</div>
               <div class="total-price__value">
                 {{ Intl.NumberFormat().format(totalPrice) }}đ
               </div>
             </div>
-            <div class="book__food text-center" @click="order()">ORDER</div>
+            <div class="book__food text-center" @click="order()">Đặt đồ</div>
           </div>
           <div
             v-else
@@ -218,13 +218,13 @@ export default {
             room = res.room.name;
           });
         await this.$store.dispatch("customer/order", params).then(() => {
-          alert("Ban da dat mon thanh cong");
+          alert("Bạn đã đặt món thành công");
           sendNotificationFirebase({
             device_type: "3",
             body:
-              "Khach hang phong" +
+              "Khách hàng phòng" +
               room +
-              " da dat do an ",
+              " đã đặt đồ ăn ",
             user_id: "3",
             title: "Food",
           })
@@ -241,13 +241,13 @@ export default {
             room = res.room.name;
           });
         await this.$store.dispatch("customer/order", params).then(() => {
-          alert("Ban da dat mon thanh cong");
+          alert("Bạn đã đặt món thành công");
           sendNotificationFirebase({
             device_type: "3",
             body:
-              "Khach hang phong" +
+              "Khách hàng phòng" +
               room +
-              " da dat do an ",
+              " đã đặt đồ ăn ",
             user_id: "3",
             title: "Food",
           })

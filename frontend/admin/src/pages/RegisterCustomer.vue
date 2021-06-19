@@ -1,7 +1,7 @@
 <template>
   <div id="login-customer">
     <div class="login-box">
-      <h1>REGISTER</h1>
+      <h1>ĐĂNG KÝ</h1>
       <ValidationObserver ref="form" v-slot="{ handleSubmit }">
         <form action="" @submit.prevent="handleSubmit(register)">
           <div v-show="step === 1">
@@ -11,10 +11,10 @@
               v-slot="{ errors }"
             >
               <div class="textbox">
-                <label for="">Name</label>
+                <label for="">Tên</label>
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder="Tên"
                   v-model="formRegister.name"
                 />
               </div>
@@ -41,16 +41,16 @@
               v-slot="{ errors }"
             >
               <div class="textbox">
-                <label for="">Password</label>
+                <label for="">Mật khẩu</label>
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="Mật khẩu"
                   v-model="formRegister.password"
                 />
               </div>
               <span class="error text-left f-w3">{{ errors[0] }}</span>
             </ValidationProvider>
-            <input type="button" class="btn" value="Next" @click="next()" />
+            <input type="button" class="btn" value="Tiếp" @click="next()" />
           </div>
           <div v-show="step === 2">
             <ValidationProvider
@@ -59,10 +59,10 @@
               v-slot="{ errors }"
             >
               <div class="textbox">
-                <label for="">Phone</label>
+                <label for="">Điện thoại</label>
                 <input
                   type="text"
-                  placeholder="Phone number"
+                  placeholder="Điện thoại"
                   v-model="formRegister.phone"
                 />
               </div>
@@ -74,7 +74,7 @@
               v-slot="{ errors }"
             >
               <div class="textbox">
-                <label for="">PASSPORT</label>
+                <label for="">Hộ chiếu</label>
                 <input
                   type="text"
                   placeholder="CMND"
@@ -89,7 +89,7 @@
               v-slot="{ errors }"
             >
               <div class="textbox">
-                <label for="">Gender</label>
+                <label for="">Giới tính</label>
                 <b-form-select v-model="formRegister.gender">
                   <b-form-select-option v-for="(item, index) in optionsGender" :key="index" :value="item.value">{{ item.text }}</b-form-select-option>
                 </b-form-select>
@@ -101,21 +101,22 @@
               rules="required"
               v-slot="{ errors }"
             >
-              <label for="" style="font-size: 20px">Birthday</label>
+              <label for="" style="font-size: 20px">Ngày sinh</label>
               <input type="date" class="date" v-model="formRegister.birthday" />
               <span class="error text-left f-w3">{{ errors[0] }}</span>
             </ValidationProvider>
             <input
               type="button"
               class="btn"
-              value="Previous"
+              value="Trước"
               @click="Previous()"
             />
             <input
               type="submit"
               class="btn"
-              value="Register"
+              value="Đăng ký"
             />
+            <span style="display: inline-block; font-size: 18px; text-align: right; float: right; margin-top: 5px">Bạn đã có tài khoản! <a style="color: red" @click="login" href="#">Đăng nhập?</a></span>
           </div>
         </form>
       </ValidationObserver>
@@ -170,6 +171,9 @@ export default {
           this.$router.push({name : 'LoginCustomer'})
         });
     },
+    login() {
+      this.$router.push({ name: "LoginCustomer" });
+    }
   },
 };
 </script>
