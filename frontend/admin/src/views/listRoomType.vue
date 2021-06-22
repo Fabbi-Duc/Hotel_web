@@ -149,6 +149,7 @@ export default {
           query: {
             room_id: id,
             room_status: status,
+            room_type: this.$route.query.type_room_id
           },
         });
       }
