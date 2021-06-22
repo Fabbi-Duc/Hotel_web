@@ -139,6 +139,7 @@ import VueGallerySlideshow from "vue-gallery-slideshow";
 import store from "@/store";
 import { sendNotificationFirebase } from "@/api/notification.api";
 import firebase from "@/plugins/firebase";
+import moment from "moment";
 export default {
   components: {
     VueGallerySlideshow,
@@ -161,6 +162,12 @@ export default {
         { value: "", text: "" },
         { value: 1, text: "F1" },
         { value: 2, text: "F2" },
+      ],
+      dataMoney: [
+        { firstHour: 2000000, nextHour: 1500000 },
+        { firstHour: 1000000, nextHour: 700000 },
+        { firstHour: 700000, nextHour: 500000 },
+        { firstHour: 2500000, nextHour: 2000000 },
       ],
       type: "",
       floor: "",
@@ -292,6 +299,19 @@ export default {
           start_time: this.checkIn,
           end_time: this.checkOut,
         };
+        var a = moment(this.checkIn); //now
+        var b = moment(this.checkOut);
+        // console.log(b.diff(a, "hours"));
+        // this.moment = a.diff(b, 'hours');
+        if (b.diff(a, "hours") <= 1) {
+          this.money =
+            this.dataMoney[this.$route.query.room_type - 1].firstHour;
+        } else {
+          this.money =
+            this.dataMoney[this.$route.query.room_type - 1].firstHour +
+            this.dataMoney[this.$route.query.room_type - 1].nextHour *
+              (b.diff(a, "hours") - 1);
+        }
         this.$refs["modal-money"].show();
       }
     },

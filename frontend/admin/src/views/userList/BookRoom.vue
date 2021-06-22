@@ -139,7 +139,7 @@
                 </div>
               </ValidationProvider>
             </div>
-             <div class="option">
+            <div class="option">
               <label for="">Tiền cọc</label>
               <ValidationProvider
                 name="Deposit"
@@ -181,6 +181,13 @@ export default {
     return {
       name: null,
       email: null,
+      room_type: null,
+      dataMoney: [
+        { firstHour: 2000000, nextHour: 1500000 },
+        { firstHour: 1000000, nextHour: 700000 },
+        { firstHour: 700000, nextHour: 500000 },
+        { firstHour: 2500000, nextHour: 2000000 },
+      ],
       birthday: null,
       phone: null,
       identity_card: null,
@@ -201,7 +208,35 @@ export default {
       this.getInfoCustomer(this.user_id);
     }
   },
+  created() {
+    this.$store.dispatch("room/getInfoRoom", this.id).then((res) => {
+      this.room_type = res.room.room_type_id;
+    });
+  },
+  watch: {
+    start_time() {
+      this.getMoney();
+    },
+    end_time() {
+      this.getMoney();
+    },
+  },
   methods: {
+    getMoney() {
+      if (this.end_time && this.start_time && this.end_time > this.start_time) {
+        var a = moment(this.start_time); //now
+        var b = moment(this.end_time);
+        if (b.diff(a, "hours") <= 1) {
+          this.deposit =
+            this.dataMoney[this.room_type - 1].firstHour;
+        } else {
+          this.deposit =
+            this.dataMoney[this.room_type - 1].firstHour +
+            this.dataMoney[this.room_type - 1].nextHour *
+              (b.diff(a, "hours") - 1);
+        }
+      }
+    },
     async bookRoom() {
       const payload = {
         name: this.name,
@@ -236,7 +271,7 @@ export default {
         const params = {
           user_id: this.user_id,
           start_time: this.start,
-        }
+        };
         await this.$store
           .dispatch("customer/updateBookRoom", params)
           .then(() => {
@@ -251,7 +286,7 @@ export default {
       const params = {
         customer_id: customer_id,
         start_time: this.start,
-      }
+      };
       await this.$store
         .dispatch("customer/getInfoCustomer", params)
         .then((res) => {
@@ -274,9 +309,9 @@ export default {
         room_id: this.id,
         park_id: this.park_id,
         start_time: this.start_time,
-        end_time: this.end_time
-      }
-      await this.$store.dispatch('customer/updatePark', payload)
+        end_time: this.end_time,
+      };
+      await this.$store.dispatch("customer/updatePark", payload);
     },
     async getQrCode() {
       let imgSrc =
