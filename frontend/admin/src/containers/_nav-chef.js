@@ -36,7 +36,6 @@ export default [
         name: "DS đơn xuất kho",
         to: "/list-export-ingredients"
       },
-      ,
       {
         _name: "CSidebarNavItem",
         icon: "cil-puzzle",
