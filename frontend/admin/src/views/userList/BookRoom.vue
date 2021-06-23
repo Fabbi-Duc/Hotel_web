@@ -228,12 +228,12 @@ export default {
         var b = moment(this.end_time);
         if (b.diff(a, "hours") <= 1) {
           this.deposit =
-            this.dataMoney[this.room_type - 1].firstHour;
+            this.dataMoney[this.room_type - 1].firstHour/2;
         } else {
           this.deposit =
-            this.dataMoney[this.room_type - 1].firstHour +
+            (this.dataMoney[this.room_type - 1].firstHour +
             this.dataMoney[this.room_type - 1].nextHour *
-              (b.diff(a, "hours") - 1);
+              (b.diff(a, "hours") - 1))/2;
         }
       }
     },

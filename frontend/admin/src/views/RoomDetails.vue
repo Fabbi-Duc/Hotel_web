@@ -305,12 +305,12 @@ export default {
         // this.moment = a.diff(b, 'hours');
         if (b.diff(a, "hours") <= 1) {
           this.money =
-            this.dataMoney[this.$route.query.room_type - 1].firstHour;
+            this.dataMoney[this.$route.query.room_type - 1].firstHour/2;
         } else {
           this.money =
-            this.dataMoney[this.$route.query.room_type - 1].firstHour +
+            (this.dataMoney[this.$route.query.room_type - 1].firstHour +
             this.dataMoney[this.$route.query.room_type - 1].nextHour *
-              (b.diff(a, "hours") - 1);
+              (b.diff(a, "hours") - 1))/2;
         }
         this.$refs["modal-money"].show();
       }
