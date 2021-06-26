@@ -1,25 +1,25 @@
 <template>
   <div class="detail-bill">
     <label for="">Khách hàng : </label>
-    <span> {{ name }}</span>
+    <span> {{ billsPdf[0].name }}</span>
     <br />
     <label for="">Giờ bắt đầu : </label>
-    <span> {{ start_time }}</span>
+    <span> {{ billsPdf[0].start_time }}</span>
     <br />
     <label for="">Giờ kết thúc : </label>
-    <span> {{ end_time }}</span>
+    <span> {{ billsPdf[0].end_time }}</span>
     <br />
     <label for="">Số giờ : </label>
-    <span> {{ hour }}</span>
+    <span> {{ billsPdf[0].hour }}</span>
     <br />
     <label for="">Tiền phòng : </label>
-    <span> {{ Math.ceil(money_room) }} VND</span>
+    <span> {{ Intl.NumberFormat().format(Math.ceil(billsPdf[0].money_room)) }} VND</span>
     <br />
-    <label for="" v-if="money_food">Tiền đồ ăn : </label>
-    <span v-if="money_food"> {{ Math.ceil(money_food) }} VND</span>
+    <label for="" v-if="billsPdf[0].money_food">Tiền đồ ăn : </label>
+    <span v-if="billsPdf[0].money_food"> {{ Intl.NumberFormat().format(Math.ceil(billsPdf[0].money_food)) }} VND</span>
     <br />
     <label>Tiền cọc : </label>
-    <span> {{ Math.ceil(deposit) }} VND</span>
+    <span> {{ Intl.NumberFormat().format(Math.ceil(billsPdf[0].deposit)) }} VND</span>
     <br />
     <label for="">Danh sách đồ hỏng: </label>
     <br />
@@ -104,6 +104,7 @@
             >
               <input
                 type="number"
+                @change="focus()"
                 @keyup="focus()"
                 min="0"
                 class="form-control"
@@ -147,11 +148,13 @@
           </div>
         </div>
         <label for="" style="margin-top: 40px">Tổng tiền : </label>
-        <span> {{ total_cost }} VND</span>
+        <span> {{ Intl.NumberFormat().format(billsPdf[0].total_cost) }} VND</span>
         <br />
         <label>Tiền cọc : </label>
-        <span>  {{ Math.ceil(total_price) }} VND</span>
+        <span>  {{ Intl.NumberFormat().format(Math.ceil(billsPdf[0].deposit)) }} VND</span>
         <br />
+        <label style="color: red; font-size: 20px">Tổng tiền cần thanh toán: : </label>
+        <span style="color: red; font-size: 20px">  {{ Intl.NumberFormat().format(Math.ceil(billsPdf[0].total_price)) }} VND</span>
         <div class="d-flex justify-content-center">
           <button class="btn-info" style="width: 150px; margin-top: 50px">
             Pay
@@ -159,28 +162,36 @@
         </div>
       </form>
     </ValidationObserver>
+    <pdfAllBills ref="allBills" :options="billsPdf" />
   </div>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { sendNotificationFirebase } from "@/api/notification.api";
+import pdfAllBills from "./PdfExport/pdfAllBills.vue"
 export default {
   components: {
     ValidationObserver,
     ValidationProvider,
+    pdfAllBills
   },
   data() {
     return {
-      end_time: null,
-      start_time: null,
-      hour: null,
-      total_cost: 0,
-      total_price: 0,
-      money_room: null,
-      money_food: null,
-      deposit: null,
-      name: null,
+      billsPdf: [
+        {
+          end_time: null,
+          start_time: null,
+          hour: null,
+          total_cost: 0,
+          total_price: 0,
+          money_room: null,
+          money_food: null,
+          deposit: null,
+          name: null,
+          broken: null
+        }
+      ],
       options: [
         {
           houseware_id: null,
@@ -210,15 +221,15 @@ export default {
     },
     getBill() {
       this.$store.dispatch("customer/detailBill", this.id).then((res) => {
-        this.start_time = res.start_time;
-        this.end_time = res.end_time;
-        this.hour = res.hour / 3600;
-        this.money_room = res.data;
-        this.money_food = res.money;
-        this.total_cost = this.money_room + this.money_food;
-        (this.deposit = res.deposit),
-          (this.total_price = this.total_cost - this.deposit),
-          (this.name = res.name);
+        this.billsPdf[0].start_time = res.start_time;
+        this.billsPdf[0].end_time = res.end_time;
+        this.billsPdf[0].hour = res.hour / 3600;
+        this.billsPdf[0].money_room = res.data;
+        this.billsPdf[0].money_food = res.money;
+        this.billsPdf[0].total_cost = this.billsPdf[0].money_room + this.billsPdf[0].money_food;
+        (this.billsPdf[0].deposit = res.deposit),
+          (this.billsPdf[0].total_price = this.billsPdf[0].total_cost - this.billsPdf[0].deposit),
+          (this.billsPdf[0].name = res.name);
       });
     },
     focus() {
@@ -226,17 +237,18 @@ export default {
         for (let i = 0; i < this.options.length; i++) {
           for (let j = 0; j < this.housewareOption.length; j++) {
             if (this.options[i].houseware_id == this.housewareOption[j].id) {
-              this.total_cost =
-                this.money_food +
-                this.money_room +
+              this.billsPdf[0].total_cost =
+                this.billsPdf[0].money_food +
+                this.billsPdf[0].money_room +
                 this.housewareOption[j].cost * this.options[i].quantity;
-              this.total_price = this.total_cost - this.deposit;
+              this.billsPdf[0].total_price = this.billsPdf[0].total_cost - this.billsPdf[0].deposit;
             }
           }
         }
+        this.billsPdf[0].broken = this.options;
       } else {
-        this.total_cost = this.money_food + this.money_room;
-        this.total_price = this.total_cost - this.deposit;
+        this.billsPdf[0].total_cost = this.billsPdf[0].money_food + this.billsPdf[0].money_room;
+        this.billsPdf[0].total_price = this.billsPdf[0].total_cost - this.billsPdf[0].deposit;
       }
     },
     getHouseware() {
@@ -272,7 +284,7 @@ export default {
     pay() {
       const params = {
         id: this.id,
-        cost_houseware: this.total_cost,
+        cost_houseware: this.billsPdf[0].total_cost,
         options: this.options,
         user_id: this.user.id,
       };
@@ -292,6 +304,7 @@ export default {
           });
         this.$router.push({ name: "Room" });
       });
+      this.$refs.allBills.generateReport();
     },
   },
 };
