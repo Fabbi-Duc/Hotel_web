@@ -13,7 +13,11 @@
       </div>
       <div class="position-relative">
         <div class="position-absolute" style="bottom: 0">
-          <button class="btn-info ml-3" style="height: 35px; width: 100px" @click="getList()">
+          <button
+            class="btn-info ml-3"
+            style="height: 35px; width: 100px"
+            @click="getList()"
+          >
             Tìm kiếm
           </button>
         </div>
@@ -32,6 +36,12 @@
           ++row.index + (Number(paginate.page) - 1) * Number(paginate.perPage)
         }}
       </template>
+      <template #cell(discount)="row">
+        <span>{{ row.item.discount }}%</span>
+      </template>
+      <template #cell(user_id)="row">
+        <span>{{ userOption[row.item.user_id - 1].text }}</span>
+      </template>
       <template #cell(action)="row">
         <b-icon
           v-if="row.item.status == 1"
@@ -42,7 +52,9 @@
           @click="deleteData(row.item.id)"
         >
         </b-icon>
-        <span v-if="row.item.status == 2" @click="updateHouse(row.item.id)"> Da hoan thanh </span>
+        <span v-if="row.item.status == 2" @click="updateHouse(row.item.id)">
+          Da hoan thanh
+        </span>
         <b-icon
           v-if="row.item.status == 1"
           icon="pencil-square"
@@ -77,9 +89,16 @@ export default {
         { key: "numerical", label: "STT" },
         { key: "cost", label: "Giá" },
         { key: "description", label: "Mô tả" },
-        { key: "created_at", label: "Ngày tạo" },
-        { key: "updated_at", label: "Ngày cập nhật" },
+        { key: "day", label: "Ngày nhập" },
+        { key: "discount", label: "Chiết khấu" },
+        { key: "user_id", label: "Người nhập" },
         { key: "action", label: "Hành động" },
+      ],
+      userOption: [
+        { value: 1, text: "Nguyễn Huy Đức" },
+        { value: 2, text: "Nguyễn Huy Trung" },
+        { value: 3, text: "Nguyễn Huy Nam" },
+        { value: 4, text: "Nguyễn Đình Tân" },
       ],
       paginate: {
         perPage: 10,
@@ -121,7 +140,10 @@ export default {
       }
     },
     updateHouse(id) {
-      this.$router.push({ name: "UpdateCouponIngredients", params: { id: id } });
+      this.$router.push({
+        name: "UpdateCouponIngredients",
+        params: { id: id },
+      });
     },
   },
 };

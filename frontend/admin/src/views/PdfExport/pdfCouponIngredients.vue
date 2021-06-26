@@ -19,7 +19,9 @@
         <div class="content text-center">
           <h2>Biên lai nhập thực phẩm</h2>
           <br /><br /><br />
-          <p class="text-right">Ngày nhập: {{ dateNow }}</p>
+          <p class="text-left">Người nhập: {{ user.user_name }}</p>
+          <p class="text-left">Ngày nhập: {{ user.day }}</p>
+          <p class="text-left">Chiết khấu: {{ user.discount }}</p>
           <table style="width: 100%">
             <tr>
               <th>Đồ dùng</th>
@@ -49,6 +51,7 @@ export default {
   components: { VueHtml2pdf },
   props: {
     options: Array,
+    user: Object
   },
   name: "PointPdfExport",
   data() {

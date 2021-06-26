@@ -14,5 +14,8 @@ class EnterCouponHouseware extends Model
         'cost',
         'description',
         'status',
+        'day',
+        'discount',
+        'user_id'
     ];
 }

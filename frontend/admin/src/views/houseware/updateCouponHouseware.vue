@@ -2,8 +2,42 @@
   <div>
     <ValidationObserver v-slot="{ handleSubmit }">
       <form @submit.prevent="handleSubmit(onSubmit)" class="form" ref="form">
+        <label for="">Ngày nhập</label>
+        <input
+          type="date"
+          class="form-control"
+          style="margin-bottom: 20px; width: 500px"
+          v-model="day"
+        />
+        <b-row>
+          <b-col>
+            <label for="">Người nhập</label>
+            <br />
+            <b-form-select
+              style="margin-bottom: 20px"
+              class="position__select"
+              v-model="user_id"
+              :options="userOption"
+            />
+            <br />
+          </b-col>
+          <b-col>
+            <label for="">Chiết khấu</label>
+            <input
+              type="text"
+              class="form-control"
+              style="width: 500px; margin-bottom: 20px"
+              v-model="discount"
+            />
+          </b-col>
+        </b-row>
         <label for="">Mô tả</label>
-        <textarea type="text" class="form-control" style="height: 200px" v-model="description" />
+        <textarea
+          type="text"
+          class="form-control"
+          style="height: 200px"
+          v-model="description"
+        />
         <div
           class="mt-3 row position-relative"
           v-for="(option, indexOption) in options"
@@ -19,7 +53,14 @@
                 v-slot="{ errors }"
               >
                 <div
-                  class="position-relative w-100 d-flex justify-content-center align-items-center option"
+                  class="
+                    position-relative
+                    w-100
+                    d-flex
+                    justify-content-center
+                    align-items-center
+                    option
+                  "
                   @click="showOption(indexOption)"
                 >
                   <input
@@ -138,8 +179,20 @@
           </div>
         </div>
         <div class="d-flex justify-content-center" v-if="status == 1">
-          <button class="btn-success mt-3" style="width: 120px" @click="update()">Cập nhật</button>
-          <button class="btn-info mt-3 ml-3" style="width: 120px" @click="complete()">Hoàn thành</button>
+          <button
+            class="btn-success mt-3"
+            style="width: 120px"
+            @click="update()"
+          >
+            Cập nhật
+          </button>
+          <button
+            class="btn-info mt-3 ml-3"
+            style="width: 120px"
+            @click="complete()"
+          >
+            Hoàn thành
+          </button>
         </div>
       </form>
     </ValidationObserver>
@@ -161,9 +214,18 @@ export default {
       status: null,
       housewareOption: null,
       show: null,
-    }
+      day: null,
+      user_id: null,
+      discount: null,
+      userOption: [
+        { value: 1, text: "Nguyễn Huy Đức" },
+        { value: 2, text: "Nguyễn Huy Trung" },
+        { value: 3, text: "Nguyễn Huy Nam" },
+        { value: 4, text: "Nguyễn Đình Tân" },
+      ],
+    };
   },
-  props: ['id'],
+  props: ["id"],
 
   created() {
     this.getList();
@@ -171,11 +233,16 @@ export default {
   },
   methods: {
     getList() {
-      this.$store.dispatch('houseware/getInfoCouponHouseware', this.id).then(res => {
-        this.description = res.description;
-        this.status = res.status;
-        this.options = res.data;
-      })
+      this.$store
+        .dispatch("houseware/getInfoCouponHouseware", this.id)
+        .then((res) => {
+          this.description = res.description;
+          this.status = res.status;
+          this.options = res.data;
+          this.user_id = res.user_id;
+          this.discount = res.discount;
+          this.day = res.day
+        });
     },
     getHouseware() {
       this.$store.dispatch("houseware/getAllHouseware").then((res) => {
@@ -212,24 +279,34 @@ export default {
       const params = {
         description: this.description,
         data: this.options,
-        id: this.id
+        id: this.id,
+        day: this.day,
+        discount: this.discount,
+        user_id: this.user_id,
       };
-      this.$store.dispatch('houseware/completeCouponHouseware', params).then(() => {
-        alert('Ban da update thanh cong');
-        window.location.reload();
-      })
+      this.$store
+        .dispatch("houseware/completeCouponHouseware", params)
+        .then(() => {
+          alert("Ban da update thanh cong");
+          window.location.reload();
+        });
     },
     update() {
       const params = {
         description: this.description,
         data: this.options,
-        id: this.id
+        id: this.id,
+        day: this.day,
+        discount: this.discount,
+        user_id: this.user_id,
       };
-      this.$store.dispatch('houseware/updateCouponHouseware', params).then(() => {
-        alert('Ban da update thanh cong');
-        window.location.reload();
-      })
-    }
-  }
-}
+      this.$store
+        .dispatch("houseware/updateCouponHouseware", params)
+        .then(() => {
+          alert("Ban da update thanh cong");
+          window.location.reload();
+        });
+    },
+  },
+};
 </script>

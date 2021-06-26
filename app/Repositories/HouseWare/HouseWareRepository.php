@@ -122,7 +122,10 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
             }
             $couponHouseware = new EnterCouponHouseware;
             $couponHouseware->description = $data['description'];
-            $couponHouseware->cost = $total;
+            $couponHouseware->user_id = $data['user_id'];
+            $couponHouseware->day = $data['day'];
+            $couponHouseware->discount = $data['discount'];
+            $couponHouseware->cost = $total * (100 - $data['discount']) / 100;
             $couponHouseware->status = 1;
             $couponHouseware->save();
             $id = DB::table('enter_coupon_houseware')->get()->last()->id;
@@ -157,8 +160,11 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
             }
             $id = $data['id'];
             DB::table('enter_coupon_houseware')->where('id', $id)->update([
-                'cost' => $total,
-                'description' => $data['description']
+                'cost' => $total*(1 - $data['discount']/100),
+                'description' => $data['description'],
+                'user_id' => $data['user_id'],
+                'day' => $data['day'],
+                'discount' => $data['discount']
             ]);
             DB::table('service_enter_coupon_houseware')->where('enter_coupon_houseware_id', $id)->delete();
             foreach ($object as $houseware) {
@@ -192,8 +198,11 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
             }
             $id = $data['id'];
             DB::table('enter_coupon_houseware')->where('id', $id)->update([
-                'cost' => $total,
+                'cost' => $total*(1 - $data['discount']/100),
                 'description' => $data['description'],
+                'user_id' => $data['user_id'],
+                'day' => $data['day'],
+                'discount' => $data['discount'],
                 'status' => 2
             ]);
             DB::table('service_enter_coupon_houseware')->where('enter_coupon_houseware_id', $id)->delete();
@@ -207,7 +216,7 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
                 $service_houseware->save();
             }
             $list = DB::table('service_enter_coupon_houseware')->where('enter_coupon_houseware_id', $id)->get();
-            foreach($list as $houseware) {
+            foreach ($list as $houseware) {
                 $quantity = DB::table('houseware')->where('id', $houseware->houseware_id)->first()->quantity + $houseware->quantity - $houseware->quantity_return;
                 DB::table('houseware')->where('id', $houseware->houseware_id)->update(['quantity' => $quantity]);
             };
@@ -254,6 +263,9 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
         try {
             $description = DB::table('enter_coupon_houseware')->where('id', $id)->first()->description;
             $status = DB::table('enter_coupon_houseware')->where('id', $id)->first()->status;
+            $user_id = DB::table('enter_coupon_houseware')->where('id', $id)->first()->user_id;
+            $day = DB::table('enter_coupon_houseware')->where('id', $id)->first()->day;
+            $discount = DB::table('enter_coupon_houseware')->where('id', $id)->first()->discount;
             $data = DB::table('houseware')
                 ->leftJoin('service_enter_coupon_houseware', 'houseware.id', '=', 'service_enter_coupon_houseware.houseware_id')
                 ->where('service_enter_coupon_houseware.enter_coupon_houseware_id', $id)
@@ -264,6 +276,9 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
                 'description' => $description,
                 'status' => $status,
                 'data' => $data,
+                'user_id' => $user_id,
+                'day' => $day,
+                'discount' => $discount
             ];
         } catch (\Exception $e) {
             return [
@@ -429,7 +444,7 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
         try {
             DB::table('export_houseware')->where('id', $id)->update(['status' => 2]);
             $list = DB::table('service_export_houseware')->where('export_houseware_id', $id)->get();
-            foreach($list as $houseware) {
+            foreach ($list as $houseware) {
                 $quantity = DB::table('houseware')->where('id', $houseware->houseware_id)->first()->quantity - $houseware->quantity;
                 DB::table('houseware')->where('id', $houseware->houseware_id)->update(['quantity' => $quantity]);
             };
@@ -444,7 +459,7 @@ class HouseWareRepository extends RepositoryAbstract implements HouseWareResposi
         }
     }
 
-    public function refuseExportHouseware($id) 
+    public function refuseExportHouseware($id)
     {
         try {
             DB::table('export_houseware')->where('id', $id)->update(['status' => 3]);

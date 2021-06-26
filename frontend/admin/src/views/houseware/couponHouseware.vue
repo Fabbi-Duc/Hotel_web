@@ -2,8 +2,42 @@
   <div>
     <ValidationObserver v-slot="{ handleSubmit }">
       <form @submit.prevent="handleSubmit(create)" class="form" ref="form">
+        <label for="">Ngày nhập</label>
+        <input
+          type="date"
+          class="form-control"
+          style="margin-bottom: 20px; width: 500px; "
+          v-model="day"
+        />
+        <b-row>
+          <b-col>
+            <label for="">Người nhập</label>
+            <br />
+            <b-form-select
+              style="margin-bottom: 20px"
+              class="position__select"
+              v-model="user_id"
+              :options="userOption"
+            />
+            <br />
+          </b-col>
+          <b-col>
+            <label for="">Chiết khấu</label>
+            <input
+              type="text"
+              class="form-control"
+              style="width: 500px; margin-bottom: 20px"
+              v-model="discount"
+            />
+          </b-col>
+        </b-row>
         <label for="">Mô tả</label>
-        <textarea type="text" class="form-control" style="height: 200px" v-model="description" />
+        <textarea
+          type="text"
+          class="form-control"
+          style="height: 200px"
+          v-model="description"
+        />
         <div
           class="mt-3 row position-relative"
           v-for="(option, indexOption) in options"
@@ -19,7 +53,14 @@
                 v-slot="{ errors }"
               >
                 <div
-                  class="position-relative w-100 d-flex justify-content-center align-items-center option"
+                  class="
+                    position-relative
+                    w-100
+                    d-flex
+                    justify-content-center
+                    align-items-center
+                    option
+                  "
                   @click="showOption(indexOption)"
                 >
                   <input
@@ -118,35 +159,56 @@
           </div>
         </div>
         <div class="d-flex justify-content-center">
-          <button type="submit" class="btn-success mt-3" style="width: 120px" @click="exportPdf()">Tạo phiếu</button>
+          <button
+            type="submit"
+            class="btn-success mt-3"
+            style="width: 120px"
+            @click="exportPdf()"
+          >
+            Tạo phiếu
+          </button>
         </div>
       </form>
     </ValidationObserver>
-    <pdfCouponHouseware ref="pdfCouponHouseware" :options="options" />
+    <pdfCouponHouseware ref="pdfCouponHouseware" :options="options" :user="user"/>
   </div>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
-import pdfCouponHouseware from "../PdfExport/pdfCouponHouseware.vue"
+import pdfCouponHouseware from "../PdfExport/pdfCouponHouseware.vue";
 
 export default {
   components: {
     ValidationObserver,
     ValidationProvider,
-    pdfCouponHouseware
+    pdfCouponHouseware,
   },
   data() {
     return {
       description: null,
       housewareOption: null,
+      day: null,
+      user_id: 1,
+      discount: null,
       show: null,
+      user: {
+        day: null,
+        user_name: null,
+        discount: null
+      },
+      userOption: [
+        { value: 1, text: "Nguyễn Huy Đức" },
+        { value: 2, text: "Nguyễn Huy Trung" },
+        { value: 3, text: "Nguyễn Huy Nam" },
+        { value: 4, text: "Nguyễn Đình Tân" },
+      ],
       options: [
         {
           houseware_id: null,
           quantity: null,
           name: null,
-          cost: null
+          cost: null,
         },
       ],
     };
@@ -170,7 +232,7 @@ export default {
     chooseOption(index, indexOption) {
       this.options[indexOption].houseware_id = this.housewareOption[index].id;
       this.options[indexOption].name = this.housewareOption[index].name;
-      this.options[indexOption].cost = this.housewareOption[index].cost
+      this.options[indexOption].cost = this.housewareOption[index].cost;
       this.show = null;
     },
     plus() {
@@ -187,13 +249,22 @@ export default {
     create() {
       const params = {
         description: this.description,
-        data: this.options
+        data: this.options,
+        day: this.day,
+        discount: this.discount,
+        user_id: this.user_id
       };
-      this.$store.dispatch('houseware/createCouponHouseware', params)
+      this.$store.dispatch("houseware/createCouponHouseware", params);
     },
     exportPdf() {
+      this.user = {
+        user_name: this.userOption[this.user_id -1].text,
+        day: this.day,
+        discount: this.discount,
+        decription: this.decription,
+      }
       this.$refs.pdfCouponHouseware.generateReport();
-    }
+    },
   },
 };
 </script>

@@ -121,7 +121,10 @@ class IngredientsRepository extends RepositoryAbstract implements IngredientsRep
             }
             $couponHouseware = new EnterCouponIngredients;
             $couponHouseware->description = $data['description'];
-            $couponHouseware->cost = $total;
+            $couponHouseware->user_id = $data['user_id'];
+            $couponHouseware->day = $data['day'];
+            $couponHouseware->discount = $data['discount'];
+            $couponHouseware->cost = $total * (100 - $data['discount']) / 100;
             $couponHouseware->status = 1;
             $couponHouseware->save();
             $id = DB::table('enter_coupon_ingredients')->get()->last()->id;
@@ -156,8 +159,11 @@ class IngredientsRepository extends RepositoryAbstract implements IngredientsRep
             }
             $id = $data['id'];
             DB::table('enter_coupon_ingredients')->where('id', $id)->update([
-                'cost' => $total,
-                'description' => $data['description']
+                'cost' => $total*(1 - $data['discount']/100),
+                'description' => $data['description'],
+                'user_id' => $data['user_id'],
+                'day' => $data['day'],
+                'discount' => $data['discount']
             ]);
             DB::table('service_enter_coupon_ingredients')->where('enter_coupon_ingredients_id', $id)->delete();
             foreach ($object as $houseware) {
@@ -191,8 +197,11 @@ class IngredientsRepository extends RepositoryAbstract implements IngredientsRep
             }
             $id = $data['id'];
             DB::table('enter_coupon_ingredients')->where('id', $id)->update([
-                'cost' => $total,
+                'cost' => $total*(1 - $data['discount']/100),
                 'description' => $data['description'],
+                'user_id' => $data['user_id'],
+                'day' => $data['day'],
+                'discount' => $data['discount'],
                 'status' => 2
             ]);
             DB::table('service_enter_coupon_ingredients')->where('enter_coupon_ingredients_id', $id)->delete();
@@ -253,6 +262,9 @@ class IngredientsRepository extends RepositoryAbstract implements IngredientsRep
         try {
             $description = DB::table('enter_coupon_ingredients')->where('id', $id)->first()->description;
             $status = DB::table('enter_coupon_ingredients')->where('id', $id)->first()->status;
+            $user_id = DB::table('enter_coupon_ingredients')->where('id', $id)->first()->user_id;
+            $day = DB::table('enter_coupon_ingredients')->where('id', $id)->first()->day;
+            $discount = DB::table('enter_coupon_ingredients')->where('id', $id)->first()->discount;
             $data = DB::table('ingredients')
                     ->leftJoin('service_enter_coupon_ingredients', 'ingredients.id', '=', 'service_enter_coupon_ingredients.ingredients_id')
                     ->where('service_enter_coupon_ingredients.enter_coupon_ingredients_id', $id)
@@ -263,6 +275,9 @@ class IngredientsRepository extends RepositoryAbstract implements IngredientsRep
                 'description' => $description,
                 'status' => $status,
                 'data' => $data,
+                'user_id' => $user_id,
+                'day' => $day,
+                'discount' => $discount
             ];
 
         } catch (\Exception $e) {

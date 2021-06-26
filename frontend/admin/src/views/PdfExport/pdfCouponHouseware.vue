@@ -19,7 +19,9 @@
         <div class="content text-center">
           <h2>Biên lai nhập hàng</h2>
           <br /><br /><br />
-          <p class="text-right">Ngày nhập: {{ dateNow }}</p>
+          <p class="text-left">Người nhập: {{ user.user_name }}</p>
+          <p class="text-left">Ngày nhập: {{ user.day }}</p>
+          <p class="text-left">Chiết khấu: {{ user.discount }}</p>
           <table style="width: 100%">
             <tr>
               <th>Đồ dùng</th>
@@ -32,7 +34,7 @@
               <td>{{ Intl.NumberFormat().format(item.cost) }}</td>
             </tr>
           </table>
-          <h3 class="text-right mt-4 mb-4" style="font-weight: bold">Tổng tiền: {{ Intl.NumberFormat().format(totalPrice) }} VND</h3>
+          <h3 class="text-right mt-4 mb-4" style="font-weight: bold">Tổng tiền: {{ Intl.NumberFormat().format(totalPrice)*(1 - user.discount/100) }} VND</h3>
           <h3 class="mt-5 mr-5 text-right">Xác nhận</h3>
           <h4 class="text-right">Chữ ký người nhập</h4>
         </div>
@@ -49,6 +51,7 @@ export default {
   components: { VueHtml2pdf },
   props: {
     options: Array,
+    user: Object,
   },
   name: "PointPdfExport",
   data() {
@@ -63,6 +66,7 @@ export default {
   created() {
     var now = new Date().toLocaleString();
     this.dateNow = now;
+    console.log(this.user);
   },
   methods: {
     onProgress(event) {
