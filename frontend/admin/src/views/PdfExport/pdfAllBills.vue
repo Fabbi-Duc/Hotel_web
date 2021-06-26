@@ -15,10 +15,36 @@
       ref="html2Pdf"
       @progress="onProgress($event)"
     >
-      <section
-        slot="pdf-content"
-      >
-        abcd
+      <section slot="pdf-content">
+        <div class="content text-center">
+          <h2>Biên lai thanh toán thuê phòng</h2>
+          <br /><br /><br />
+          <p class="text-right">Ngày trả phòng: {{ dateNow }}</p>
+         <p class="text-left"> Khách hàng: {{ options[0].name }}</p>
+          <p class="text-left">Giờ bắt đầu: {{ options[0].start_time }}</p>
+          <p class="text-left">Giờ kết thúc: {{ options[0].end_time }}</p>
+          <p class="text-left">Số giờ: {{ options[0].hour }}</p>
+          <p class="text-left">Tiền phòng: {{ Intl.NumberFormat().format(options[0].money_room) }} VND</p>
+          <p class="text-left">Tiền cọc: {{ Intl.NumberFormat().format(options[0].deposit) }} VND</p>
+          <h4 for="" class="text-left">Danh sách đồ hỏng:</h4>
+          <table style="width: 100%">
+            <tr>
+              <th>Đồ dùng</th>
+              <th>Số lượng</th>
+              <th>Đơn giá</th>
+            </tr>
+            <tr v-for="(item, index) in options[0].broken" :key="index">
+              <td>{{ item.name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ Intl.NumberFormat().format(item.cost) }}</td>
+            </tr>
+          </table>
+          <h3 class="text-right mt-4 mb-4" style="font-weight: bold">
+            Tổng tiền: {{ Intl.NumberFormat().format(options[0].total_cost - options[0].deposit) }} VND
+          </h3>
+          <h3 class="mt-5 mr-5 text-right">Xác nhận</h3>
+          <h4 class="text-right">Chữ ký người nhập</h4>
+        </div>
         <div class="html2pdf__page-break"></div>
       </section>
     </vue-html2pdf>
@@ -31,14 +57,23 @@ import VueHtml2pdf from "vue-html2pdf";
 export default {
   components: { VueHtml2pdf },
   name: "PointPdfExport",
+  props: {
+    options: Array,
+  },
   data() {
-    return {};
+    return {
+      dateNow: null,
+    };
   },
   computed: {
     ...mapGetters({
       usersBlocked: "auth/usersBlock",
-      dataExport: "pointHistory/dataExport"
-    })
+      dataExport: "pointHistory/dataExport",
+    }),
+  },
+  created() {
+    var now = new Date().toLocaleString();
+    this.dateNow = now;
   },
   methods: {
     onProgress(event) {
@@ -48,7 +83,7 @@ export default {
     async generateReport() {
       await this.$refs.html2Pdf.generatePdf();
     },
-  }
+  },
 };
 </script>
 
