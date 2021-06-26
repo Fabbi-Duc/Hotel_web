@@ -97,8 +97,6 @@ export default {
               Math.cos(deglat2) *
               Math.pow(Math.sin(difflog / 2), 2);
           let res = 6378.8 * (2 * Math.asin(Math.sqrt(val))); //for kilometers
-
-          console.log(res);
         },
         function (err) {
           console.log(err);

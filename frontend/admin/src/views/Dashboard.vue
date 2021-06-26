@@ -153,9 +153,10 @@
             <template #cell(late)="row">
               <span
                 v-if="
-                row.item.time_check_in &&
+                  row.item.time_check_in &&
                   formatTime(row.item.time_check_in) >
-                    formatTime('2017-06-01T06:00') && user.shift == 1
+                    formatTime('2017-06-01T06:00') &&
+                  user.shift == 1
                 "
               >
                 {{
@@ -177,7 +178,7 @@
               </span>
               <span
                 v-if="
-                row.item.time_check_in &&
+                  row.item.time_check_in &&
                   row.item.time_check_in > formatTime('2017-06-01T18:00') &&
                   user.shift == 2
                 "
@@ -203,9 +204,10 @@
             <template #cell(soon)="row">
               <span
                 v-if="
-                row.item.time_check_out &&
+                  row.item.time_check_out &&
                   formatTime(row.item.time_check_out) <
-                  formatTime('2017-06-01T17:30') && user.shift == 1
+                    formatTime('2017-06-01T17:30') &&
+                  user.shift == 1
                 "
               >
                 {{
@@ -227,7 +229,7 @@
               </span>
               <span
                 v-if="
-                row.item.time_check_out &&
+                  row.item.time_check_out &&
                   formatTimeHour(row.item.time_check_out) <
                     formatTimeHourTomorrow('2017-06-01T05:30') &&
                   user.shift == 2
@@ -403,10 +405,10 @@ export default {
           });
           sendNotificationFirebase({
             device_type: "0",
-            body: "Nhân viên" + this.user.lastname + 'đã tạo đơn bổ sung công',
+            body: "Nhân viên" + this.user.lastname + "đã tạo đơn bổ sung công",
             user_id: "0",
             title: "Bổ sung công",
-          })
+          });
         } else {
           this.$toasted.show("Bạn đã tạo đơn rồi", {
             duration: 3000,
@@ -474,25 +476,91 @@ export default {
       );
     },
     checkIn() {
-      let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
-      const params = {
-        user_id: this.user.id,
-        time: time,
-      };
-      this.$store.dispatch("user/checkIn", params).then(() => {
-        this.checkTimeSheet();
-        this.getTimeSheet();
+      navigator.geolocation.getCurrentPosition(function (position) {
+        // console.log(position.coords.latitude);
+        // console.log(position.coords.longitude);
+        let lat1 = 21.0476192;
+        let log1 = 105.79381839999999;
+        let lat2 = position.coords.latitude;
+        let log2 = position.coords.longitude;
+        var pi = Math.PI;
+
+        let deglat1 = lat1 * (pi / 180);
+        let deglog1 = log1 * (pi / 180);
+        let deglat2 = lat2 * (pi / 180);
+        let deglog2 = log2 * (pi / 180);
+
+        let difflat = deglat2 - deglat1;
+        let difflog = deglog2 - deglog1;
+
+        let val =
+          Math.pow(Math.sin(difflat / 2), 2) +
+          Math.cos(deglat1) *
+            Math.cos(deglat2) *
+            Math.pow(Math.sin(difflog / 2), 2);
+        let res = 6378.8 * (2 * Math.asin(Math.sqrt(val)));
+        if (res < 0.1) {
+          let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
+          const params = {
+            user_id: this.user.id,
+            time: time,
+          };
+          this.$store.dispatch("user/checkIn", params).then(() => {
+            this.checkTimeSheet();
+            this.getTimeSheet();
+            this.$toasted.show("Checkin thành công", {
+              duration: 3000,
+            });
+          });
+        } else {
+          this.$toasted.show("Checkin thất bại", {
+            duration: 3000,
+          });
+        }
       });
     },
     checkOut() {
-      let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
-      const params = {
-        user_id: this.user.id,
-        time: time,
-      };
-      this.$store.dispatch("user/checkOut", params).then(() => {
-        this.checkTimeSheet();
-        this.getTimeSheet();
+      navigator.geolocation.getCurrentPosition(function (position) {
+        // console.log(position.coords.latitude);
+        // console.log(position.coords.longitude);
+        let lat1 = 21.0476192;
+        let log1 = 105.79381839999999;
+        let lat2 = position.coords.latitude;
+        let log2 = position.coords.longitude;
+        var pi = Math.PI;
+
+        let deglat1 = lat1 * (pi / 180);
+        let deglog1 = log1 * (pi / 180);
+        let deglat2 = lat2 * (pi / 180);
+        let deglog2 = log2 * (pi / 180);
+
+        let difflat = deglat2 - deglat1;
+        let difflog = deglog2 - deglog1;
+
+        let val =
+          Math.pow(Math.sin(difflat / 2), 2) +
+          Math.cos(deglat1) *
+            Math.cos(deglat2) *
+            Math.pow(Math.sin(difflog / 2), 2);
+        let res = 6378.8 * (2 * Math.asin(Math.sqrt(val)));
+        if (res < 0.1) {
+          let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
+          const params = {
+            user_id: this.user.id,
+            time: time,
+          };
+          this.$store.dispatch("user/checkOut", params).then(() => {
+            this.checkTimeSheet();
+            this.getTimeSheet();
+            this.$toasted.show("Checkout thành công", {
+              duration: 3000,
+            });
+          });
+        } else {
+          this.$toasted.show("Checkout thất bại", {
+            duration: 3000,
+          });
+        }
       });
     },
     async search() {

@@ -18,6 +18,9 @@ class CreateTableEnterCouponIngredientsTable extends Migration
             $table->integer('cost');
             $table->string('description');
             $table->integer('status');
+            $table->date('day');
+            $table->string('discount');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

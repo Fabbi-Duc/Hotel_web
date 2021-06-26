@@ -1,7 +1,36 @@
 <template>
   <div>
     <ValidationObserver v-slot="{ handleSubmit }">
-      <form @submit.prevent="handleSubmit(onSubmit)" class="form" ref="form">
+      <form @submit.prevent="handleSubmit(update)" class="form" ref="form">
+        <label for="">Ngày nhập</label>
+        <input
+          type="date"
+          class="form-control"
+          style="margin-bottom: 20px; width: 500px"
+          v-model="day"
+        />
+        <b-row>
+          <b-col>
+            <label for="">Người nhập</label>
+            <br />
+            <b-form-select
+              style="margin-bottom: 20px"
+              class="position__select"
+              v-model="user_id"
+              :options="userOption"
+            />
+            <br />
+          </b-col>
+          <b-col>
+            <label for="">Chiết khấu</label>
+            <input
+              type="text"
+              class="form-control"
+              style="width: 500px; margin-bottom: 20px"
+              v-model="discount"
+            />
+          </b-col>
+        </b-row>
         <label for="">Mô tả</label>
         <textarea
           type="text"
@@ -24,7 +53,14 @@
                 v-slot="{ errors }"
               >
                 <div
-                  class="position-relative w-100 d-flex justify-content-center align-items-center option"
+                  class="
+                    position-relative
+                    w-100
+                    d-flex
+                    justify-content-center
+                    align-items-center
+                    option
+                  "
                   @click="showOption(indexOption)"
                 >
                   <input
@@ -126,7 +162,11 @@
               </span>
             </div>
           </div>
-          <div class="d-flex position-absolute" style="right: 0; top: 40px" v-if="status == 1">
+          <div
+            class="d-flex position-absolute"
+            style="right: 0; top: 40px"
+            v-if="status == 1"
+          >
             <b-icon
               icon="plus-square"
               scale="3"
@@ -141,7 +181,13 @@
           </div>
         </div>
         <div class="d-flex justify-content-center" v-if="status == 1">
-          <button class="btn-success mt-3" style="width: 120px" @click="update()">Update</button>
+          <button
+            class="btn-success mt-3"
+            style="width: 120px"
+            @click="update()"
+          >
+            Update
+          </button>
           <button
             class="btn-info mt-3 ml-3"
             style="width: 120px"
@@ -170,6 +216,15 @@ export default {
       housewareOption: null,
       show: null,
       status: null,
+      day: null,
+      user_id: null,
+      discount: null,
+      userOption: [
+        { value: 1, text: "Nguyễn Huy Đức" },
+        { value: 2, text: "Nguyễn Huy Trung" },
+        { value: 3, text: "Nguyễn Huy Nam" },
+        { value: 4, text: "Nguyễn Đình Tân" },
+      ],
     };
   },
   props: ["id"],
@@ -186,7 +241,9 @@ export default {
           this.description = res.description;
           this.status = res.status;
           this.options = res.data;
-          console.log(this.options);
+          this.user_id = res.user_id;
+          this.discount = res.discount;
+          this.day = res.day
         });
     },
     getHouseware() {
@@ -224,18 +281,26 @@ export default {
       const params = {
         description: this.description,
         data: this.options,
-        id: this.id
+        id: this.id,
+        day: this.day,
+        discount: this.discount,
+        user_id: this.user_id,
       };
-      this.$store.dispatch('ingredients/completeCouponHouseware', params).then(() => {
-        alert('Ban da update thanh cong');
-        window.location.reload();
-      })
+      this.$store
+        .dispatch("ingredients/completeCouponHouseware", params)
+        .then(() => {
+          alert("Ban da update thanh cong");
+          window.location.reload();
+        });
     },
     update() {
       const params = {
         description: this.description,
         data: this.options,
         id: this.id,
+        day: this.day,
+        discount: this.discount,
+        user_id: this.user_id,
       };
       this.$store
         .dispatch("ingredients/updateCouponHouseware", params)

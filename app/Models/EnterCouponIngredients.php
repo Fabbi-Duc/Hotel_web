@@ -14,5 +14,8 @@ class EnterCouponIngredients extends Model
         'cost',
         'desciption',
         'status',
+        'day',
+        'discount',
+        'user_id'
     ];
 }
