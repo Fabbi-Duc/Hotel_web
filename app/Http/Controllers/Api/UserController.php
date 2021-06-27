@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Mail\SendMail;
-// use App\Mail\SendMailPark;
+use App\Mail\SendMailPark;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\TimeSheet;
@@ -33,6 +33,11 @@ class UserController extends ApiController
         $data = $request->all();
         DB::table('rooms')->where('id', $data['id'])->update(['code_room' => $data['code']]);
         Mail::to($data['email'])->send(new SendMail($data['imgSrc']));
+    }
+
+    public function sendTimeSheet(Request $request)
+    {
+        Mail::to($request->email)->send(new SendMailPark($request->time_sheet, $request->month, $request->year, $request->money));
     }
 
     public function getInfoUser($id)
@@ -289,12 +294,14 @@ class UserController extends ApiController
     {
         $date = getdate();
         $month = $date['mon'];
+        $year = $date['year'];
         $timesheet = DB::table('timesheet')->where('user_id', $id)->where('status', 2)->get();
         $total_time = 0;
         foreach ($timesheet as $time) {
             if ($time) {
                 $month_time = date("m", strtotime($time->day));
-                if ($month_time == $month) {
+                $year_time = date("Y", strtotime($time->day));
+                if ($month_time == $month && $year == $year_time) {
                     if ($time->time_check_in && $time->time_check_out) {
                         $first_date = strtotime($time->time_check_in);
                         $second_date = strtotime($time->time_check_out);
@@ -310,6 +317,42 @@ class UserController extends ApiController
             'total_time' => $total_time / 3600,
             'name' => $user->lastname,
             'salary' => $user->salary
+        ];
+    }
+
+    public function getTimeSendTimeSheet(Request $request)
+    {
+        $timesheet = DB::table('timesheet')->where('user_id', $request->id)->where('status', 2)->get();
+        $total_time = 0;
+        foreach ($timesheet as $time) {
+            if ($time) {
+                $month_time = date("m", strtotime($time->day));
+                $year_time = date("Y", strtotime($time->day));
+                if ($month_time == $request->month && $request->year == $year_time) {
+                    if ($time->time_check_in && $time->time_check_out) {
+                        $first_date = strtotime($time->time_check_in);
+                        $second_date = strtotime($time->time_check_out);
+                        $datediff = abs($second_date - $first_date);
+                        $total_time += $datediff;
+                    }
+                }
+            }
+        };
+        $user = DB::table('users')->where('id', $request->id)->first();
+        $money = $user->salary * ($total_time / 3600) / $request->day;
+        Mail::to($user->email)->send(new SendMailPark($total_time / 3600, $request->month, $request->year, $money));
+        return [
+            'success' => true,
+            // 'time' => $total_time / 3600,
+            // 'money' => $user->salary * $total_time / 3600,
+        ];
+    }
+
+    public function getAllUser() {
+        $user = DB::table('users')->get();
+        return [
+            'success' => true,
+            'user' => $user,
         ];
     }
 

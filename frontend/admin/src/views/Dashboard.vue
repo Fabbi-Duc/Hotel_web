@@ -476,6 +476,7 @@ export default {
       );
     },
     checkIn() {
+      let vm = this;
       navigator.geolocation.getCurrentPosition(function (position) {
         // console.log(position.coords.latitude);
         // console.log(position.coords.longitude);
@@ -502,24 +503,25 @@ export default {
         if (res < 0.1) {
           let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
           const params = {
-            user_id: this.user.id,
+            user_id: vm.user.id,
             time: time,
           };
-          this.$store.dispatch("user/checkIn", params).then(() => {
-            this.checkTimeSheet();
-            this.getTimeSheet();
-            this.$toasted.show("Checkin thành công", {
+          vm.$store.dispatch("user/checkIn", params).then(() => {
+            vm.checkTimeSheet();
+            vm.getTimeSheet();
+            vm.$toasted.show("Checkin thành công", {
               duration: 3000,
             });
           });
         } else {
-          this.$toasted.show("Checkin thất bại", {
+          vm.$toasted.show("Checkin thất bại", {
             duration: 3000,
           });
         }
       });
     },
     checkOut() {
+      let vm = this;
       navigator.geolocation.getCurrentPosition(function (position) {
         // console.log(position.coords.latitude);
         // console.log(position.coords.longitude);
@@ -546,18 +548,18 @@ export default {
         if (res < 0.1) {
           let time = moment(new Date()).format("YYYY-MM-DDTHH:mm");
           const params = {
-            user_id: this.user.id,
+            user_id: vm.user.id,
             time: time,
           };
-          this.$store.dispatch("user/checkOut", params).then(() => {
-            this.checkTimeSheet();
-            this.getTimeSheet();
-            this.$toasted.show("Checkout thành công", {
+          vm.$store.dispatch("user/checkOut", params).then(() => {
+            vm.checkTimeSheet();
+            vm.getTimeSheet();
+            vm.$toasted.show("Checkout thành công", {
               duration: 3000,
             });
           });
         } else {
-          this.$toasted.show("Checkout thất bại", {
+          vm.$toasted.show("Checkout thất bại", {
             duration: 3000,
           });
         }
