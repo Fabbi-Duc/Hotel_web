@@ -215,3 +215,19 @@ export const updateChangeRoom = params => {
     params
   });
 };
+
+export const getSendMailTimeSheet = params => {
+  return request({
+    url: "/get-send-time-sheet",
+    method: "get",
+    params
+  })
+}
+
+export const getAllUser = () =>{
+  return request({
+    url: "/get-all-user",
+    method: "get"
+  })
+}
+

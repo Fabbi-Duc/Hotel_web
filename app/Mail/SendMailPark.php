@@ -10,15 +10,18 @@ use Illuminate\Queue\SerializesModels;
 class SendMailPark extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $park_id;
+    protected $time, $month, $year, $money;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($park_id)
+    public function __construct($time, $month, $year, $money)
     {
-         $this->park_id =  $park_id;   
+        $this->time =  $time;
+        $this->year = $year;
+        $this->month = $month;
+        $this->money = $money;
     }
 
     /**
@@ -29,7 +32,10 @@ class SendMailPark extends Mailable
     public function build()
     {
         return $this->view('mail_park')->with([
-            'park_id' => $this->park_id
-        ]);;
+            'year' => $this->year,
+            'time' => $this->time,
+            'month' => $this->month,
+            'money' => $this->money,
+        ]);
     }
 }

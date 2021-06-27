@@ -158,3 +158,6 @@ Route::post('/refuse-update-timesheet', [UserController::class, 'refuseTimeSheet
 Route::get('/mounth-timesheet/{id}', [UserController::class, 'getTimeSheetMounth'])->name('getTimeSheetMounth');
 Route::get('/get-room/{id}', [UserController::class, 'getRoom'])->name('getRoom');
 Route::get('/update-change-room', [UserController::class, 'updateChangeRoom'])->name('updateChangeRoom');
+// Route::get('/send-time-sheet', [UserController::class, 'sendTimeSheet'])->name('sendTimeSheet');
+Route::get('/get-send-time-sheet', [UserController::class, 'getTimeSendTimeSheet'])->name('getTimeSendTimeSheet');
+Route::get('/get-all-user', [UserController::class, 'getAllUser'])->name('getAllUser');

@@ -4,7 +4,7 @@ import {
   pay, createFood, updateFood, listFood, getInfoFood, deleteFood, createPark,
   getCountUser, checkTimeSheet, checkIn, checkOut, getTimeSheet, createUpdateTimeSheet, getInfoListUpdateTimeSheet,
   deleteUpdateTimeSheet, updateUpdateTimeSheet, getListUpdateTimeSheet, successUpdateTimeSheet, refuseUpdateTimeSheet,
-  getTimeSheetMounth, getRoom, updateChangeRoom
+  getTimeSheetMounth, getRoom, updateChangeRoom, getSendMailTimeSheet,getAllUser
 } from "@/api/user.api";
 
 export const state = {
@@ -363,4 +363,27 @@ export const actions = {
     })
   },
 
+  getSendMailTimeSheet({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getSendMailTimeSheet(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  },
+
+  getAllUser({commit}) {
+    return new Promise((resolve, reject) => {
+      getAllUser()
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    })
+  }
 }
