@@ -233,19 +233,19 @@ export default {
       });
     },
     focus() {
+      let cost = 0;
       if (this.options.length >= 1) {
         for (let i = 0; i < this.options.length; i++) {
           for (let j = 0; j < this.housewareOption.length; j++) {
             if (this.options[i].houseware_id == this.housewareOption[j].id) {
-              this.billsPdf[0].total_cost =
-                this.billsPdf[0].money_food +
-                this.billsPdf[0].money_room +
+              cost +=
                 this.housewareOption[j].cost * this.options[i].quantity;
-              this.billsPdf[0].total_price = this.billsPdf[0].total_cost - this.billsPdf[0].deposit;
             }
           }
         }
+        this.billsPdf[0].total_cost = this.billsPdf[0].money_room + this.billsPdf[0].money_food + cost;
         this.billsPdf[0].broken = this.options;
+        this.billsPdf[0].total_price = this.billsPdf[0].total_cost - this.billsPdf[0].deposit;
       } else {
         this.billsPdf[0].total_cost = this.billsPdf[0].money_food + this.billsPdf[0].money_room;
         this.billsPdf[0].total_price = this.billsPdf[0].total_cost - this.billsPdf[0].deposit;
