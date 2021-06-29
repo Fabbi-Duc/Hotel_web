@@ -25,7 +25,7 @@ class BillsRepository extends RepositoryAbstract implements BillsRepositoryInter
             $list = DB::table("bills");
             return [
                 'success' => true,
-                'Revenue' => $list->where('status', '=', 2)->sum('price')
+                'Revenue' => $list->where('status', '=', 3)->sum('price')
             ];
         } catch (\Exception $e) {
             return [
