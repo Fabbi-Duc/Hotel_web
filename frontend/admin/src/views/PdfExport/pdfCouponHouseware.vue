@@ -34,7 +34,7 @@
               <td>{{ Intl.NumberFormat().format(item.cost) }}</td>
             </tr>
           </table>
-          <h3 class="text-right mt-4 mb-4" style="font-weight: bold">Tổng tiền: {{ Intl.NumberFormat().format(totalPrice)*(1 - user.discount/100) }} VND</h3>
+          <h3 class="text-right mt-4 mb-4" style="font-weight: bold">Tổng tiền: {{ Intl.NumberFormat().format(totalPrice * (1 - parseInt(user.discount) / 100) )}} VND</h3>
           <h3 class="mt-5 mr-5 text-right">Xác nhận</h3>
           <h4 class="text-right">Chữ ký người nhập</h4>
         </div>
